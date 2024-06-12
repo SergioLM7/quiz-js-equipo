@@ -3,3 +3,49 @@
     padding: 0;
     font-family: Arial;
 }
+
+header {
+    color: white;
+    font-size: 30px;
+    background-color: black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px; 
+
+}
+
+.header h1 {
+    margin: 0; 
+}
+
+#login {
+    margin: 0; 
+    background-image: linear-gradient(blue, rgb(117, 225, 255));
+    width: 40px;
+}
+
+#mainContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 150px;
+}
+
+#mainContent h2 {
+    font-size: 3em; 
+    margin-bottom: 20px;
+}
+
+#mainContent button {
+    font-size: 1.5em; 
+    padding: 10px 20px;
+    margin: 10px;
+    background-image: linear-gradient(red, black);
+    margin-bottom: 150px;
+    cursor: pointer;
+}
+#goRankings{
+    background-color: transparent;
+}

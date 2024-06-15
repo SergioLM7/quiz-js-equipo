@@ -76,30 +76,38 @@ const paintQuestion = (object) => {
     h3Question.innerHTML = question;
     const h4Category = document.createElement('H4');
     h4Category.innerHTML = category;
+    const questionTitle = document.createElement('DIV');
+    questionTitle.id = "questionTitle"
+    questionTitle.classList = 'rainbow-text'
+    questionTitle.append(h4Category,h3Question)
     const divAnswer1 = document.createElement('DIV');
+    divAnswer1.id = 'answer1'
     const divAnswer2 = document.createElement('DIV');
+    divAnswer2.id = 'answer2'
     const divAnswer3 = document.createElement('DIV');
+    divAnswer3.id = 'answer3'
     const divAnswer4 = document.createElement('DIV');
+    divAnswer4.id = 'answer4'
 
     if (object.type === 'boolean') {
         answers = [object.incorrect_answers[0], object.correct_answer];
         shuffleAnswers(answers);
 
-        divAnswer1.innerHTML = `<p>${answers[0]}</p>`;
-        divAnswer2.innerHTML = `<p>${answers[1]}</p>`;
-
-        fragment.append(h4Category, h3Question, divAnswer1, divAnswer2)
+        divAnswer1.innerHTML = `<button>${answers[0]}</button>`;
+        divAnswer2.innerHTML = `<button>${answers[1]}</button>`;
+        
+        fragment.append(questionTitle, divAnswer1, divAnswer2)
         questionCardContainer.append(fragment);
     } else {
         answers = [object.correct_answer, object.incorrect_answers[0], object.incorrect_answers[1], object.incorrect_answers[2]];
         shuffleAnswers(answers);
 
-        divAnswer1.innerHTML = `<p>${answers[0]}</p>`;
-        divAnswer2.innerHTML = `<p>${answers[1]}</p>`;
-        divAnswer3.innerHTML = `<p>${answers[2]}</p>`;
-        divAnswer4.innerHTML = `<p>${answers[3]}</p>`;
-
-        fragment.append(h4Category, h3Question, divAnswer1, divAnswer2, divAnswer3, divAnswer4)
+        divAnswer1.innerHTML = `<button>${answers[0]}</button>`;
+        divAnswer2.innerHTML = `<button>${answers[1]}</button>`;
+        divAnswer3.innerHTML = `<button>${answers[2]}</button>`;
+        divAnswer4.innerHTML = `<button>${answers[3]}</button>`;
+        
+        fragment.append(questionTitle, divAnswer1, divAnswer2, divAnswer3, divAnswer4)
         questionCardContainer.append(fragment);
     }
 };
@@ -115,3 +123,4 @@ const shuffleAnswers = (answers) => {
 }
 
 // Function Calls
+paintQuestion()

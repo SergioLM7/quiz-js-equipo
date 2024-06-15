@@ -75,19 +75,27 @@ const paintQuestion = (object) => {
     h3Question.innerHTML = question;
     const h4Category = document.createElement('H4');
     h4Category.innerHTML = category;
+    const questionTitle = document.createElement('DIV');
+    questionTitle.id = "questionTitle"
+    questionTitle.classList = 'rainbow-text'
+    questionTitle.append(h4Category,h3Question)
     const divAnswer1 = document.createElement('DIV');
+    divAnswer1.id = 'answer1'
     const divAnswer2 = document.createElement('DIV');
+    divAnswer2.id = 'answer2'
     const divAnswer3 = document.createElement('DIV');
+    divAnswer3.id = 'answer3'
     const divAnswer4 = document.createElement('DIV');
+    divAnswer4.id = 'answer4'
 
     if (object.type === 'boolean') {
         const answer1 = object.incorrect_answers[0];
         const answer2 = object.correct_answer;
 
-        divAnswer1.innerHTML = `<p>${answer1}</p>`;
-        divAnswer2.innerHTML = `<p>${answer2}</p>`;
+        divAnswer1.innerHTML = `<button>${answer1}</button>`;
+        divAnswer2.innerHTML = `<button>${answer2}</button>`;
 
-        fragment.append(h4Category, h3Question, divAnswer1, divAnswer2)
+        fragment.append(questionTitle, divAnswer1, divAnswer2)
         questionCardContainer.append(fragment);
     } else {
         const answer1 = object.incorrect_answers[1];
@@ -95,14 +103,16 @@ const paintQuestion = (object) => {
         const answer3 = object.correct_answer;
         const answer4 = object.incorrect_answers[2];
 
-        divAnswer1.innerHTML = `<p>${answer1}</p>`;
-        divAnswer2.innerHTML = `<p>${answer2}</p>`;
-        divAnswer3.innerHTML = `<p>${answer3}</p>`;
-        divAnswer4.innerHTML = `<p>${answer4}</p>`;
+        divAnswer1.innerHTML = `<button>${answer1}</button>`;
+        divAnswer2.innerHTML = `<button>${answer2}</button>`;
+        divAnswer3.innerHTML = `<button>${answer3}</button>`;
+        divAnswer4.innerHTML = `<button>${answer4}</button>`;
 
-        fragment.append(h4Category, h3Question, divAnswer1, divAnswer2, divAnswer3, divAnswer4)
+        
+        fragment.append(questionTitle, divAnswer1, divAnswer2, divAnswer3, divAnswer4)
         questionCardContainer.append(fragment);
     }
 };
 
 // Function Calls
+paintQuestion()

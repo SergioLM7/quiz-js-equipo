@@ -4,6 +4,15 @@
     padding: 0;
 }
 
+html,
+body {
+    height: 100%;
+}
+
+body {
+    background-color: black;
+}
+
 header {
     color: rgb(0, 0, 0);
     font-size: 30px;
@@ -11,24 +20,24 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 25px; 
+    padding: 25px;
 }
+
 header h1 {
-    margin: 0; 
+    margin: 0;
 }
 
 #login {
-    margin: 0; 
+    margin: 0;
     background-image: linear-gradient(blue, rgb(117, 225, 255));
     width: 60px;
     height: 60px;
-}
-#login:hover {
-    background-image: linear-gradient(rgb(204, 0, 255), rgb(0, 81, 255));
+    transition: width 1s ease;
 }
 
-body {
-    background-color: black;
+#login:hover {
+    background-image: linear-gradient(rgb(204, 0, 255), rgb(0, 81, 255));
+    width: 120px;
 }
 
 #mainContent {
@@ -38,16 +47,17 @@ body {
     text-align: center;
     margin-top: 150px;
     color: white;
+    padding-bottom: 100px;
 }
 
 #mainContent h2 {
-    font-size: 80px; 
+    font-size: 80px;
     margin-bottom: 100px;
     margin-top: 80px;
 }
 
 #mainContent button {
-    font-size: 1.5em; 
+    font-size: 1.5em;
     padding: 10px 20px;
     cursor: pointer;
 }
@@ -72,11 +82,14 @@ body {
 }
 
 footer {
+    width: 100%;
     background-color: white;
-    padding: 50px;
+    padding-top: 50px;
+    padding-bottom: 50px;
     color: black;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+    margin-top: 250px;
 }
 
 footer h3 {
@@ -85,14 +98,37 @@ footer h3 {
 }
 
 @keyframes rainbow {
-    0% { color: red; }
-    14% { color: orange; }
-    28% { color: yellow; }
-    42% { color: green; }
-    57% { color: blue; }
-    71% { color: indigo; }
-    85% { color: violet; }
-    100% { color: red; }
+    0% {
+        color: red;
+    }
+
+    14% {
+        color: orange;
+    }
+
+    28% {
+        color: yellow;
+    }
+
+    42% {
+        color: green;
+    }
+
+    57% {
+        color: blue;
+    }
+
+    71% {
+        color: indigo;
+    }
+
+    85% {
+        color: violet;
+    }
+
+    100% {
+        color: red;
+    }
 }
 
 .rainbow-text {
@@ -101,20 +137,111 @@ footer h3 {
     animation: rainbow 3s infinite;
 }
 
+/*Añadido (A REVISAR) para pintar las preguntas*/
+
+article h3,
+h4 {
+    padding: 10px 0 0 0;
+}
+
+#goButton {
+    display: block;
+    margin-top: 200px;
+    margin-bottom: 80px;
+}
+
+
+#questionsMainContainer {
+    padding-top: 70px;
+    margin-right: 110px;
+    margin-left: 110px;
+}
+
+#questionTitle {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 30px;
+}
+
+#questionTitle h4 {
+    padding-bottom: 10px;
+    font-size: 20px;
+
+}
+
+#questionTitle h3 {
+    color: white;
+    font-size: 20px;
+}
+
+#questionCard {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#answer1 button {
+    background-color: rgb(90, 222, 255);
+}
+
+#answer2 button {
+    background-color: rgb(255, 236, 131);
+}
+
+#answer3 button {
+    background-color: rgb(123, 255, 151);
+}
+
+#answer4 button {
+    background-color: rgb(255, 105, 105);
+}
+
+#questionCard button {
+    padding-bottom: 10px;
+    padding-right: 60px;
+    padding-left: 60px;
+    width: 400px;
+    height: 90px;
+}
+
+#nextButton {
+    margin-top: 100px;
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 60px;
+    padding-left: 60px;
+    display: none;
+    margin-left: 45%;
+    margin-bottom: 320px;
+}
+
+
 @media (max-width: 1200px) {
     header {
         flex-direction: column;
         text-align: center;
     }
+
     header h1 {
         margin-bottom: 20px;
     }
+
     #mainContent h2 {
         font-size: 60px;
     }
+
     #mainContent button {
         font-size: 1.2em;
     }
+
+    #nextButton {
+        margin-left: 35%;
+    }
+
     footer {
         flex-direction: column;
         align-items: center;
@@ -125,19 +252,28 @@ footer h3 {
     header {
         padding: 15px;
     }
+
     header h1 {
         font-size: 24px;
     }
+
     #login {
         width: 50px;
         height: 50px;
     }
+
     #mainContent {
         margin-top: 100px;
     }
+
     #mainContent h2 {
         font-size: 50px;
     }
+
+    #nextButton {
+        margin-left: 35%;
+    }
+
     #mainContent button {
         font-size: 1em;
         padding: 8px 16px;
@@ -148,47 +284,34 @@ footer h3 {
     header {
         padding: 10px;
     }
+
     header h1 {
         font-size: 20px;
     }
+
     #login {
         width: 40px;
         height: 40px;
     }
+
+    #nextButton {
+        margin-left: 35%;
+    }
+
     #mainContent {
         margin-top: 50px;
     }
+
     #mainContent h2 {
         font-size: 40px;
     }
+
     #mainContent button {
         font-size: 0.8em;
         padding: 6px 12px;
     }
+
     footer {
         padding: 30px;
     }
-}
-
-/*Añadido (A REVISAR) para pintar las preguntas*/
-#questionCard div {
-    display: flex;
-    padding: 10px 0 0 0;
-}
-
-div p {
-    color: white;
-}
-
-article h3, h4 {
-    color:white;
-    padding: 10px 0 0 0;
-}
-
-#nextButton {
-    display: none;
-}
-
-#goButton {
-    display: block;
 }

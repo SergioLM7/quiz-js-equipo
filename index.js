@@ -7,6 +7,7 @@ const nextButton = document.querySelector('#nextButton');
 const apiQuiz = 'https://opentdb.com/api.php?amount=10';
 let arrApiQuiz;
 let currentIndex = 0;
+let answers = [];
 
 
 // Event Listeners
@@ -81,28 +82,36 @@ const paintQuestion = (object) => {
     const divAnswer4 = document.createElement('DIV');
 
     if (object.type === 'boolean') {
-        const answer1 = object.incorrect_answers[0];
-        const answer2 = object.correct_answer;
+        answers = [object.incorrect_answers[0], object.correct_answer];
+        shuffleAnswers(answers);
 
-        divAnswer1.innerHTML = `<p>${answer1}</p>`;
-        divAnswer2.innerHTML = `<p>${answer2}</p>`;
+        divAnswer1.innerHTML = `<p>${answers[0]}</p>`;
+        divAnswer2.innerHTML = `<p>${answers[1]}</p>`;
 
         fragment.append(h4Category, h3Question, divAnswer1, divAnswer2)
         questionCardContainer.append(fragment);
     } else {
-        const answer1 = object.incorrect_answers[1];
-        const answer2 = object.incorrect_answers[0];
-        const answer3 = object.correct_answer;
-        const answer4 = object.incorrect_answers[2];
+        answers = [object.correct_answer, object.incorrect_answers[0], object.incorrect_answers[1], object.incorrect_answers[2]];
+        shuffleAnswers(answers);
 
-        divAnswer1.innerHTML = `<p>${answer1}</p>`;
-        divAnswer2.innerHTML = `<p>${answer2}</p>`;
-        divAnswer3.innerHTML = `<p>${answer3}</p>`;
-        divAnswer4.innerHTML = `<p>${answer4}</p>`;
+        divAnswer1.innerHTML = `<p>${answers[0]}</p>`;
+        divAnswer2.innerHTML = `<p>${answers[1]}</p>`;
+        divAnswer3.innerHTML = `<p>${answers[2]}</p>`;
+        divAnswer4.innerHTML = `<p>${answers[3]}</p>`;
 
         fragment.append(h4Category, h3Question, divAnswer1, divAnswer2, divAnswer3, divAnswer4)
         questionCardContainer.append(fragment);
     }
 };
+
+const shuffleAnswers = (answers) => {
+    console.log('Primer array', answers);
+    for (let i = answers.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [answers[i], answers[j]] = [answers[j], answers[i]];
+        console.log(i, j, answers);
+    }
+    return answers;
+}
 
 // Function Calls

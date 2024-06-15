@@ -7,6 +7,7 @@ const nextButton = document.querySelector('#nextButton');
 const apiQuiz = 'https://opentdb.com/api.php?amount=10';
 let arrApiQuiz;
 let currentIndex = 0;
+let answers = [];
 
 
 // Event Listeners
@@ -89,30 +90,37 @@ const paintQuestion = (object) => {
     divAnswer4.id = 'answer4'
 
     if (object.type === 'boolean') {
-        const answer1 = object.incorrect_answers[0];
-        const answer2 = object.correct_answer;
+        answers = [object.incorrect_answers[0], object.correct_answer];
+        shuffleAnswers(answers);
 
-        divAnswer1.innerHTML = `<button>${answer1}</button>`;
-        divAnswer2.innerHTML = `<button>${answer2}</button>`;
-
+        divAnswer1.innerHTML = `<button>${answers[0]}</button>`;
+        divAnswer2.innerHTML = `<button>${answers[1]}</button>`;
+        
         fragment.append(questionTitle, divAnswer1, divAnswer2)
         questionCardContainer.append(fragment);
     } else {
-        const answer1 = object.incorrect_answers[1];
-        const answer2 = object.incorrect_answers[0];
-        const answer3 = object.correct_answer;
-        const answer4 = object.incorrect_answers[2];
+        answers = [object.correct_answer, object.incorrect_answers[0], object.incorrect_answers[1], object.incorrect_answers[2]];
+        shuffleAnswers(answers);
 
-        divAnswer1.innerHTML = `<button>${answer1}</button>`;
-        divAnswer2.innerHTML = `<button>${answer2}</button>`;
-        divAnswer3.innerHTML = `<button>${answer3}</button>`;
-        divAnswer4.innerHTML = `<button>${answer4}</button>`;
-
+        divAnswer1.innerHTML = `<button>${answers[0]}</button>`;
+        divAnswer2.innerHTML = `<button>${answers[1]}</button>`;
+        divAnswer3.innerHTML = `<button>${answers[2]}</button>`;
+        divAnswer4.innerHTML = `<button>${answers[3]}</button>`;
         
         fragment.append(questionTitle, divAnswer1, divAnswer2, divAnswer3, divAnswer4)
         questionCardContainer.append(fragment);
     }
 };
+
+const shuffleAnswers = (answers) => {
+    console.log('Primer array', answers);
+    for (let i = answers.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [answers[i], answers[j]] = [answers[j], answers[i]];
+        console.log(i, j, answers);
+    }
+    return answers;
+}
 
 // Function Calls
 paintQuestion()

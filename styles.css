@@ -169,3 +169,26 @@ footer h3 {
         padding: 30px;
     }
 }
+
+/*Añadido (A REVISAR) para pintar las preguntas*/
+#questionCard div {
+    display: flex;
+    padding: 10px 0 0 0;
+}
+
+div p {
+    color: white;
+}
+
+article h3, h4 {
+    color:white;
+    padding: 10px 0 0 0;
+}
+
+#nextButton {
+    display: none;
+}
+
+#goButton {
+    display: block;
+}

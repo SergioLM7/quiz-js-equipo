@@ -218,10 +218,91 @@ h4 {
     margin-bottom: 320px;
 }
 
+/* User Authentication Styles */
+#login-window,
+#signup-window {
+    padding: 5px 10px 7px 10px;
+}
+
+#auth-container {
+    display: flex;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    pointer-events: none;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    transition: opacity 0.3s ease;
+    box-sizing: border-box;
+}
+
+#login-container,
+#signup-container {
+    background-color: #fff;
+    height: fit-content;
+    width: 30%;
+    max-width: 100%;
+    padding: 30px 50px;
+    border-radius: 3px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.fa-xmark {
+    pointer-events: none;
+}
+
+.close-auth-window {
+    padding: 4px 10px 5px 10px;
+    /* margin-bottom: 10px; */
+    margin-left: 90%;
+    box-sizing: border-box;
+}
+
+#login-container label,
+#signup-container label {
+    margin-top: 100px;
+}
+
+#login-container input,
+#signup-container input {
+    width: 100%;
+    padding: 10px 10px;
+    margin-bottom: 10px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+#login-container input[type=submit],
+#signup-container input[type=submit] {
+    width: 100%;
+    background-color: darkblue;
+    font-size: 1em;
+    color: white;
+    padding: 10px 20px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+input[type=submit]:hover {
+    background-color: #45a049;
+}
+
+.show {
+    pointer-events: auto !important;
+    opacity: 1 !important;
+}
+
 .hidden {
     display: none;
 }
-
 
 @media (max-width: 1200px) {
     header {

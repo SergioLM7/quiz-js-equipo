@@ -22,7 +22,7 @@ let answers = [];
 
 // Auth User Variables
 let isUserLogged;
-// const profilePictureContainer = document.querySelector('#profilePictureContainer');
+const profilePictureContainer = document.querySelector('#profilePictureContainer');
 const loginContainer = document.querySelector('#login-container');
 const signupContainer = document.querySelector('#signup-container');
 const authContainer = document.querySelector('#auth-container');
@@ -55,6 +55,12 @@ document.addEventListener('click', ({ target }) => {
         authContainer.classList.remove('show');
     }
 
+});
+
+document.addEventListener('change', ({ target }) => {
+    if (target.matches('#btnFilePfp')) {
+        uploadProfilePicture();
+    }
 });
 
 // Event listeners user authentication
@@ -199,10 +205,16 @@ const signInUser = (email, password) => {
 }
 
 const createUser = (user) => {
+    // Create a document reference with the user ID as the document ID
     db.collection("users")
-        .add(user)
-        .then((docRef) => console.log("Document written with ID: ", docRef.id))
-        .catch((error) => console.error("Error adding document: ", error));
+        .doc(user.id)  // This sets the document ID to the user's UID
+        .set(user)  // Use set to create the document with the provided data
+        .then(() => {
+            console.log("Document written with ID: ", user.id);
+        })
+        .catch((error) => {
+            console.error("Error adding document: ", error);
+        });
 }
 
 const signUpUser = (nameSignup, email, password) => {
@@ -216,7 +228,7 @@ const signUpUser = (nameSignup, email, password) => {
                 id: user.uid,
                 name: nameSignup,
                 email: user.email,
-                profilePicture: 'ProfilePicture'
+                profilePicture: 'https://firebasestorage.googleapis.com/v0/b/quizjs-4e621.appspot.com/o/profilePictures%2FprofilePicture.png?alt=media&token=af80ce80-7247-49bc-be5a-da9b388e40d8'
             });
             user.updateProfile({
                 displayName: nameSignup //Actualiza el display name
@@ -242,22 +254,73 @@ firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         isUserLogged = firebase.auth().currentUser;
         console.log(`Está en el sistema:${user.email} ${user.uid}`);
-        // document.getElementById("message").innerText = `Hello ${isUserLogged.displayName}!`;
+        document.getElementById("message").innerText = `Hello ${isUserLogged.displayName}!`;
         document.querySelector('#loggedOffContainer').classList.add('hidden');
         document.querySelector('#loggedInContainer').classList.remove('hidden');
-        // profilePictureContainer.innerHTML = '';
-        // getProfilePicture();
+        profilePictureContainer.innerHTML = '';
+        getProfilePicture();
     } else {
         isUserLogged = firebase.auth().currentUser;
         console.log("no hay usuarios en el sistema");
-        // document.getElementById("message").innerText = `No hay usuarios en el sistema`;
+        document.getElementById("message").innerText = `No hay usuarios en el sistema`;
         document.querySelector('#loggedOffContainer').classList.remove('hidden');
         document.querySelector('#loggedInContainer').classList.add('hidden');
-        // profilePictureContainer.innerHTML = '';
-        // getProfilePicture();
+        profilePictureContainer.innerHTML = '';
+        getProfilePicture();
     }
 });
 
+// Profile Picture
+const uploadProfilePicture = () => {
+    const file = document.querySelector('#btnFilePfp').files[0];
+    const storageRef = firebase.storage().ref();
+    var profilePicRef = storageRef.child(`profilePictures/${isUserLogged.uid}profilePicture.jpg`);
+
+    // Upload the file
+    profilePicRef.put(file).then(function (snapshot) {
+        // Get the download URL
+        snapshot.ref.getDownloadURL().then(function (downloadURL) {
+            // Save the download URL in Firestore
+            db.collection('users')
+                .doc(isUserLogged.uid)
+                .set({
+                    profilePicture: downloadURL
+                }, { merge: true }).then(function () {
+                    console.log('Profile picture URL saved successfully!');
+                    getProfilePicture();
+                }).catch(function (error) {
+                    console.error('Error saving profile picture URL: ', error);
+                });
+        });
+    }).catch(function (error) {
+        console.error('Error uploading profile picture: ', error);
+    });
+}
+
+const getProfilePicture = () => {
+    isUserLogged = firebase.auth().currentUser;
+    db.collection('users')
+        .doc(isUserLogged.uid)
+        .get()
+        .then(function (doc) {
+            if (doc.exists) {
+                const urlProfilePicture = doc.data().profilePicture;
+                if (urlProfilePicture) {
+                    profilePictureContainer.innerHTML = '';
+                    const imgProfilePicture = document.createElement('IMG');
+                    imgProfilePicture.id = 'imgProfilePicture';
+                    imgProfilePicture.src = `${urlProfilePicture}`;
+                    profilePictureContainer.append(imgProfilePicture);
+                }
+            } else {
+                console.log('No such document!');
+            }
+        }).catch(function (error) {
+            console.log('Error getting document:', error);
+        });
+}
+
+// Footer Logic
 const generateFooter = () => {
     const developers = [
         {

@@ -1,3 +1,14 @@
+const firebaseConfig = {
+    apiKey: "AIzaSyDm4y61vpKTeudhBnPZR-y9_suQd6Z7oHI",
+    authDomain: "quizjs-4e621.firebaseapp.com",
+    projectId: "quizjs-4e621",
+    storageBucket: "quizjs-4e621.appspot.com",
+    messagingSenderId: "1068148851720",
+    appId: "1:1068148851720:web:7185cb90463c1d1ebafdbd"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
 // General Variables
 const fragment = document.createDocumentFragment();
 const goButton = document.querySelector('#goButton');
@@ -9,16 +20,64 @@ let arrApiQuiz;
 let currentIndex = 0;
 let answers = [];
 
+// Auth User Variables
+let isUserLogged;
+// const profilePictureContainer = document.querySelector('#profilePictureContainer');
+const loginContainer = document.querySelector('#login-container');
+const signupContainer = document.querySelector('#signup-container');
+const authContainer = document.querySelector('#auth-container');
+const closeAuthWindow = document.querySelector('.close-auth-window');
+
 // Event Listeners
 document.addEventListener('click', ({ target }) => {
+
     if (target.matches('#goToQuiz')) {
         window.location.href = "./pages/questions.html";
     }
+
     if (target.matches('.btnAnswer')) {
         iterateArrApiQuiz();
     }
+
+    if (target.matches('#login-window')) {
+        authContainer.classList.add('show');
+        signupContainer.classList.add('hidden');
+        loginContainer.classList.remove('hidden');
+    }
+
+    if (target.matches('#signup-window')) {
+        authContainer.classList.add('show');
+        loginContainer.classList.add('hidden');
+        signupContainer.classList.remove('hidden');
+    }
+
+    if (target.matches('.close-auth-window')) {
+        authContainer.classList.remove('show');
+    }
+
 });
 
+// Event listeners user authentication
+document.getElementById("formLogin").addEventListener("submit", function (event) {
+    event.preventDefault();
+    let emailLogin = event.target.elements.emailLogin.value;
+    let passLogin = event.target.elements.passLogin.value;
+    signInUser(emailLogin, passLogin)
+});
+
+document.getElementById("formSignup").addEventListener("submit", function (event) {
+    event.preventDefault();
+    let nameSignup = event.target.elements.nameSignup.value;
+    let emailSignup = event.target.elements.emailSignup.value;
+    let passSignup = event.target.elements.passSignup.value;
+    let passSignupRepeat = event.target.elements.passSignupRepeat.value;
+
+    passSignup === passSignupRepeat ? signUpUser(nameSignup, emailSignup, passSignup) : alert("error password");
+});
+
+document.getElementById("button-logout").addEventListener("click", () => {
+    signOut();
+});
 
 // ApiQuiz Functions
 //Get questions from API
@@ -120,8 +179,84 @@ const shuffleAnswers = (answers) => {
     return answers;
 };
 
+// User Authentication Functions
+const signInUser = (email, password) => {
+    firebase.auth().signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            let user = userCredential.user;
+            console.log(`se ha logado ${user.email} ID:${user.uid}`)
+            alert(`se ha logado ${user.email} ID:${user.uid}`)
+            console.log("USER", user);
+        })
+        .catch((error) => {
+            let errorCode = error.code;
+            let errorMessage = error.message;
+            console.log(errorCode)
+            console.log(errorMessage)
+            alert('Wrong authentication details.');
+        });
+    authContainer.classList.remove('show');
+}
+
+const createUser = (user) => {
+    db.collection("users")
+        .add(user)
+        .then((docRef) => console.log("Document written with ID: ", docRef.id))
+        .catch((error) => console.error("Error adding document: ", error));
+}
+
+const signUpUser = (nameSignup, email, password) => {
+    firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            let user = userCredential.user;
+            console.log(`se ha registrado ${user.email} ID:${user.uid}`);
+            createUser({
+                id: user.uid,
+                name: nameSignup,
+                email: user.email,
+                profilePicture: 'ProfilePicture'
+            });
+            user.updateProfile({
+                displayName: nameSignup //Actualiza el display name
+            });
+            authContainer.classList.remove('show');
+        })
+        .catch((error) => {
+            console.log("Error en el sistema" + error.message, "Error: " + error.code);
+        });
+}
+
+const signOut = () => {
+    let user = firebase.auth().currentUser;
+
+    firebase.auth().signOut().then(() => {
+        console.log("Sale del sistema: " + user.email);
+    }).catch((error) => {
+        console.log("hubo un error: " + error);
+    });
+}
+
+firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+        isUserLogged = firebase.auth().currentUser;
+        console.log(`Está en el sistema:${user.email} ${user.uid}`);
+        // document.getElementById("message").innerText = `Hello ${isUserLogged.displayName}!`;
+        document.querySelector('#loggedOffContainer').classList.add('hidden');
+        document.querySelector('#loggedInContainer').classList.remove('hidden');
+        // profilePictureContainer.innerHTML = '';
+        // getProfilePicture();
+    } else {
+        isUserLogged = firebase.auth().currentUser;
+        console.log("no hay usuarios en el sistema");
+        // document.getElementById("message").innerText = `No hay usuarios en el sistema`;
+        document.querySelector('#loggedOffContainer').classList.remove('hidden');
+        document.querySelector('#loggedInContainer').classList.add('hidden');
+        // profilePictureContainer.innerHTML = '';
+        // getProfilePicture();
+    }
+});
+
 // Function Calls
 onWindowChange();
-
-
-

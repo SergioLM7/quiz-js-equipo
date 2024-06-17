@@ -9,17 +9,12 @@ let arrApiQuiz;
 let currentIndex = 0;
 let answers = [];
 
-
-console.log(window.location.pathname);
-
-
 // Event Listeners
 document.addEventListener('click', ({ target }) => {
     if (target.matches('#goToQuiz')) {
         window.location.href = "./pages/questions.html";
     }
-
-    if (target.matches('#nextButton')) {
+    if (target.matches('.btnAnswer')) {
         iterateArrApiQuiz();
     }
 });
@@ -45,8 +40,8 @@ const toLocalStorage = (array) => {
 
 //Iterate arrApiQuiz
 const iterateArrApiQuiz = () => {
-    document.querySelector('#questionCard').innerHTML = '';
     if (currentIndex < arrApiQuiz.length) {
+        document.querySelector('#questionCard').innerHTML = '';
         paintQuestion(arrApiQuiz[currentIndex]);
         currentIndex++;
     } else {
@@ -69,7 +64,6 @@ const onWindowChange = async () => {
         }
     };
 };
-
 
 //Paint questions at pages/questions
 const paintQuestion = (object) => {
@@ -97,8 +91,8 @@ const paintQuestion = (object) => {
         answers = [object.incorrect_answers[0], object.correct_answer];
         shuffleAnswers(answers);
 
-        divAnswer1.innerHTML = `<button>${answers[0]}</button>`;
-        divAnswer2.innerHTML = `<button>${answers[1]}</button>`;
+        divAnswer1.innerHTML = `<button id=${answers[0]} class="btnAnswer">${answers[0]}</button>`;
+        divAnswer2.innerHTML = `<button id=${answers[1]} class="btnAnswer">${answers[1]}</button>`;
 
         fragment.append(questionTitle, divAnswer1, divAnswer2)
         questionCardContainer.append(fragment);
@@ -106,10 +100,10 @@ const paintQuestion = (object) => {
         answers = [object.correct_answer, object.incorrect_answers[0], object.incorrect_answers[1], object.incorrect_answers[2]];
         shuffleAnswers(answers);
 
-        divAnswer1.innerHTML = `<button>${answers[0]}</button>`;
-        divAnswer2.innerHTML = `<button>${answers[1]}</button>`;
-        divAnswer3.innerHTML = `<button>${answers[2]}</button>`;
-        divAnswer4.innerHTML = `<button>${answers[3]}</button>`;
+        divAnswer1.innerHTML = `<button id=${answers[0]} class="btnAnswer">${answers[0]}</button>`;
+        divAnswer2.innerHTML = `<button id=${answers[1]} class="btnAnswer">${answers[1]}</button>`;
+        divAnswer3.innerHTML = `<button id=${answers[2]} class="btnAnswer">${answers[2]}</button>`;
+        divAnswer4.innerHTML = `<button id=${answers[3]} class="btnAnswer">${answers[3]}</button>`;
 
         fragment.append(questionTitle, divAnswer1, divAnswer2, divAnswer3, divAnswer4)
         questionCardContainer.append(fragment);
@@ -124,7 +118,7 @@ const shuffleAnswers = (answers) => {
         console.log(i, j, answers);
     }
     return answers;
-}
+};
 
 // Function Calls
 onWindowChange();

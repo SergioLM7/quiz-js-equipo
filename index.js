@@ -258,5 +258,31 @@ firebase.auth().onAuthStateChanged(function (user) {
     }
 });
 
+const generateFooter = () => {
+    const developers = [
+        {
+            name: 'Sergio Lillo Martínez',
+            github: 'https://github.com/SergioLM7'
+        },
+        {
+            name: 'Antonio González Torres',
+            github: 'https://github.com/Nitolez'
+        },
+        {
+            name: 'Diego Blázquez Rosado',
+            github: 'https://github.com/diegoblazquezr'
+        }
+    ];
+    const footerDevsContainer = document.querySelector('#footer-devs-container');
+    shuffleAnswers(developers);
+    developers.forEach((element) => {
+        const spanDev = document.createElement('SPAN');
+        spanDev.innerHTML = `${element.name}<a href="${element.github}" target="_blank"><i class="fa-brands fa-github fa-xl" style="color: #000000;"></i></a>`;
+        fragment.append(spanDev);
+    });
+    footerDevsContainer.append(fragment);
+}
+
 // Function Calls
 onWindowChange();
+generateFooter();

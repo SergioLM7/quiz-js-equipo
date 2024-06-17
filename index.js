@@ -1,6 +1,6 @@
 // General Variables
 const fragment = document.createDocumentFragment();
-const goButton = document.querySelector('#goButton'); 
+const goButton = document.querySelector('#goButton');
 const nextButton = document.querySelector('#nextButton');
 
 // ApiQuiz Variables
@@ -10,26 +10,15 @@ let currentIndex = 0;
 let answers = [];
 
 
+console.log(window.location.pathname);
+
+
 // Event Listeners
-document.addEventListener('click', async ({ target }) => {
+document.addEventListener('click', ({ target }) => {
     if (target.matches('#goToQuiz')) {
-        try {
-            const preguntas = await getApiQuiz();
-            toLocalStorage(preguntas);
-            setTimeout(() => {
-                window.location.href = './pages/questions.html';
-            }, 2000)
-        } catch (error) {
-            console.error('Error obtaining questions from quiz:', error);
-        }
+        window.location.href = "./pages/questions.html";
     }
-    if (target.matches('#goButton')) {
-        goButton.style.display = 'none'; 
-        nextButton.style.display = 'block'; 
-        arrApiQuiz = JSON.parse(localStorage.getItem('arrApiQuiz'));
-        iterateArrApiQuiz();
-    }
-    
+
     if (target.matches('#nextButton')) {
         iterateArrApiQuiz();
     }
@@ -43,7 +32,7 @@ const getApiQuiz = async () => {
     try {
         const responseApiQuiz = await fetch(apiQuiz);
         const dataApiQuiz = await responseApiQuiz.json();
-        return dataApiQuiz.results;
+        return arrApiQuiz = dataApiQuiz.results;
     } catch (error) {
         throw (error);
     }
@@ -57,15 +46,30 @@ const toLocalStorage = (array) => {
 //Iterate arrApiQuiz
 const iterateArrApiQuiz = () => {
     document.querySelector('#questionCard').innerHTML = '';
-    if (arrApiQuiz && currentIndex < arrApiQuiz.length) {
+    if (currentIndex < arrApiQuiz.length) {
         paintQuestion(arrApiQuiz[currentIndex]);
         currentIndex++;
     } else {
         alert('You have finished the quiz.');
         currentIndex = 0;
-        nextButton.style.display = 'none'; 
     }
 };
+
+//Initial function
+const onWindowChange = async () => {
+    if (window.location.pathname == "/pages/questions.html") {
+        if (localStorage.getItem('arrApiQuiz')) {
+            arrApiQuiz = JSON.parse(localStorage.getItem('arrApiQuiz'));
+            iterateArrApiQuiz();
+        } else {
+            const preguntas = await getApiQuiz();
+            console.log(preguntas)
+            toLocalStorage(preguntas);
+            iterateArrApiQuiz();
+        }
+    };
+};
+
 
 //Paint questions at pages/questions
 const paintQuestion = (object) => {
@@ -79,7 +83,7 @@ const paintQuestion = (object) => {
     const questionTitle = document.createElement('DIV');
     questionTitle.id = "questionTitle"
     questionTitle.classList = 'rainbow-text'
-    questionTitle.append(h4Category,h3Question)
+    questionTitle.append(h4Category, h3Question)
     const divAnswer1 = document.createElement('DIV');
     divAnswer1.id = 'answer1'
     const divAnswer2 = document.createElement('DIV');
@@ -95,7 +99,7 @@ const paintQuestion = (object) => {
 
         divAnswer1.innerHTML = `<button>${answers[0]}</button>`;
         divAnswer2.innerHTML = `<button>${answers[1]}</button>`;
-        
+
         fragment.append(questionTitle, divAnswer1, divAnswer2)
         questionCardContainer.append(fragment);
     } else {
@@ -106,7 +110,7 @@ const paintQuestion = (object) => {
         divAnswer2.innerHTML = `<button>${answers[1]}</button>`;
         divAnswer3.innerHTML = `<button>${answers[2]}</button>`;
         divAnswer4.innerHTML = `<button>${answers[3]}</button>`;
-        
+
         fragment.append(questionTitle, divAnswer1, divAnswer2, divAnswer3, divAnswer4)
         questionCardContainer.append(fragment);
     }
@@ -123,4 +127,7 @@ const shuffleAnswers = (answers) => {
 }
 
 // Function Calls
-paintQuestion()
+onWindowChange();
+
+
+

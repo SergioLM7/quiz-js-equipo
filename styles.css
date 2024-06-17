@@ -27,17 +27,17 @@ header h1 {
     margin: 0;
 }
 
-#login {
+#login-window, #signup-window {
     margin: 0;
     background-image: linear-gradient(blue, rgb(117, 225, 255));
-    width: 60px;
+    width: 120px;
     height: 60px;
     transition: width 1s ease;
 }
 
-#login:hover {
+#login-window:hover, #signup-window:hover {
     background-image: linear-gradient(rgb(204, 0, 255), rgb(0, 81, 255));
-    width: 120px;
+    width: 160px;
 }
 
 #mainContent {

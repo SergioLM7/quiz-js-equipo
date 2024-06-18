@@ -254,6 +254,7 @@ firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         isUserLogged = firebase.auth().currentUser;
         console.log(`Está en el sistema:${user.email} ${user.uid}`);
+        console.log(isUserLogged);
         document.getElementById("message").innerText = `Hello ${isUserLogged.displayName}!`;
         document.querySelector('#loggedOffContainer').classList.add('hidden');
         document.querySelector('#loggedInContainer').classList.remove('hidden');
@@ -345,6 +346,32 @@ const generateFooter = () => {
     });
     footerDevsContainer.append(fragment);
 }
+
+// Save Score and Date to User
+const saveScore = (obj) => {
+    if (isUserLogged) {
+        const userRef = db.collection('users').doc(isUserLogged.uid);
+
+        userRef.get().then((doc) => {
+            if (doc.exists) {
+                let scoresArray = doc.data().scores || [];
+                scoresArray.push(obj);
+
+                userRef.set({ scores: scoresArray }, { merge: true })
+                    .then(() => {
+                        console.log('Score saved successfully!');
+                    })
+                    .catch((error) => {
+                        console.error('Error saving score: ', error);
+                    });
+            }
+        })
+    } else {
+        console.log("No user is logged in to add their score.");
+        alert("You need to be logged in to add score.");
+    }
+}
+// saveScore({score: 10, date: '07-02-1997'});
 
 // Function Calls
 onWindowChange();

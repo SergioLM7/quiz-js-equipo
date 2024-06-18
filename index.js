@@ -34,6 +34,9 @@ document.addEventListener('click', ({ target }) => {
     if (target.matches('#goToQuiz')) {
         window.location.href = "./pages/questions.html";
     }
+    if (target.matches('#goRankings')) {
+        window.location.href = "./pages/results.html";
+    }
 
     if (target.matches('.btnAnswer')) {
         iterateArrApiQuiz();
@@ -85,18 +88,37 @@ document.getElementById("button-logout").addEventListener("click", () => {
     signOut();
 });
 
+//EVENT PARA LA MUSICA
+document.addEventListener('DOMContentLoaded', function () {
+    var audio = document.getElementById('audioPlayer');
+    var button = document.getElementById('audioButton');
+
+    button.addEventListener('click', function () {
+        if (audio.paused) {
+            audio.play();
+            button.classList.add('playing');
+        } else {
+            audio.pause();
+            button.classList.remove('playing');
+        }
+    });
+});
+
+
 // ApiQuiz Functions
 //Get questions from API
 const getApiQuiz = async () => {
-    console.log('access...')
+    console.log('Accessing API...');
     try {
         const responseApiQuiz = await fetch(apiQuiz);
         const dataApiQuiz = await responseApiQuiz.json();
+        console.log('Data from API:', dataApiQuiz); // Añade este log
         return arrApiQuiz = dataApiQuiz.results;
     } catch (error) {
-        throw (error);
+        console.error('Error fetching API:', error);
     }
 };
+
 
 //Save questions in Local Storage
 const toLocalStorage = (array) => {
@@ -105,8 +127,10 @@ const toLocalStorage = (array) => {
 
 //Iterate arrApiQuiz
 const iterateArrApiQuiz = () => {
+    console.log('Iterating questions array...');
     if (currentIndex < arrApiQuiz.length) {
         document.querySelector('#questionCard').innerHTML = '';
+        console.log('Painting question:', arrApiQuiz[currentIndex]);
         paintQuestion(arrApiQuiz[currentIndex]);
         currentIndex++;
     } else {
@@ -115,23 +139,29 @@ const iterateArrApiQuiz = () => {
     }
 };
 
+
 //Initial function
 const onWindowChange = async () => {
-    if (window.location.pathname == "/pages/questions.html") {
+    if (window.location.pathname == "/quiz-js-equipo/pages/questions.html") {
+        console.log('On questions page');
         if (localStorage.getItem('arrApiQuiz')) {
             arrApiQuiz = JSON.parse(localStorage.getItem('arrApiQuiz'));
+            console.log('Using questions from local storage', arrApiQuiz);
             iterateArrApiQuiz();
         } else {
             const preguntas = await getApiQuiz();
-            console.log(preguntas)
+            console.log('Questions from API:', preguntas);
             toLocalStorage(preguntas);
             iterateArrApiQuiz();
         }
-    };
+    }
 };
+
+
 
 //Paint questions at pages/questions
 const paintQuestion = (object) => {
+    console.log('Painting question:', object);
     const questionCardContainer = document.querySelector('#questionCard');
     const question = object.question;
     const category = object.category;
@@ -140,17 +170,17 @@ const paintQuestion = (object) => {
     const h4Category = document.createElement('H4');
     h4Category.innerHTML = category;
     const questionTitle = document.createElement('DIV');
-    questionTitle.id = "questionTitle"
-    questionTitle.classList = 'rainbow-text'
-    questionTitle.append(h4Category, h3Question)
+    questionTitle.id = "questionTitle";
+    questionTitle.classList = 'rainbow-text';
+    questionTitle.append(h4Category, h3Question);
     const divAnswer1 = document.createElement('DIV');
-    divAnswer1.id = 'answer1'
+    divAnswer1.id = 'answer1';
     const divAnswer2 = document.createElement('DIV');
-    divAnswer2.id = 'answer2'
+    divAnswer2.id = 'answer2';
     const divAnswer3 = document.createElement('DIV');
-    divAnswer3.id = 'answer3'
+    divAnswer3.id = 'answer3';
     const divAnswer4 = document.createElement('DIV');
-    divAnswer4.id = 'answer4'
+    divAnswer4.id = 'answer4';
 
     if (object.type === 'boolean') {
         answers = [object.incorrect_answers[0], object.correct_answer];
@@ -159,7 +189,7 @@ const paintQuestion = (object) => {
         divAnswer1.innerHTML = `<button id=${answers[0]} class="btnAnswer">${answers[0]}</button>`;
         divAnswer2.innerHTML = `<button id=${answers[1]} class="btnAnswer">${answers[1]}</button>`;
 
-        fragment.append(questionTitle, divAnswer1, divAnswer2)
+        fragment.append(questionTitle, divAnswer1, divAnswer2);
         questionCardContainer.append(fragment);
     } else {
         answers = [object.correct_answer, object.incorrect_answers[0], object.incorrect_answers[1], object.incorrect_answers[2]];
@@ -170,10 +200,12 @@ const paintQuestion = (object) => {
         divAnswer3.innerHTML = `<button id=${answers[2]} class="btnAnswer">${answers[2]}</button>`;
         divAnswer4.innerHTML = `<button id=${answers[3]} class="btnAnswer">${answers[3]}</button>`;
 
-        fragment.append(questionTitle, divAnswer1, divAnswer2, divAnswer3, divAnswer4)
+        fragment.append(questionTitle, divAnswer1, divAnswer2, divAnswer3, divAnswer4);
         questionCardContainer.append(fragment);
     }
+    console.log('Question painted successfully');
 };
+
 
 const shuffleAnswers = (answers) => {
     console.log('Primer array', answers);
@@ -256,15 +288,20 @@ firebase.auth().onAuthStateChanged(function (user) {
         console.log(`Está en el sistema:${user.email} ${user.uid}`);
         document.getElementById("message").innerText = `Hello ${isUserLogged.displayName}!`;
         document.querySelector('#loggedOffContainer').classList.add('hidden');
-        document.querySelector('#loggedInContainer').classList.remove('hidden');
+        document.querySelector('#loggedInContainer').classList.remove('hidden');        
+        document.querySelector('#button-logout').style.display="block"
+
         profilePictureContainer.innerHTML = '';
         getProfilePicture();
     } else {
         isUserLogged = firebase.auth().currentUser;
         console.log("no hay usuarios en el sistema");
         document.getElementById("message").innerText = `No hay usuarios en el sistema`;
+        document.getElementById("message").style.fontSize = "12px";
         document.querySelector('#loggedOffContainer').classList.remove('hidden');
         document.querySelector('#loggedInContainer').classList.add('hidden');
+        document.querySelector('#button-logout').style.display="none"
+        document.querySelector('#profilePictureContainer').style.display= "none"
         profilePictureContainer.innerHTML = '';
         getProfilePicture();
     }

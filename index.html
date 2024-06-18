@@ -11,7 +11,7 @@
 
 <body>
     <header>
-        <h1>QUIZ</h1>
+        <h1><a href="index.html">QUIZ</a></h1>
         <section id="userNavContainer">
             <article id="loggedOffContainer">
                 <button id='login-window'>Login</button>
@@ -22,7 +22,8 @@
                     <label for="btnFilePfp" id="labelPfp">
                         <div id="profilePictureContainer"></div>
                     </label>
-                    <input type="file" id="btnFilePfp" name="btnFilePfp" accept="image/png, image/jpeg" style="display:none" />
+                    <input type="file" id="btnFilePfp" name="btnFilePfp" accept="image/png, image/jpeg"
+                        style="display:none" />
                     <p id="message"></p>
                 </div>
                 <button id="button-logout">Logout</button>
@@ -31,9 +32,15 @@
     </header>
 
     <main>
+        <div class="audio-button" id="audioButton"></div>
+        <audio id="audioPlayer">
+            <source src="./recursos/Pokémon Red, Blue and Yellow - Battle! Trainer Red Music [4bit].mp3" type="audio/mpeg">
+            Tu navegador no soporta la etiqueta de audio.
+        </audio>
         <div id="mainContent">
             <h2 class="rainbow-text">Welcome to the Quiz!</h2>
-           <!--  <a id="goToQuiz" href="./pages/questions.html"> --><button id="goToQuiz">Take the Quiz!</button><!-- </a> -->
+            <!--  <a id="goToQuiz" href="./pages/questions.html"> --><button id="goToQuiz">Take the
+                Quiz!</button><!-- </a> -->
             <button id="goRankings">RANKINGS</button>
         </div>
         <section id="auth-container">

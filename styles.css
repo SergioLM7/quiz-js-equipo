@@ -212,6 +212,15 @@ h4 {
     align-items: center;
 }
 
+/*Clases para cuando las respuestas sean correctas o incorrectas*/
+.btnAnswer .correct {
+    background-color: greenyellow;
+}
+
+.btnAnswer .incorrect {
+    background-color: red;
+}
+
 #answer1 button {
     background-color: rgb(90, 222, 255);
 }

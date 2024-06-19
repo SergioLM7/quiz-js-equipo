@@ -19,6 +19,8 @@ const apiQuiz = 'https://opentdb.com/api.php?amount=10';
 let arrApiQuiz;
 let currentIndex = 0;
 let answers = [];
+let userAnswers = [];
+let points;
 
 // Auth User Variables
 let isUserLogged;
@@ -39,6 +41,9 @@ document.addEventListener('click', ({ target }) => {
     }
 
     if (target.matches('.btnAnswer')) {
+        saveAnswers(target.id);
+        checkAnswers(target.id, userAnswers, arrApiQuiz);
+        console.log(userAnswers);
         iterateArrApiQuiz();
     }
 
@@ -60,6 +65,7 @@ document.addEventListener('click', ({ target }) => {
 
 });
 
+//Event listener Upload Profile Picture
 document.addEventListener('change', ({ target }) => {
     if (target.matches('#btnFilePfp')) {
         uploadProfilePicture();
@@ -67,14 +73,14 @@ document.addEventListener('change', ({ target }) => {
 });
 
 // Event listeners user authentication
-document.getElementById("formLogin").addEventListener("submit", function (event) {
+document.getElementById("formLogin").addEventListener("submit", (event) => {
     event.preventDefault();
     let emailLogin = event.target.elements.emailLogin.value;
     let passLogin = event.target.elements.passLogin.value;
     signInUser(emailLogin, passLogin)
 });
 
-document.getElementById("formSignup").addEventListener("submit", function (event) {
+document.getElementById("formSignup").addEventListener("submit", (event) => {
     event.preventDefault();
     let nameSignup = event.target.elements.nameSignup.value;
     let emailSignup = event.target.elements.emailSignup.value;
@@ -88,12 +94,12 @@ document.getElementById("button-logout").addEventListener("click", () => {
     signOut();
 });
 
-//EVENT PARA LA MUSICA
-document.addEventListener('DOMContentLoaded', function () {
-    var audio = document.getElementById('audioPlayer');
-    var button = document.getElementById('audioButton');
+//Event music
+document.addEventListener('DOMContentLoaded', () => {
+    const audio = document.getElementById('audioPlayer');
+    const button = document.getElementById('audioButton');
 
-    button.addEventListener('click', function () {
+    button.addEventListener('click', () => {
         if (audio.paused) {
             audio.play();
             button.classList.add('playing');
@@ -142,7 +148,7 @@ const iterateArrApiQuiz = () => {
 
 //Initial function
 const onWindowChange = async () => {
-    if (window.location.pathname == "/quiz-js-equipo/pages/questions.html") {
+    if (window.location.pathname == "/pages/questions.html") {
         console.log('On questions page');
         if (localStorage.getItem('arrApiQuiz')) {
             arrApiQuiz = JSON.parse(localStorage.getItem('arrApiQuiz'));
@@ -186,19 +192,19 @@ const paintQuestion = (object) => {
         answers = [object.incorrect_answers[0], object.correct_answer];
         shuffleAnswers(answers);
 
-        divAnswer1.innerHTML = `<button id=${answers[0]} class="btnAnswer">${answers[0]}</button>`;
-        divAnswer2.innerHTML = `<button id=${answers[1]} class="btnAnswer">${answers[1]}</button>`;
+        divAnswer1.innerHTML = `<button id='${answers[0]}' class="btnAnswer">${answers[0]}</button>`;
+        divAnswer2.innerHTML = `<button id='${answers[1]}' class="btnAnswer">${answers[1]}</button>`;
 
         fragment.append(questionTitle, divAnswer1, divAnswer2);
         questionCardContainer.append(fragment);
     } else {
         answers = [object.correct_answer, object.incorrect_answers[0], object.incorrect_answers[1], object.incorrect_answers[2]];
-        shuffleAnswers(answers);
+        //shuffleAnswers(answers);
 
-        divAnswer1.innerHTML = `<button id=${answers[0]} class="btnAnswer">${answers[0]}</button>`;
-        divAnswer2.innerHTML = `<button id=${answers[1]} class="btnAnswer">${answers[1]}</button>`;
-        divAnswer3.innerHTML = `<button id=${answers[2]} class="btnAnswer">${answers[2]}</button>`;
-        divAnswer4.innerHTML = `<button id=${answers[3]} class="btnAnswer">${answers[3]}</button>`;
+        divAnswer1.innerHTML = `<button id='${answers[0]}' class="btnAnswer">${answers[0]}</button>`;
+        divAnswer2.innerHTML = `<button id='${answers[1]}' class="btnAnswer">${answers[1]}</button>`;
+        divAnswer3.innerHTML = `<button id='${answers[2]}' class="btnAnswer">${answers[2]}</button>`;
+        divAnswer4.innerHTML = `<button id='${answers[3]}' class="btnAnswer">${answers[3]}</button>`;
 
         fragment.append(questionTitle, divAnswer1, divAnswer2, divAnswer3, divAnswer4);
         questionCardContainer.append(fragment);
@@ -206,7 +212,7 @@ const paintQuestion = (object) => {
     console.log('Question painted successfully');
 };
 
-
+//Function to show answers in almost random positions
 const shuffleAnswers = (answers) => {
     console.log('Primer array', answers);
     for (let i = answers.length - 1; i > 0; i--) {
@@ -216,6 +222,36 @@ const shuffleAnswers = (answers) => {
     }
     return answers;
 };
+
+//Function save answers
+const saveAnswers =(answer) => {
+    userAnswers.push(answer);
+};
+
+//Function check answers
+const checkAnswers = (answer, arrayUser, arrayBBDD) => {
+    const answerIndex = arrayUser.indexOf(answer);
+    const buttonAnswer = document.getElementById(answer);
+
+    if (answer === arrayBBDD[answerIndex].correct_answer) {
+        buttonAnswer.classList.add('correct');
+        alert('CORRECT!');
+        points++;
+    } else {
+        buttonAnswer.classList.add('incorrect');
+        alert ('INCORRECT!')
+    }
+   /* for (let i=-1; i < arrayUser.length; i++) {
+        if (arrayUser[i+1] === arrayBBDD[i+1].correct_answer) {
+            alert('CORRECT!');
+            console.log(i);
+        } else {
+            alert('INCORRECT');
+        }
+    };*/
+};
+
+
 
 // User Authentication Functions
 const signInUser = (email, password) => {
@@ -234,7 +270,7 @@ const signInUser = (email, password) => {
             alert('Wrong authentication details.');
         });
     authContainer.classList.remove('show');
-}
+};
 
 const createUser = (user) => {
     // Create a document reference with the user ID as the document ID
@@ -280,9 +316,9 @@ const signOut = () => {
     }).catch((error) => {
         console.log("hubo un error: " + error);
     });
-}
+};
 
-firebase.auth().onAuthStateChanged(function (user) {
+firebase.auth().onAuthStateChanged((user) => {
     if (user) {
         isUserLogged = firebase.auth().currentUser;
         console.log(`Está en el sistema:${user.email} ${user.uid}`);
@@ -314,32 +350,32 @@ const uploadProfilePicture = () => {
     var profilePicRef = storageRef.child(`profilePictures/${isUserLogged.uid}profilePicture.jpg`);
 
     // Upload the file
-    profilePicRef.put(file).then(function (snapshot) {
+    profilePicRef.put(file).then((snapshot) => {
         // Get the download URL
-        snapshot.ref.getDownloadURL().then(function (downloadURL) {
+        snapshot.ref.getDownloadURL().then((downloadURL) => {
             // Save the download URL in Firestore
             db.collection('users')
                 .doc(isUserLogged.uid)
                 .set({
                     profilePicture: downloadURL
-                }, { merge: true }).then(function () {
+                }, { merge: true }).then( () => {
                     console.log('Profile picture URL saved successfully!');
                     getProfilePicture();
-                }).catch(function (error) {
+                }).catch( (error) => {
                     console.error('Error saving profile picture URL: ', error);
                 });
         });
-    }).catch(function (error) {
+    }).catch( (error) => {
         console.error('Error uploading profile picture: ', error);
     });
-}
+};
 
 const getProfilePicture = () => {
     isUserLogged = firebase.auth().currentUser;
     db.collection('users')
         .doc(isUserLogged.uid)
         .get()
-        .then(function (doc) {
+        .then( (doc) => {
             if (doc.exists) {
                 const urlProfilePicture = doc.data().profilePicture;
                 if (urlProfilePicture) {
@@ -352,10 +388,10 @@ const getProfilePicture = () => {
             } else {
                 console.log('No such document!');
             }
-        }).catch(function (error) {
+        }).catch( (error) => {
             console.log('Error getting document:', error);
         });
-}
+};
 
 // Footer Logic
 const generateFooter = () => {
@@ -381,7 +417,7 @@ const generateFooter = () => {
         fragment.append(spanDev);
     });
     footerDevsContainer.append(fragment);
-}
+};
 
 // Function Calls
 onWindowChange();

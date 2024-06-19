@@ -20,7 +20,7 @@ let arrApiQuiz;
 let currentIndex = 0;
 let answers = [];
 let userAnswers = [];
-let points;
+let points = 0;
 
 // Auth User Variables
 let isUserLogged;
@@ -37,7 +37,7 @@ document.addEventListener('click', ({ target }) => {
         window.location.href = "./pages/questions.html";
     }
     if (target.matches('#goRankings')) {
-        window.location.href = "./pages/results.html";
+        //hay que crear-pintar rankings
     }
 
     if (target.matches('.btnAnswer')) {
@@ -63,6 +63,22 @@ document.addEventListener('click', ({ target }) => {
         authContainer.classList.remove('show');
     }
 
+    if (target.matches('#save-score')) {
+        const date = new Date();
+        const formattedDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+        const objScore = {
+            score: JSON.parse(localStorage.getItem('score')),
+            date: formattedDate
+        };
+        console.log(objScore)
+        if (isUserLogged){
+            saveScore(objScore);
+        } else {
+            authContainer.classList.add('show');
+            signupContainer.classList.remove('hidden');
+            loginContainer.classList.add('hidden');
+        }
+    }  
 });
 
 //Event listener Upload Profile Picture
@@ -127,8 +143,12 @@ const getApiQuiz = async () => {
 
 
 //Save questions in Local Storage
-const toLocalStorage = (array) => {
-    localStorage.setItem('arrApiQuiz', JSON.stringify(array));
+const toLocalStorage = (element) => {
+    if (typeof element === 'number') {
+        localStorage.setItem('score', JSON.stringify(element));
+    } else {
+        localStorage.setItem('arrApiQuiz', JSON.stringify(element));
+    }
 };
 
 //Iterate arrApiQuiz
@@ -136,12 +156,15 @@ const iterateArrApiQuiz = () => {
     console.log('Iterating questions array...');
     if (currentIndex < arrApiQuiz.length) {
         document.querySelector('#questionCard').innerHTML = '';
-        console.log('Painting question:', arrApiQuiz[currentIndex]);
+        //console.log('Painting question:', arrApiQuiz[currentIndex]);
         paintQuestion(arrApiQuiz[currentIndex]);
         currentIndex++;
     } else {
-        alert('You have finished the quiz.');
+        userAnswers = [];
         currentIndex = 0;
+        toLocalStorage(points);
+        alert('You have finished the quiz.');
+        window.location.href = './results.html';
     }
 };
 
@@ -164,10 +187,9 @@ const onWindowChange = async () => {
 };
 
 
-
 //Paint questions at pages/questions
 const paintQuestion = (object) => {
-    console.log('Painting question:', object);
+    //console.log('Painting question:', object);
     const questionCardContainer = document.querySelector('#questionCard');
     const question = object.question;
     const category = object.category;
@@ -199,7 +221,7 @@ const paintQuestion = (object) => {
         questionCardContainer.append(fragment);
     } else {
         answers = [object.correct_answer, object.incorrect_answers[0], object.incorrect_answers[1], object.incorrect_answers[2]];
-        //shuffleAnswers(answers);
+        shuffleAnswers(answers);
 
         divAnswer1.innerHTML = `<button id='${answers[0]}' class="btnAnswer">${answers[0]}</button>`;
         divAnswer2.innerHTML = `<button id='${answers[1]}' class="btnAnswer">${answers[1]}</button>`;
@@ -209,16 +231,16 @@ const paintQuestion = (object) => {
         fragment.append(questionTitle, divAnswer1, divAnswer2, divAnswer3, divAnswer4);
         questionCardContainer.append(fragment);
     }
-    console.log('Question painted successfully');
+    //console.log('Question painted successfully');
 };
 
 //Function to show answers in almost random positions
 const shuffleAnswers = (answers) => {
-    console.log('Primer array', answers);
+    //console.log('Primer array', answers);
     for (let i = answers.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [answers[i], answers[j]] = [answers[j], answers[i]];
-        console.log(i, j, answers);
+        //console.log(i, j, answers);
     }
     return answers;
 };
@@ -235,8 +257,9 @@ const checkAnswers = (answer, arrayUser, arrayBBDD) => {
 
     if (answer === arrayBBDD[answerIndex].correct_answer) {
         buttonAnswer.classList.add('correct');
-        alert('CORRECT!');
         points++;
+        console.log(points)
+        alert('CORRECT!');
     } else {
         buttonAnswer.classList.add('incorrect');
         alert ('INCORRECT!')
@@ -326,24 +349,27 @@ firebase.auth().onAuthStateChanged((user) => {
     if (user) {
         isUserLogged = firebase.auth().currentUser;
         console.log(`Está en el sistema:${user.email} ${user.uid}`);
-        console.log(isUserLogged);
+        //console.log(isUserLogged);
         document.getElementById("message").innerText = `Hello ${isUserLogged.displayName}!`;
         document.querySelector('#loggedOffContainer').classList.add('hidden');
         document.querySelector('#loggedInContainer').classList.remove('hidden');        
-        document.querySelector('#button-logout').style.display="block"
-        document.querySelector('#pfpMessageContainer').style.display="flex"
+        document.querySelector('#button-logout').classList.remove('hidden');
+        document.querySelector('#pfpMessageContainer').classList.remove('hidden');
+        document.querySelector('#profilePictureContainer').classList.remove('hidden');
+
 
         profilePictureContainer.innerHTML = '';
         getProfilePicture();
     } else {
         isUserLogged = firebase.auth().currentUser;
         console.log("no hay usuarios en el sistema");
-        document.getElementById("message").innerText = `No hay usuarios en el sistema`;
-        document.getElementById("message").style.fontSize = "12px";
+        //document.getElementById("message").innerText = `No hay usuarios en el sistema`;
+        //document.getElementById("message").style.fontSize = "12px";
+        document.querySelector('#pfpMessageContainer').classList.add('hidden');
         document.querySelector('#loggedOffContainer').classList.remove('hidden');
         document.querySelector('#loggedInContainer').classList.add('hidden');
-        document.querySelector('#button-logout').style.display="none"
-        document.querySelector('#profilePictureContainer').style.display= "none"
+        document.querySelector('#button-logout').classList.add('hidden');
+        document.querySelector('#profilePictureContainer').classList.add('hidden');
         profilePictureContainer.innerHTML = '';
         getProfilePicture();
     }
@@ -378,7 +404,9 @@ const uploadProfilePicture = () => {
 
 const getProfilePicture = () => {
     isUserLogged = firebase.auth().currentUser;
-    db.collection('users')
+
+    if (isUserLogged) {
+        db.collection('users')
         .doc(isUserLogged.uid)
         .get()
         .then( (doc) => {
@@ -397,6 +425,8 @@ const getProfilePicture = () => {
         }).catch( (error) => {
             console.log('Error getting document:', error);
         });
+    }
+    
 };
 
 // Footer Logic
@@ -426,7 +456,7 @@ const generateFooter = () => {
 };
 
 //Temporizador
-let timer;
+/*let timer;
 let minutes = 0;
 let seconds = 0;
 
@@ -454,9 +484,9 @@ function updateTimer() {
 
     document.getElementById('timer').textContent = `${displayMinutes}:${displaySeconds}`;
     if(seconds == 10){
-        stopTimer()
+        stopTimer();
     }
-}
+}*/
 
 // Save Score and Date to User
 const saveScore = (obj) => {
@@ -486,4 +516,4 @@ const saveScore = (obj) => {
 // Function Calls
 onWindowChange();
 generateFooter();
-startTimer(); 
+//startTimer(); 

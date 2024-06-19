@@ -10,6 +10,13 @@ body {
 body {
     background-color: black;
 }
+
+main {
+    min-height: 100vh; 
+    display: flex; 
+    flex-direction: column;
+}
+
 a {
     text-decoration: none;
     color: inherit;
@@ -97,7 +104,7 @@ footer {
     display: flex;
     justify-content: center;
     flex-direction: column;
-    margin-top: 70px;
+    margin-top: auto;
 }
 #timer{
     display: flex;
@@ -188,6 +195,16 @@ h4 {
     flex-direction: column;
     align-items: center;
 }
+
+/*Clases para cuando las respuestas sean correctas o incorrectas*/
+.correct {
+    background-color: greenyellow !important;
+}
+
+.incorrect {
+    background-color: red !important;
+}
+
 #answer1 button {
     background-color: rgb(90, 222, 255);
 }
@@ -224,7 +241,7 @@ h4 {
 /* User Authentication Styles */
 #pfpMessageContainer {
     margin-bottom: 10px;
-    display: none;
+    display: flex;
     align-items: center;
 }
 #labelPfp {
@@ -318,13 +335,13 @@ input[type=submit]:hover {
     opacity: 1 !important;
 }
 .hidden {
-    display: none;
+    display: none !important;
 }
 .audio-button {
     display: inline-block;
     width: 70px;
     height: 51px;
-    background: url(./recursos/audioOn.png) no-repeat center center;
+    background: url('./assets/images/audioOn.png') no-repeat center center;
     background-size: cover;
     cursor: pointer;
     margin-left: 0;
@@ -334,7 +351,7 @@ input[type=submit]:hover {
     top: 20%;
 }
 .audio-button.playing {
-    background: url('./recursos/audioOff.png') no-repeat center center;
+    background: url('./assets/images/audioOff.png') no-repeat center center;
     background-size: cover;
 }
 @media (max-width: 1200px) {
@@ -411,13 +428,4 @@ input[type=submit]:hover {
     footer {
         padding: 30px;
     }
-}
-
-/*Clases para cuando las respuestas sean correctas o incorrectas*/
-.btnAnswer .correct {
-    background-color: greenyellow;
-}
-
-.btnAnswer .incorrect {
-    background-color: red;
 }

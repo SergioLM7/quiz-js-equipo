@@ -236,6 +236,10 @@ const signInUser = (email, password) => {
     authContainer.classList.remove('show');
 }
 
+//LOG IN CON GOOGLE
+
+
+
 const createUser = (user) => {
     // Create a document reference with the user ID as the document ID
     db.collection("users")
@@ -290,6 +294,7 @@ firebase.auth().onAuthStateChanged(function (user) {
         document.querySelector('#loggedOffContainer').classList.add('hidden');
         document.querySelector('#loggedInContainer').classList.remove('hidden');        
         document.querySelector('#button-logout').style.display="block"
+        document.querySelector('#pfpMessageContainer').style.display="flex"
 
         profilePictureContainer.innerHTML = '';
         getProfilePicture();
@@ -383,6 +388,42 @@ const generateFooter = () => {
     footerDevsContainer.append(fragment);
 }
 
+//Temporizador
+let timer;
+let minutes = 0;
+let seconds = 0;
+
+function startTimer() {
+    timer = setInterval(updateTimer, 1000); 
+    document.getElementById('timer').classList.add('timer-go');
+}
+
+function stopTimer() {
+    clearInterval(timer);
+    document.getElementById('timer').classList.remove('timer-go');
+    document.getElementById('timer').classList.add('timer-stopped');
+
+}
+
+function updateTimer() {
+    seconds++;
+    if (seconds >= 60) {
+        seconds = 0;
+        minutes++;
+    }
+
+    let displayMinutes = minutes < 10 ? `0${minutes}` : minutes;
+    let displaySeconds = seconds < 10 ? `0${seconds}` : seconds;
+
+    document.getElementById('timer').textContent = `${displayMinutes}:${displaySeconds}`;
+    if(seconds == 10){
+        stopTimer()
+    }
+}
+
+
+
 // Function Calls
 onWindowChange();
 generateFooter();
+startTimer(); 

@@ -67,13 +67,13 @@ margin: 0
     text-align: center;
     margin-top: 150px;
     color: white;
-    padding-bottom: 100px;
+    padding-bottom: 20px;
 }
 
 #mainContent h2 {
     font-size: 80px;
-    margin-bottom: 100px;
-    margin-top: 80px;
+    margin-bottom: 50px;
+    margin-top: 10px;
 }
 
 #mainContent button {
@@ -85,7 +85,7 @@ margin: 0
 #goToQuiz {
     background-color: rgb(119, 0, 255);
     margin: 10px;
-    margin-bottom: 151px;
+    margin-bottom: 40px;
 }
 
 #goToQuiz:hover {
@@ -111,9 +111,20 @@ footer {
     display: flex;
     justify-content: center;
     flex-direction: column;
-    margin-top: 250px;
+    margin-top: 70px;
 }
-
+#timer{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    font-size: 30px;
+}
+.timer-stopped {
+    color: red;
+}
+.timer-go {
+    color: white;
+}
 footer h3 {
     font-size: 0.9em;
     text-align: center;
@@ -181,7 +192,7 @@ h4 {
 
 
 #questionsMainContainer {
-    padding-top: 70px;
+    padding-top: 20px;
     margin-right: 110px;
     margin-left: 110px;
 }
@@ -262,7 +273,7 @@ h4 {
 /* User Authentication Styles */
 #pfpMessageContainer {
     margin-bottom: 10px;
-    display: flex;
+    display: none;
     align-items: center;
 }
 
@@ -385,7 +396,7 @@ input[type=submit]:hover {
     margin-top: 5px;
     position: absolute; 
     left: 94%; 
-    top: 16%;
+    top: 20%;
 }
 
 .audio-button.playing {

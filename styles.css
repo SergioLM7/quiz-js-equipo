@@ -3,21 +3,17 @@
     margin: 0;
     padding: 0;
 }
-
 html,
 body {
     height: 100%;
 }
-
 body {
     background-color: black;
 }
-
 a {
     text-decoration: none;
     color: inherit;
 }
-
 header {
     color: rgb(0, 0, 0);
     font-size: 30px;
@@ -27,11 +23,9 @@ header {
     align-items: center;
     padding: 25px;
 }
-
 header h1 {
     margin: 0;
 }
-
 #login-window,
 #signup-window {
     margin: 0;
@@ -40,7 +34,6 @@ header h1 {
     height: 60px;
     transition: width 1s ease;
 }
-
 #login-window:hover,
 #signup-window:hover {
     background-image: linear-gradient(rgb(204, 0, 255), rgb(0, 81, 255));
@@ -58,7 +51,7 @@ header h1 {
 display: flex;
 }
 #loggedOffContainer{
-margin: 0    
+margin: 0
 }
 #mainContent {
     display: flex;
@@ -69,38 +62,31 @@ margin: 0
     color: white;
     padding-bottom: 20px;
 }
-
 #mainContent h2 {
     font-size: 80px;
     margin-bottom: 50px;
     margin-top: 10px;
 }
-
 #mainContent button {
     font-size: 1.5em;
     padding: 10px 20px;
     cursor: pointer;
 }
-
 #goToQuiz {
     background-color: rgb(119, 0, 255);
     margin: 10px;
     margin-bottom: 40px;
 }
-
 #goToQuiz:hover {
     background-image: linear-gradient(rgb(132, 0, 255), rgb(0, 81, 255));
 }
-
 #goRankings {
     background-color: rgb(247, 0, 255);
     margin-bottom: 21px;
 }
-
 #goRankings:hover {
     background-image: linear-gradient(rgb(234, 0, 255), rgb(0, 81, 255));
 }
-
 footer {
     width: 100%;
     background-color: white;
@@ -129,91 +115,71 @@ footer h3 {
     font-size: 0.9em;
     text-align: center;
 }
-
 #footer-devs-container {
     font-weight: bold;
     display: flex;
     justify-content: space-evenly;
     margin-top: 20px;
 }
-
 @keyframes rainbow {
     0% {
         color: red;
     }
-
     14% {
         color: orange;
     }
-
     28% {
         color: yellow;
     }
-
     42% {
         color: green;
     }
-
     57% {
         color: blue;
     }
-
     71% {
         color: indigo;
     }
-
     85% {
         color: violet;
     }
-
     100% {
         color: red;
     }
 }
-
 .rainbow-text {
     font-size: 2em;
     font-weight: bold;
     animation: rainbow 3s infinite;
 }
-
 /*Añadido (A REVISAR) para pintar las preguntas*/
-
 article h3,
 h4 {
     padding: 10px 0 0 0;
 }
-
 #goButton {
     display: block;
     margin-top: 200px;
     margin-bottom: 80px;
 }
-
-
 #questionsMainContainer {
     padding-top: 20px;
     margin-right: 110px;
     margin-left: 110px;
 }
-
 #questionTitle {
     display: flex;
     flex-direction: column;
     padding-bottom: 30px;
 }
-
 #questionTitle h4 {
     padding-bottom: 10px;
     font-size: 20px;
-
 }
-
 #questionTitle h3 {
     color: white;
     font-size: 20px;
 }
-
 #questionCard {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
@@ -222,32 +188,18 @@ h4 {
     flex-direction: column;
     align-items: center;
 }
-
-/*Clases para cuando las respuestas sean correctas o incorrectas*/
-.btnAnswer .correct {
-    background-color: greenyellow;
-}
-
-.btnAnswer .incorrect {
-    background-color: red;
-}
-
 #answer1 button {
     background-color: rgb(90, 222, 255);
 }
-
 #answer2 button {
     background-color: rgb(255, 236, 131);
 }
-
 #answer3 button {
     background-color: rgb(123, 255, 151);
 }
-
 #answer4 button {
     background-color: rgb(255, 105, 105);
 }
-
 #questionCard button {
     padding-bottom: 10px;
     padding-right: 60px;
@@ -255,7 +207,6 @@ h4 {
     width: 400px;
     height: 90px;
 }
-
 #nextButton {
     margin-top: 100px;
     align-items: center;
@@ -276,16 +227,13 @@ h4 {
     display: none;
     align-items: center;
 }
-
 #labelPfp {
     display: block;
     width: fit-content;
 }
-
 #labelPfp:hover {
     cursor: pointer;
 }
-
 #profilePictureContainer {
     width: 50px;
     height: 50px;
@@ -293,18 +241,15 @@ h4 {
     border-radius: 50%;
     overflow: hidden;
 }
-
 #imgProfilePicture {
     width: 100%;
     height: 100%;
     margin-right: 10px;
 }
-
 #login-window,
 #signup-window {
     padding: 5px 10px 7px 10px;
 }
-
 #auth-container {
     display: flex;
     background-color: rgba(0, 0, 0, 0.5);
@@ -320,7 +265,6 @@ h4 {
     transition: opacity 0.3s ease;
     box-sizing: border-box;
 }
-
 #login-container,
 #signup-container {
     background-color: #fff;
@@ -331,23 +275,19 @@ h4 {
     border-radius: 3px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
-
 .fa-xmark {
     pointer-events: none;
 }
-
 .close-auth-window {
     padding: 4px 10px 5px 10px;
     /* margin-bottom: 10px; */
     margin-left: 90%;
     box-sizing: border-box;
 }
-
 #login-container label,
 #signup-container label {
     margin-top: 100px;
 }
-
 #login-container input,
 #signup-container input {
     width: 100%;
@@ -358,7 +298,6 @@ h4 {
     border-radius: 3px;
     box-sizing: border-box;
 }
-
 #login-container input[type=submit],
 #signup-container input[type=submit] {
     width: 100%;
@@ -371,20 +310,16 @@ h4 {
     border-radius: 3px;
     cursor: pointer;
 }
-
 input[type=submit]:hover {
-    background-color: #45a049;
+    background-color: #45A049;
 }
-
 .show {
     pointer-events: auto !important;
     opacity: 1 !important;
 }
-
 .hidden {
     display: none;
 }
-
 .audio-button {
     display: inline-block;
     width: 70px;
@@ -394,109 +329,95 @@ input[type=submit]:hover {
     cursor: pointer;
     margin-left: 0;
     margin-top: 5px;
-    position: absolute; 
-    left: 94%; 
+    position: absolute;
+    left: 94%;
     top: 20%;
 }
-
 .audio-button.playing {
     background: url('./recursos/audioOff.png') no-repeat center center;
     background-size: cover;
 }
-
-
 @media (max-width: 1200px) {
     header {
         flex-direction: column;
         text-align: center;
     }
-
     header h1 {
         margin-bottom: 20px;
     }
-
     #mainContent h2 {
         font-size: 60px;
     }
-
     #mainContent button {
         font-size: 1.2em;
     }
-
     #nextButton {
         margin-left: 35%;
     }
-
     footer {
         flex-direction: column;
         align-items: center;
     }
 }
-
 @media (max-width: 768px) {
     header {
         padding: 15px;
     }
-
     header h1 {
         font-size: 24px;
     }
-
     #login {
         width: 50px;
         height: 50px;
     }
-
     #mainContent {
         margin-top: 100px;
     }
-
     #mainContent h2 {
         font-size: 50px;
     }
-
     #nextButton {
         margin-left: 35%;
     }
-
     #mainContent button {
         font-size: 1em;
         padding: 8px 16px;
     }
 }
-
 @media (max-width: 480px) {
     header {
         padding: 10px;
     }
-
     header h1 {
         font-size: 20px;
     }
-
     #login {
         width: 40px;
         height: 40px;
     }
-
     #nextButton {
         margin-left: 35%;
     }
-
     #mainContent {
         margin-top: 50px;
     }
-
     #mainContent h2 {
         font-size: 40px;
     }
-
     #mainContent button {
         font-size: 0.8em;
         padding: 6px 12px;
     }
-
     footer {
         padding: 30px;
     }
+}
+
+/*Clases para cuando las respuestas sean correctas o incorrectas*/
+.btnAnswer .correct {
+    background-color: greenyellow;
+}
+
+.btnAnswer .incorrect {
+    background-color: red;
 }

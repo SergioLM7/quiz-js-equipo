@@ -93,7 +93,7 @@ document.addEventListener('click', ({ target }) => {
         }
     }
 
-    if (target.matches('#back-home')) {
+    if (target.matches('#button-back')) {
         window.location.href = "/index.html";
     }
 
@@ -198,7 +198,7 @@ const onWindowChange = async () => {
 
     if (regex.test(pathname)) {
         pathnameModified = pathname.match(regex)[0];
-    //Hasta aqui y la } final del if
+        //Hasta aqui y la } final del if
 
         if (window.location.pathname === pathnameModified) {
             console.log('On questions page');
@@ -225,7 +225,7 @@ const onWindowChange = async () => {
     //Hay que quitar esto para desplegar en Pages
     if (regex2.test(pathname)) {
         pathnameModified = pathname.match(regex2)[0];
-    //Hasta aqui y la } final del if
+        //Hasta aqui y la } final del if
 
         if (window.location.pathname == pathnameModified) {
             console.log('Painting results...');
@@ -323,10 +323,35 @@ const paintResults = (number) => {
 
 
 //Function to paint Ranking at index.html
-const paintRanking = (obj) => {
+const paintRanking = async (array) => {
+    const rankingBodyTable = document.getElementById('body-table');
+    const arrayRanking = await array;
+    if (arrayRanking) {
+        let position = 1;
+        array.forEach((object) => {
+            const trUser = document.createElement('TR');
+            const tdPos = document.createElement('TD');
+            tdPos.textContent = `${position++}º`;
 
+            const tdImage = document.createElement('TD');
+            tdImage.classList.add('user-image-table');
+            tdImage.innerHTML = `<img src='${object.profilePicture}' alt='imagen de perfil de ${object.name}'>`;
+            const tdName = document.createElement('TD');
+            tdName.textContent = object.name;
+            const tdScore = document.createElement('TD');
+            tdScore.textContent = object.score;
+            const tdDate = document.createElement('TD');
+            const date = new Date (object.date);
+            const formattedDate2 = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+            tdDate.textContent = formattedDate2;
 
+            fragment.append(tdPos, tdImage, tdName, tdScore, tdDate);
+            trUser.append(fragment);
+            rankingBodyTable.append(trUser);
+        })
+    }
 };
+
 
 //Function to show answers in almost random positions
 const shuffleAnswers = (answers) => {
@@ -658,7 +683,68 @@ const saveScore = (obj) => {
     }
 };
 // saveScore({score: 10, date: '07-02-1997'});
+const getRanking = () => {
+    return db.collection("users")
+        .get()
+        .then(usersSnapshot => {
+            const bestScoreUsers = [];
+
+            usersSnapshot.forEach(doc => {
+                const data = doc.data();
+
+                if (data.scores && Array.isArray(data.scores)) {
+
+                    const maxScoreObj = data.scores.reduce((maxObj, currentObj) => {
+                        // return currentObj.score > maxObj.score ? currentObj : maxObj;
+                        if (currentObj.score > maxObj.score) {
+                            return currentObj;
+                        } else if (currentObj.score === maxObj.score) {
+                            // return new Date(currentObj.date) > new Date(maxObj.date) ? currentObj : maxObj;
+                            if (new Date(currentObj.date) > new Date(maxObj.date)) {
+                                return currentObj;
+                            } else {
+                                return maxObj;
+                            }
+                        } else {
+                            return maxObj;
+                        }
+                    }, data.scores[0]);
+
+                    bestScoreUsers.push({
+                        profilePicture: data.profilePicture,
+                        name: data.name,
+                        score: maxScoreObj.score,
+                        date: maxScoreObj.date
+                    });
+                    // console.log(bestScoreUsers);
+                }
+            });
+            const bestScoreUsersOrdered = bestScoreUsers.sort((a, b) => {
+                if (b.score === a.score) {
+                    return new Date(b.date) - new Date(a.date);
+                }
+                return b.score - a.score;
+            });
+            // console.log(bestScoreUsersOrdered.slice(0,3));
+            return bestScoreUsersOrdered.slice(0, 10);
+        })
+        .catch(error => {
+            console.error("Error retrieving ranking:", error);
+            throw new Error("Internal Server Error");
+        });
+};
+
+const processingRanking = async() => {
+    getRanking()
+    .then(top10 => {
+        paintRanking(top10);
+    })
+    .catch(error => {
+        console.error("Error processing ranking:", error);
+    });
+}
 // Function Calls
 generateFooter();
 onWindowChange();
+processingRanking();
 //startTimer(); 

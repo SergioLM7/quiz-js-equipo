@@ -572,12 +572,12 @@ function getRanking() {
                 // let maxScore = Math.max.apply(Math, array.map(function(o) { return o.score; }));
                 let maxScore = Math.max(...data.scores.map(obj => {
                     // Sort the ranking by score (descending) and by date (descending) for the same score
-                    data.scores.sort((a, b) => {
-                        if (b.score === a.score) {
-                            return new Date(b.date) - new Date(a.date);
-                        }
-                        return b.score - a.score;
-                    });
+                    // data.scores.sort((a = a.date, b = b.date) => {
+                    //     if (b.score === a.score) {
+                    //         return new Date(b.date) - new Date(a.date);
+                    //     }
+                    //     return b.score - a.score;
+                    // });
                     if (a) {
                         obj.score;
                     }

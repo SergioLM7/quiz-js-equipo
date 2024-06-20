@@ -71,14 +71,14 @@ document.addEventListener('click', ({ target }) => {
             date: formattedDate
         };
         console.log(objScore)
-        if (isUserLogged){
+        if (isUserLogged) {
             saveScore(objScore);
         } else {
             authContainer.classList.add('show');
             signupContainer.classList.remove('hidden');
             loginContainer.classList.add('hidden');
         }
-    }  
+    }
 });
 
 //Event listener Upload Profile Picture
@@ -246,7 +246,7 @@ const shuffleAnswers = (answers) => {
 };
 
 //Function save answers
-const saveAnswers =(answer) => {
+const saveAnswers = (answer) => {
     userAnswers.push(answer);
 };
 
@@ -262,16 +262,16 @@ const checkAnswers = (answer, arrayUser, arrayBBDD) => {
         alert('CORRECT!');
     } else {
         buttonAnswer.classList.add('incorrect');
-        alert ('INCORRECT!')
+        alert('INCORRECT!')
     }
-   /* for (let i=-1; i < arrayUser.length; i++) {
-        if (arrayUser[i+1] === arrayBBDD[i+1].correct_answer) {
-            alert('CORRECT!');
-            console.log(i);
-        } else {
-            alert('INCORRECT');
-        }
-    };*/
+    /* for (let i=-1; i < arrayUser.length; i++) {
+         if (arrayUser[i+1] === arrayBBDD[i+1].correct_answer) {
+             alert('CORRECT!');
+             console.log(i);
+         } else {
+             alert('INCORRECT');
+         }
+     };*/
 };
 
 
@@ -352,7 +352,7 @@ firebase.auth().onAuthStateChanged((user) => {
         //console.log(isUserLogged);
         document.getElementById("message").innerText = `Hello ${isUserLogged.displayName}!`;
         document.querySelector('#loggedOffContainer').classList.add('hidden');
-        document.querySelector('#loggedInContainer').classList.remove('hidden');        
+        document.querySelector('#loggedInContainer').classList.remove('hidden');
         document.querySelector('#button-logout').classList.remove('hidden');
         document.querySelector('#pfpMessageContainer').classList.remove('hidden');
         document.querySelector('#profilePictureContainer').classList.remove('hidden');
@@ -390,14 +390,14 @@ const uploadProfilePicture = () => {
                 .doc(isUserLogged.uid)
                 .set({
                     profilePicture: downloadURL
-                }, { merge: true }).then( () => {
+                }, { merge: true }).then(() => {
                     console.log('Profile picture URL saved successfully!');
                     getProfilePicture();
-                }).catch( (error) => {
+                }).catch((error) => {
                     console.error('Error saving profile picture URL: ', error);
                 });
         });
-    }).catch( (error) => {
+    }).catch((error) => {
         console.error('Error uploading profile picture: ', error);
     });
 };
@@ -407,26 +407,26 @@ const getProfilePicture = () => {
 
     if (isUserLogged) {
         db.collection('users')
-        .doc(isUserLogged.uid)
-        .get()
-        .then( (doc) => {
-            if (doc.exists) {
-                const urlProfilePicture = doc.data().profilePicture;
-                if (urlProfilePicture) {
-                    profilePictureContainer.innerHTML = '';
-                    const imgProfilePicture = document.createElement('IMG');
-                    imgProfilePicture.id = 'imgProfilePicture';
-                    imgProfilePicture.src = `${urlProfilePicture}`;
-                    profilePictureContainer.append(imgProfilePicture);
+            .doc(isUserLogged.uid)
+            .get()
+            .then((doc) => {
+                if (doc.exists) {
+                    const urlProfilePicture = doc.data().profilePicture;
+                    if (urlProfilePicture) {
+                        profilePictureContainer.innerHTML = '';
+                        const imgProfilePicture = document.createElement('IMG');
+                        imgProfilePicture.id = 'imgProfilePicture';
+                        imgProfilePicture.src = `${urlProfilePicture}`;
+                        profilePictureContainer.append(imgProfilePicture);
+                    }
+                } else {
+                    console.log('No such document!');
                 }
-            } else {
-                console.log('No such document!');
-            }
-        }).catch( (error) => {
-            console.log('Error getting document:', error);
-        });
+            }).catch((error) => {
+                console.log('Error getting document:', error);
+            });
     }
-    
+
 };
 
 // Footer Logic
@@ -512,8 +512,67 @@ const saveScore = (obj) => {
         alert("You need to be logged in to add score.");
     }
 }
+
 // saveScore({score: 10, date: '07-02-1997'});
+
+function getRanking() {
+    return db.collection("users")
+        .get()
+        .then(usersSnapshot => {
+            const ranking = [];
+
+            usersSnapshot.forEach(doc => {
+                const data = doc.data();
+                console.log(data.scores);
+                // let maxScore = Math.max.apply(Math, array.map(function(o) { return o.score; }));
+                let maxScore = Math.max(...data.scores.map(obj => {
+                    // Sort the ranking by score (descending) and by date (descending) for the same score
+                    data.scores.sort((a, b) => {
+                        if (b.score === a.score) {
+                            return new Date(b.date) - new Date(a.date);
+                        }
+                        return b.score - a.score;
+                    });
+                    if (a) {
+                        obj.score;
+                    }
+                }));
+                console.log(maxScore);
+                // if (data.scores && Array.isArray(data.scores)) {
+                //     data.scores.forEach(scoreObj => {
+                //         ranking.push({
+                //             profilePicture: scoreObj.profilePicture,
+                //             name: scoreObj.name,
+                //             score: scoreObj.score,
+                //             date: scoreObj.date
+                //         });
+                //     });
+                // }
+            });
+
+
+            // Get the top 10 users
+            const top10Users = ranking.slice(0, 10);
+
+            console.log(top10Users);
+            return top10Users;
+        })
+        .catch(error => {
+            console.error("Error retrieving top 10 ranking:", error);
+            throw new Error("Internal Server Error");
+        });
+}
+
+// Call the function and log the top 10 users
+// getTop10Users().then(top10Users => {
+//     console.log("Top 10 Users:", top10Users);
+// }).catch(error => {
+//     console.error("Error:", error);
+// });
+
+
 // Function Calls
 onWindowChange();
 generateFooter();
 //startTimer(); 
+getRanking();

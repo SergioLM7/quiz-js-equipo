@@ -57,6 +57,7 @@ document.addEventListener('click', ({ target }) => {
     }
 
 
+
     if (target.matches('#signup-window')) {
         authContainer.classList.add('show');
         loginContainer.classList.add('hidden');
@@ -83,17 +84,19 @@ document.addEventListener('click', ({ target }) => {
         };
         console.log(objScore)
         if (isUserLogged) {
-            saveScore(objScore);
-            saveButton.setAttribute('disabled', true);
-            saveButton.classList.add('button-disabled');
-        } else {
-            authContainer.classList.add('show');
-            signupContainer.classList.remove('hidden');
-            loginContainer.classList.add('hidden');
+            if (isUserLogged) {
+                saveScore(objScore);
+                saveButton.setAttribute('disabled', true);
+                saveButton.classList.add('button-disabled');
+            } else {
+                authContainer.classList.add('show');
+                signupContainer.classList.remove('hidden');
+                loginContainer.classList.add('hidden');
+            }
         }
     }
 
-    if (target.matches('#back-home')) {
+    if (target.matches('#button-back')) {
         window.location.href = "/index.html";
     }
 
@@ -188,31 +191,49 @@ const iterateArrApiQuiz = () => {
 
 
 const onWindowChange = async () => {
-    console.log('Checking current path:', window.location.pathname);
-    
-    if (window.location.pathname === "/pages/questions.html") {
-        console.log('On questions page');
-        
-        if (localStorage.getItem('arrApiQuiz')) {
-            arrApiQuiz = JSON.parse(localStorage.getItem('arrApiQuiz'));
-            console.log('Using questions from local storage', arrApiQuiz);
-            iterateArrApiQuiz();
-        } else {
-            try {
-                const preguntas = await getApiQuiz();
-                console.log('Questions from API:', preguntas);
-                toLocalStorage(preguntas);
+    console.log('Checking current path:', window.location);
+
+    //Hay que quitar esto para desplegar en Pages
+    const pathname = window.location.pathname;
+    let pathnameModified;
+    let regex = /\/pages\/questions\.html$/;
+    let regex2 = /\/pages\/results\.html$/;
+
+    if (regex.test(pathname)) {
+        pathnameModified = pathname.match(regex)[0];
+        //Hasta aqui y la } final del if
+
+        if (window.location.pathname === pathnameModified) {
+            console.log('On questions page');
+
+            if (localStorage.getItem('arrApiQuiz')) {
+                arrApiQuiz = JSON.parse(localStorage.getItem('arrApiQuiz'));
+                console.log('Using questions from local storage', arrApiQuiz);
                 iterateArrApiQuiz();
-            } catch (error) {
-                console.error('Error fetching questions:', error);
+            } else {
+                try {
+                    const preguntas = await getApiQuiz();
+                    console.log('Questions from API:', preguntas);
+                    toLocalStorage(preguntas);
+                    iterateArrApiQuiz();
+                } catch (error) {
+                    console.error('Error fetching questions:', error);
+                }
             }
+        } else {
+            console.log('Not on questions page');
         }
-    } else {
-        console.log('Not on questions page');
     }
-    if (window.location.pathname == '/pages/results.html') {
-        console.log('Painting results...');
-        paintResults(JSON.parse(localStorage.getItem('score')));
+
+    //Hay que quitar esto para desplegar en Pages
+    if (regex2.test(pathname)) {
+        pathnameModified = pathname.match(regex2)[0];
+        //Hasta aqui y la } final del if
+
+        if (window.location.pathname == pathnameModified) {
+            console.log('Painting results...');
+            paintResults(JSON.parse(localStorage.getItem('score')));
+        }
     }
 };
 
@@ -224,6 +245,8 @@ const decodeHTML = (html) => {
 };
 
 
+
+//Function to paint questions at pages/questions
 //Function to paint questions at pages/questions
 const paintQuestion = (object) => {
     //console.log('Painting question:', object);
@@ -272,6 +295,7 @@ const paintQuestion = (object) => {
 };
 
 //Function to paint results, at pages/results
+//Function to paint results, at pages/results
 const paintResults = (number) => {
     const resultsSection = document.getElementById('results-container');
     const newResultsArticle = document.createElement('ARTICLE');
@@ -289,26 +313,54 @@ const paintResults = (number) => {
     newButtonBack.textContent = 'Go back home';
 
     if (number >= 0 && number < 5) {
-        messageDIV.textContent = 'Uff, te has quedado lejos de tu mejor versión. ¡Vuelve a intentarlo!';
-    } else if (number >= 5 && number < 7) {
-        messageDIV.textContent = '¡Nada mal, vas camino de convertirte en un as del Quiz';
-    } else if (number >= 7 && number < 9) {
-        messageDIV.textContent = '¡Sensacional! Te has acercado a los mejores. Ya estás cerca...';
-    } else if (number >= 9 && number === 10) {
-        messageDIV.textContent = '¡¡Enorme!! Pleno total de respuestas correctas. Pero, ¿estarás dentro del top 10 de nuestro ranking?';
-    }
+        if (number >= 0 && number < 5) {
+            messageDIV.textContent = 'Uff, te has quedado lejos de tu mejor versión. ¡Vuelve a intentarlo!';
+        } else if (number >= 5 && number < 7) {
+            messageDIV.textContent = '¡Nada mal, vas camino de convertirte en un as del Quiz';
+        } else if (number >= 7 && number < 9) {
+            messageDIV.textContent = '¡Sensacional! Te has acercado a los mejores. Ya estás cerca...';
+        } else if (number >= 9 && number === 10) {
+        } else if (number >= 9 && number === 10) {
+            messageDIV.textContent = '¡¡Enorme!! Pleno total de respuestas correctas. Pero, ¿estarás dentro del top 10 de nuestro ranking?';
+        }
 
-    newButtonBackArticle.append(newButtonBack);
-    newResultsArticle.append(resultDIV, messageDIV);
-    resultsSection.append(newResultsArticle, newButtonBackArticle);
+        newButtonBackArticle.append(newButtonBack);
+        newResultsArticle.append(resultDIV, messageDIV);
+        resultsSection.append(newResultsArticle, newButtonBackArticle);
+    };
 };
 
 
 //Function to paint Ranking at index.html
-const paintRanking = (obj) => {
+const paintRanking = async (array) => {
+    const rankingBodyTable = document.getElementById('body-table');
+    const arrayRanking = await array;
+    if (arrayRanking) {
+        let position = 1;
+        arrayRanking.forEach((object) => {
+            const trUser = document.createElement('TR');
+            const tdPos = document.createElement('TD');
+            tdPos.textContent = `${position++}º`;
 
+            const tdImage = document.createElement('TD');
+            tdImage.classList.add('user-image-table');
+            tdImage.innerHTML = `<img src='${object.profilePicture}' alt='imagen de perfil de ${object.name}'>`;
+            const tdName = document.createElement('TD');
+            tdName.textContent = object.name;
+            const tdScore = document.createElement('TD');
+            tdScore.textContent = object.score;
+            const tdDate = document.createElement('TD');
+            const date = new Date(object.date);
+            const formattedDate2 = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+            tdDate.textContent = formattedDate2;
 
+            fragment.append(tdPos, tdImage, tdName, tdScore, tdDate);
+            trUser.append(fragment);
+            rankingBodyTable.append(trUser);
+        })
+    }
 };
+
 
 //Function to show answers in almost random positions
 const shuffleAnswers = (answers) => {
@@ -323,7 +375,9 @@ const shuffleAnswers = (answers) => {
 
 //Function save answers
 const saveAnswers = (answer) => {
-    userAnswers.push(answer);
+    const saveAnswers = (answer) => {
+        userAnswers.push(answer);
+    };
 };
 
 //Function check answers
@@ -339,7 +393,16 @@ const checkAnswers = (answer, arrayUser, arrayBBDD) => {
     } else {
         buttonAnswer.classList.add('incorrect');
         alert('INCORRECT!')
+        alert('INCORRECT!')
     }
+    /* for (let i=-1; i < arrayUser.length; i++) {
+         if (arrayUser[i+1] === arrayBBDD[i+1].correct_answer) {
+             alert('CORRECT!');
+             console.log(i);
+         } else {
+             alert('INCORRECT');
+         }
+     };*/
     /* for (let i=-1; i < arrayUser.length; i++) {
          if (arrayUser[i+1] === arrayBBDD[i+1].correct_answer) {
              alert('CORRECT!');
@@ -387,7 +450,7 @@ const loginGoogle = async () => {
         throw new Error(error);
 
     }
-}
+};
 
 const buttonLoginGoogle = document.querySelector("#buttonLoginGoogle");
 
@@ -405,6 +468,7 @@ firebase.auth().onAuthStateChanged((user) => {
         console.log(`Está en el sistema:${user.email} ${user.uid}`);
         document.getElementById("message").innerText = `Hello ${isUserLogged.displayName}!`;
         document.querySelector('#loggedOffContainer').classList.add('hidden');
+        document.querySelector('#loggedInContainer').classList.remove('hidden');
         document.querySelector('#loggedInContainer').classList.remove('hidden');
         document.querySelector('#button-logout').classList.remove('hidden');
         document.querySelector('#pfpMessageContainer').classList.remove('hidden');
@@ -437,7 +501,7 @@ const createUser = (user) => {
         .catch((error) => {
             console.error("Error adding document: ", error);
         });
-}
+};
 
 const signUpUser = (nameSignup, email, password) => {
     firebase
@@ -480,6 +544,7 @@ firebase.auth().onAuthStateChanged((user) => {
         document.getElementById("message").innerText = `Hello ${isUserLogged.displayName}!`;
         document.querySelector('#loggedOffContainer').classList.add('hidden');
         document.querySelector('#loggedInContainer').classList.remove('hidden');
+        document.querySelector('#loggedInContainer').classList.remove('hidden');
         document.querySelector('#button-logout').classList.remove('hidden');
         document.querySelector('#pfpMessageContainer').classList.remove('hidden');
         document.querySelector('#profilePictureContainer').classList.remove('hidden');
@@ -518,12 +583,15 @@ const uploadProfilePicture = () => {
                 .set({
                     profilePicture: downloadURL
                 }, { merge: true }).then(() => {
+                }, { merge: true }).then(() => {
                     console.log('Profile picture URL saved successfully!');
                     getProfilePicture();
+                }).catch((error) => {
                 }).catch((error) => {
                     console.error('Error saving profile picture URL: ', error);
                 });
         });
+    }).catch((error) => {
     }).catch((error) => {
         console.error('Error uploading profile picture: ', error);
     });
@@ -553,7 +621,6 @@ const getProfilePicture = () => {
                 console.log('Error getting document:', error);
             });
     }
-
 };
 
 // Footer Logic
@@ -586,29 +653,29 @@ const generateFooter = () => {
 /*let timer;
 let minutes = 0;
 let seconds = 0;
-
+ 
 function startTimer() {
     timer = setInterval(updateTimer, 1000); 
     document.getElementById('timer').classList.add('timer-go');
 }
-
+ 
 function stopTimer() {
     clearInterval(timer);
     document.getElementById('timer').classList.remove('timer-go');
     document.getElementById('timer').classList.add('timer-stopped');
-
+ 
 }
-
+ 
 function updateTimer() {
     seconds++;
     if (seconds >= 60) {
         seconds = 0;
         minutes++;
     }
-
+ 
     let displayMinutes = minutes < 10 ? `0${minutes}` : minutes;
     let displaySeconds = seconds < 10 ? `0${seconds}` : seconds;
-
+ 
     document.getElementById('timer').textContent = `${displayMinutes}:${displaySeconds}`;
     if(seconds == 10){
         stopTimer();
@@ -639,10 +706,6 @@ const saveScore = (obj) => {
         alert("You need to be logged in to add score.");
     }
 };
-
-//Gráfica stats
-
-
 
 // saveScore({score: 10, date: '07-02-1997'});
 
@@ -697,8 +760,21 @@ function getRanking() {
         });
 };
 
+
+const processingRanking = async () => {
+    console.log(getRanking())
+    try {
+        const top10 = await getRanking();
+        paintRanking(top10);
+
+    } catch (error) {
+        console.error("Error processing ranking:", error);
+
+    }  
+};
+
 // Function Calls
 generateFooter();
 onWindowChange();
+processingRanking();
 //startTimer();
-getRanking(); 

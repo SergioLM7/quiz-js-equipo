@@ -481,12 +481,18 @@ header h1 {
 
 /* Selectores por Clases */
 .audio-button {
+    display: inline-block;
+    align-self: center;
+    width: 50px;
+    height: 30px;
     background: url('./assets/images/audioOff.png') no-repeat center center;
     background-size: cover;
     cursor: pointer;
     display: inline-block;
     height: 51px;
     margin-left: 0;
+    margin-top: 20px;
+  
     margin-top: 5px;
     position: absolute;
     top: 17%;
@@ -733,6 +739,13 @@ header h1 {
         margin: 0;
     }
 
+    #ranking{
+        font-size: 15px;
+        margin-left: 80px;
+    }
+    main{
+        min-height: 20;
+    }
     .audio-button {
         width: 40px;
         height: 30px;
@@ -756,6 +769,7 @@ header h1 {
         display: contents;
     }
 
+    
     #login-window,
     #signup-window {
         width: 40px;
@@ -832,6 +846,13 @@ header h1 {
         margin: 0;
     }
 
+    #ranking{
+        font-size: 9px;
+        margin-left: 20px;
+    }
+    main{
+        min-height: 20;
+    }
     .audio-button {
         width: 40px;
         height: 30px;
@@ -842,7 +863,7 @@ header h1 {
 }
 
 /* Dispositivos muy pequeños (teléfonos móviles pequeños como el iPhone SE) */
-@media (max-width: 320px) {
+@media (max-width: 375px) {
     header {
         padding: 10px;
         max-width: 100%;
@@ -909,7 +930,6 @@ header h1 {
         align-items: center;
         justify-content: center;
         gap: 10px;
-        /* Espacio entre los botones */
     }
 
     #loggedInContainer button {
@@ -921,12 +941,20 @@ header h1 {
 
     #scoreButton {
         margin: 0;
+        width: 80px;
     }
 
     #button-logout {
         margin: 0;
+        width: 80px;
     }
-
+    #ranking{
+        font-size: 7px;
+        margin-left: 20px;
+    }
+    main{
+        min-height: 20;
+    }
     .audio-button {
         width: 40px;
         height: 30px;
@@ -1020,6 +1048,13 @@ header h1 {
         margin: 0;
     }
 
+    #ranking{
+        font-size: 9px;
+        margin-left: 20px;
+    }
+    main{
+        min-height: 20;
+    }
     .audio-button {
         width: 40px;
         height: 30px;
@@ -1037,4 +1072,26 @@ header h1 {
     transform: rotate(180deg);
     white-space: nowrap;
     writing-mode: vertical-rl;
+    cursor: pointer;   
+}
+
+/*Ranking Table*/
+#ranking {
+    display: flex;
+    justify-content: center;
+}
+table {
+    margin: 20px;
+}
+
+td {
+    padding: 20px;
+}
+
+#head-table th, td {
+    color: white;
+}
+.user-image-table img{
+    width: 20px;
+    height: 20px;
 }

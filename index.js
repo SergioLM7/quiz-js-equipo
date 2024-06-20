@@ -13,6 +13,7 @@ const db = firebase.firestore();
 const fragment = document.createDocumentFragment();
 const goButton = document.querySelector('#goButton');
 const nextButton = document.querySelector('#nextButton');
+const rankings = document.getElementById('ranking');
 
 // ApiQuiz Variables
 const apiQuiz = 'https://opentdb.com/api.php?amount=10';
@@ -98,6 +99,11 @@ document.addEventListener('click', ({ target }) => {
 
     if (target.matches('#button-back')) {
         window.location.href = "/index.html";
+    }
+
+    if (target.matches('#goRankings')) {
+        processingRanking();
+        rankings.classList.remove('hidden');
     }
 
 });
@@ -304,7 +310,7 @@ const paintResults = (number) => {
     const resultDIV = document.createElement('DIV');
     const messageDIV = document.createElement('DIV');
 
-    resultDIV.textContent = `${number} / 10`;
+    resultDIV.textContent = `${number}/30`;
     resultDIV.id = 'result';
     messageDIV.id = 'result-message';
     newResultsArticle.id = 'results-article';
@@ -312,22 +318,20 @@ const paintResults = (number) => {
     newButtonBack.id = 'button-back';
     newButtonBack.textContent = 'Go back home';
 
-    if (number >= 0 && number < 5) {
-        if (number >= 0 && number < 5) {
-            messageDIV.textContent = 'Uff, te has quedado lejos de tu mejor versión. ¡Vuelve a intentarlo!';
-        } else if (number >= 5 && number < 7) {
-            messageDIV.textContent = '¡Nada mal, vas camino de convertirte en un as del Quiz';
-        } else if (number >= 7 && number < 9) {
-            messageDIV.textContent = '¡Sensacional! Te has acercado a los mejores. Ya estás cerca...';
-        } else if (number >= 9 && number === 10) {
-        } else if (number >= 9 && number === 10) {
-            messageDIV.textContent = '¡¡Enorme!! Pleno total de respuestas correctas. Pero, ¿estarás dentro del top 10 de nuestro ranking?';
+    if (number >= 0 && number < 10) {
+            messageDIV.textContent = 'Uff, you are far from your best version, try again!';
+        } else if (number >= 10 && number < 16) {
+            messageDIV.textContent = 'Not bad, you are on your way to becoming a Quiz master!';
+        } else if (number >= 16 && number < 30) {
+            messageDIV.textContent = 'Sensational! You have come close to the best. You are already close...';
+        } else if (number === 30) {
+            messageDIV.textContent = 'Huge one!!! You are the Lord of the Quiz, but is there a place for you in the overall top10?';
         }
 
         newButtonBackArticle.append(newButtonBack);
         newResultsArticle.append(resultDIV, messageDIV);
         resultsSection.append(newResultsArticle, newButtonBackArticle);
-    };
+   
 };
 
 
@@ -375,42 +379,33 @@ const shuffleAnswers = (answers) => {
 
 //Function save answers
 const saveAnswers = (answer) => {
-    const saveAnswers = (answer) => {
-        userAnswers.push(answer);
-    };
+        userAnswers.push(answer)
 };
 
-//Function check answers
+//Function to check if the answers are correct
 const checkAnswers = (answer, arrayUser, arrayBBDD) => {
     const answerIndex = arrayUser.indexOf(answer);
     const buttonAnswer = document.getElementById(answer);
 
-    if (answer === arrayBBDD[answerIndex].correct_answer) {
+    if (answer === decodeHTML(arrayBBDD[answerIndex].correct_answer) && arrayBBDD[answerIndex].difficulty === 'hard') {
         buttonAnswer.classList.add('correct');
-        points++;
+        points += 3;
+        console.log(points)
+        alert('CORRECT!');
+    } else if (answer === decodeHTML(arrayBBDD[answerIndex].correct_answer) && arrayBBDD[answerIndex].difficulty === 'medium') {
+        buttonAnswer.classList.add('correct');
+        points += 2;
+        console.log(points)
+        alert('CORRECT!');
+    } else if (answer === decodeHTML(arrayBBDD[answerIndex].correct_answer) && arrayBBDD[answerIndex].difficulty === 'easy') {
+        buttonAnswer.classList.add('correct');
+        points ++;
         console.log(points)
         alert('CORRECT!');
     } else {
         buttonAnswer.classList.add('incorrect');
         alert('INCORRECT!')
-        alert('INCORRECT!')
     }
-    /* for (let i=-1; i < arrayUser.length; i++) {
-         if (arrayUser[i+1] === arrayBBDD[i+1].correct_answer) {
-             alert('CORRECT!');
-             console.log(i);
-         } else {
-             alert('INCORRECT');
-         }
-     };*/
-    /* for (let i=-1; i < arrayUser.length; i++) {
-         if (arrayUser[i+1] === arrayBBDD[i+1].correct_answer) {
-             alert('CORRECT!');
-             console.log(i);
-         } else {
-             alert('INCORRECT');
-         }
-     };*/
 };
 
 
@@ -760,9 +755,8 @@ function getRanking() {
         });
 };
 
-
+//Function to resolve getRanking promise and call paintRanking
 const processingRanking = async () => {
-    console.log(getRanking())
     try {
         const top10 = await getRanking();
         paintRanking(top10);
@@ -776,5 +770,4 @@ const processingRanking = async () => {
 // Function Calls
 generateFooter();
 onWindowChange();
-processingRanking();
 //startTimer();

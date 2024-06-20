@@ -84,16 +84,16 @@ document.addEventListener('click', ({ target }) => {
         };
         console.log(objScore)
         if (isUserLogged) {
-        if (isUserLogged) {
-            saveScore(objScore);
-            saveButton.setAttribute('disabled', true);
-            saveButton.classList.add('button-disabled');
-        } else {
-            authContainer.classList.add('show');
-            signupContainer.classList.remove('hidden');
-            loginContainer.classList.add('hidden');
+            if (isUserLogged) {
+                saveScore(objScore);
+                saveButton.setAttribute('disabled', true);
+                saveButton.classList.add('button-disabled');
+            } else {
+                authContainer.classList.add('show');
+                signupContainer.classList.remove('hidden');
+                loginContainer.classList.add('hidden');
+            }
         }
-    }
     }
 
     if (target.matches('#button-back')) {
@@ -201,7 +201,7 @@ const onWindowChange = async () => {
 
     if (regex.test(pathname)) {
         pathnameModified = pathname.match(regex)[0];
-    //Hasta aqui y la } final del if
+        //Hasta aqui y la } final del if
 
         if (window.location.pathname === pathnameModified) {
             console.log('On questions page');
@@ -228,7 +228,7 @@ const onWindowChange = async () => {
     //Hay que quitar esto para desplegar en Pages
     if (regex2.test(pathname)) {
         pathnameModified = pathname.match(regex2)[0];
-    //Hasta aqui y la } final del if
+        //Hasta aqui y la } final del if
 
         if (window.location.pathname == pathnameModified) {
             console.log('Painting results...');
@@ -313,20 +313,21 @@ const paintResults = (number) => {
     newButtonBack.textContent = 'Go back home';
 
     if (number >= 0 && number < 5) {
-    if (number >= 0 && number < 5) {
-        messageDIV.textContent = 'Uff, te has quedado lejos de tu mejor versión. ¡Vuelve a intentarlo!';
-    } else if (number >= 5 && number < 7) {
-        messageDIV.textContent = '¡Nada mal, vas camino de convertirte en un as del Quiz';
-    } else if (number >= 7 && number < 9) {
-        messageDIV.textContent = '¡Sensacional! Te has acercado a los mejores. Ya estás cerca...';
-    } else if (number >= 9 && number === 10) {
-    } else if (number >= 9 && number === 10) {
-        messageDIV.textContent = '¡¡Enorme!! Pleno total de respuestas correctas. Pero, ¿estarás dentro del top 10 de nuestro ranking?';
-    }
+        if (number >= 0 && number < 5) {
+            messageDIV.textContent = 'Uff, te has quedado lejos de tu mejor versión. ¡Vuelve a intentarlo!';
+        } else if (number >= 5 && number < 7) {
+            messageDIV.textContent = '¡Nada mal, vas camino de convertirte en un as del Quiz';
+        } else if (number >= 7 && number < 9) {
+            messageDIV.textContent = '¡Sensacional! Te has acercado a los mejores. Ya estás cerca...';
+        } else if (number >= 9 && number === 10) {
+        } else if (number >= 9 && number === 10) {
+            messageDIV.textContent = '¡¡Enorme!! Pleno total de respuestas correctas. Pero, ¿estarás dentro del top 10 de nuestro ranking?';
+        }
 
-    newButtonBackArticle.append(newButtonBack);
-    newResultsArticle.append(resultDIV, messageDIV);
-    resultsSection.append(newResultsArticle, newButtonBackArticle);
+        newButtonBackArticle.append(newButtonBack);
+        newResultsArticle.append(resultDIV, messageDIV);
+        resultsSection.append(newResultsArticle, newButtonBackArticle);
+    };
 };
 
 
@@ -336,7 +337,7 @@ const paintRanking = async (array) => {
     const arrayRanking = await array;
     if (arrayRanking) {
         let position = 1;
-        array.forEach((object) => {
+        arrayRanking.forEach((object) => {
             const trUser = document.createElement('TR');
             const tdPos = document.createElement('TD');
             tdPos.textContent = `${position++}º`;
@@ -349,7 +350,7 @@ const paintRanking = async (array) => {
             const tdScore = document.createElement('TD');
             tdScore.textContent = object.score;
             const tdDate = document.createElement('TD');
-            const date = new Date (object.date);
+            const date = new Date(object.date);
             const formattedDate2 = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
             tdDate.textContent = formattedDate2;
 
@@ -374,8 +375,9 @@ const shuffleAnswers = (answers) => {
 
 //Function save answers
 const saveAnswers = (answer) => {
-const saveAnswers = (answer) => {
-    userAnswers.push(answer);
+    const saveAnswers = (answer) => {
+        userAnswers.push(answer);
+    };
 };
 
 //Function check answers
@@ -448,7 +450,7 @@ const loginGoogle = async () => {
         throw new Error(error);
 
     }
-}
+};
 
 const buttonLoginGoogle = document.querySelector("#buttonLoginGoogle");
 
@@ -499,7 +501,7 @@ const createUser = (user) => {
         .catch((error) => {
             console.error("Error adding document: ", error);
         });
-}
+};
 
 const signUpUser = (nameSignup, email, password) => {
     firebase
@@ -618,27 +620,7 @@ const getProfilePicture = () => {
             }).catch((error) => {
                 console.log('Error getting document:', error);
             });
-            .doc(isUserLogged.uid)
-            .get()
-            .then((doc) => {
-                if (doc.exists) {
-                    const urlProfilePicture = doc.data().profilePicture;
-                    if (urlProfilePicture) {
-                        profilePictureContainer.innerHTML = '';
-                        const imgProfilePicture = document.createElement('IMG');
-                        imgProfilePicture.id = 'imgProfilePicture';
-                        imgProfilePicture.src = `${urlProfilePicture}`;
-                        profilePictureContainer.append(imgProfilePicture);
-                    }
-                } else {
-                    console.log('No such document!');
-                }
-            }).catch((error) => {
-                console.log('Error getting document:', error);
-            });
     }
-
-
 };
 
 // Footer Logic
@@ -671,29 +653,29 @@ const generateFooter = () => {
 /*let timer;
 let minutes = 0;
 let seconds = 0;
-
+ 
 function startTimer() {
     timer = setInterval(updateTimer, 1000); 
     document.getElementById('timer').classList.add('timer-go');
 }
-
+ 
 function stopTimer() {
     clearInterval(timer);
     document.getElementById('timer').classList.remove('timer-go');
     document.getElementById('timer').classList.add('timer-stopped');
-
+ 
 }
-
+ 
 function updateTimer() {
     seconds++;
     if (seconds >= 60) {
         seconds = 0;
         minutes++;
     }
-
+ 
     let displayMinutes = minutes < 10 ? `0${minutes}` : minutes;
     let displaySeconds = seconds < 10 ? `0${seconds}` : seconds;
-
+ 
     document.getElementById('timer').textContent = `${displayMinutes}:${displaySeconds}`;
     if(seconds == 10){
         stopTimer();
@@ -724,9 +706,10 @@ const saveScore = (obj) => {
         alert("You need to be logged in to add score.");
     }
 };
-};
+
 // saveScore({score: 10, date: '07-02-1997'});
-const getRanking = () => {
+
+function getRanking() {
     return db.collection("users")
         .get()
         .then(usersSnapshot => {
@@ -777,17 +760,21 @@ const getRanking = () => {
         });
 };
 
-const processingRanking = async() => {
-    getRanking()
-    .then(top10 => {
+
+const processingRanking = async () => {
+    console.log(getRanking())
+    try {
+        const top10 = await getRanking();
         paintRanking(top10);
-    })
-    .catch(error => {
+
+    } catch (error) {
         console.error("Error processing ranking:", error);
-    });
-}
+
+    }  
+};
+
 // Function Calls
 generateFooter();
 onWindowChange();
 processingRanking();
-//startTimer(); 
+//startTimer();

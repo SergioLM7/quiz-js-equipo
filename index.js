@@ -14,6 +14,8 @@ const fragment = document.createDocumentFragment();
 const goButton = document.querySelector('#goButton');
 const nextButton = document.querySelector('#nextButton');
 const rankings = document.getElementById('ranking');
+const pSignUp = document.createElement('P');
+
 
 // ApiQuiz Variables
 const apiQuiz = 'https://opentdb.com/api.php?amount=10';
@@ -84,17 +86,17 @@ document.addEventListener('click', ({ target }) => {
             date: date
         };
         console.log(objScore)
-        if (isUserLogged) {
             if (isUserLogged) {
                 saveScore(objScore);
                 saveButton.setAttribute('disabled', true);
                 saveButton.classList.add('button-disabled');
             } else {
+                pSignUp.innerHTML = `If you already have and account:<button id='login-results'>Log In</button>`;
+                signupContainer.append(pSignUp)
                 authContainer.classList.add('show');
                 signupContainer.classList.remove('hidden');
                 loginContainer.classList.add('hidden');
             }
-        }
     }
 
     if (target.matches('#button-back')) {
@@ -104,6 +106,12 @@ document.addEventListener('click', ({ target }) => {
     if (target.matches('#goRankings')) {
         processingRanking();
         rankings.classList.remove('hidden');
+    }
+
+    if (target.matches('#login-results')) {
+        signupContainer.classList.add('hidden');
+        loginContainer.classList.remove('hidden');
+        pSignUp.innerHTML = '';
     }
 
 });

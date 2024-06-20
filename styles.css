@@ -34,7 +34,9 @@ header h1 {
     margin: 0;
 }
 #login-window,
-#signup-window {
+#signup-window, 
+#button-logout,
+#scoreButton {
     margin: 0;
     background-image: linear-gradient(blue, rgb(117, 225, 255));
     width: 120px;
@@ -42,9 +44,14 @@ header h1 {
     transition: width 1s ease;
 }
 #login-window:hover,
-#signup-window:hover {
+#signup-window:hover, 
+#button-logout:hover,
+#scoreButton:hover {
     background-image: linear-gradient(rgb(204, 0, 255), rgb(0, 81, 255));
     width: 160px;
+}
+#scoreButton {
+    margin-left: 20px;
 }
 #button-logout{
     margin: 0;
@@ -52,7 +59,7 @@ header h1 {
     width: 120px;
     height: 60px;
     transition: width 1s ease;
-    margin-left: 50px;
+    margin-left: 10px;
 }
 #loggedInContainer{
 display: flex;
@@ -284,10 +291,11 @@ h4 {
     box-sizing: border-box;
 }
 #login-container,
-#signup-container {
+#signup-container,
+#statsContainer {
     background-color: #fff;
     height: fit-content;
-    width: 30%;
+    width: 60%;
     max-width: 100%;
     padding: 30px 50px;
     border-radius: 3px;
@@ -303,7 +311,8 @@ h4 {
     box-sizing: border-box;
 }
 #login-container label,
-#signup-container label {
+#signup-container label,
+#statsContainer label {
     margin-top: 100px;
 }
 #login-container input,
@@ -342,7 +351,7 @@ input[type=submit]:hover {
     display: inline-block;
     width: 70px;
     height: 51px;
-    background: url('./assets/images/audioOn.png') no-repeat center center;
+    background: url('./assets/images/audioOff.png') no-repeat center center;
     background-size: cover;
     cursor: pointer;
     margin-left: 0;
@@ -352,7 +361,7 @@ input[type=submit]:hover {
     top: 20%;
 }
 .audio-button.playing {
-    background: url('./assets/images/audioOff.png') no-repeat center center;
+    background: url('./assets/images/audioOn.png') no-repeat center center;
     background-size: cover;
 }
 @media (max-width: 1200px) {

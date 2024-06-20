@@ -29,6 +29,7 @@ const loginContainer = document.querySelector('#login-container');
 const signupContainer = document.querySelector('#signup-container');
 const authContainer = document.querySelector('#auth-container');
 const closeAuthWindow = document.querySelector('.close-auth-window');
+const statsContainer = document.querySelector("#statsContainer");
 
 // Event Listeners
 document.addEventListener('click', ({ target }) => {
@@ -52,14 +53,22 @@ document.addEventListener('click', ({ target }) => {
         authContainer.classList.add('show');
         signupContainer.classList.add('hidden');
         loginContainer.classList.remove('hidden');
+        statsContainer.classList.add('hidden')
     }
 
+    
     if (target.matches('#signup-window')) {
         authContainer.classList.add('show');
         loginContainer.classList.add('hidden');
         signupContainer.classList.remove('hidden');
+        statsContainer.classList.add('hidden')
     }
-
+    if (target.matches('#scoreButton')) {
+        authContainer.classList.add('show');
+        signupContainer.classList.add('hidden');
+        loginContainer.classList.add('hidden');
+        statsContainer.classList.remove('hidden')
+    }
     if (target.matches('.close-auth-window')) {
         authContainer.classList.remove('show');
     }
@@ -178,27 +187,42 @@ const iterateArrApiQuiz = () => {
 };
 
 
-//Initial function
 const onWindowChange = async () => {
-    if (window.location.pathname == "/pages/questions.html") {
+    console.log('Checking current path:', window.location.pathname);
+    
+    if (window.location.pathname === "/quiz-js-equipo/pages/questions.html") {
         console.log('On questions page');
+        
         if (localStorage.getItem('arrApiQuiz')) {
             arrApiQuiz = JSON.parse(localStorage.getItem('arrApiQuiz'));
             console.log('Using questions from local storage', arrApiQuiz);
             iterateArrApiQuiz();
         } else {
-            const preguntas = await getApiQuiz();
-            console.log('Questions from API:', preguntas);
-            toLocalStorage(preguntas);
-            iterateArrApiQuiz();
+            try {
+                const preguntas = await getApiQuiz();
+                console.log('Questions from API:', preguntas);
+                toLocalStorage(preguntas);
+                iterateArrApiQuiz();
+            } catch (error) {
+                console.error('Error fetching questions:', error);
+            }
         }
+    } else {
+        console.log('Not on questions page');
     }
-    if (window.location.pathname == '/pages/results.html') {
+    if (window.location.pathname == '/quiz-js-equipo/pages/results.html') {
         console.log('Painting results...');
         paintResults(JSON.parse(localStorage.getItem('score')));
     }
 };
 
+//Normalización preguntas
+const decodeHTML = (html) => {
+    const textArea = document.createElement("textarea");
+    textArea.innerHTML = html;
+    return textArea.value;
+};
+    
 
 //Paint questions at pages/questions
 const paintQuestion = (object) => {
@@ -227,8 +251,8 @@ const paintQuestion = (object) => {
         answers = [object.incorrect_answers[0], object.correct_answer];
         shuffleAnswers(answers);
 
-        divAnswer1.innerHTML = `<button id='${answers[0]}' class="btnAnswer">${answers[0]}</button>`;
-        divAnswer2.innerHTML = `<button id='${answers[1]}' class="btnAnswer">${answers[1]}</button>`;
+        divAnswer1.innerHTML = `<button id='${decodeHTML(answers[0])}' class="btnAnswer">${decodeHTML(answers[0])}</button>`;
+        divAnswer2.innerHTML = `<button id='${decodeHTML(answers[1])}' class="btnAnswer">${decodeHTML(answers[1])}</button>`;
 
         fragment.append(questionTitle, divAnswer1, divAnswer2);
         questionCardContainer.append(fragment);
@@ -236,10 +260,10 @@ const paintQuestion = (object) => {
         answers = [object.correct_answer, object.incorrect_answers[0], object.incorrect_answers[1], object.incorrect_answers[2]];
         shuffleAnswers(answers);
 
-        divAnswer1.innerHTML = `<button id='${answers[0]}' class="btnAnswer">${answers[0]}</button>`;
-        divAnswer2.innerHTML = `<button id='${answers[1]}' class="btnAnswer">${answers[1]}</button>`;
-        divAnswer3.innerHTML = `<button id='${answers[2]}' class="btnAnswer">${answers[2]}</button>`;
-        divAnswer4.innerHTML = `<button id='${answers[3]}' class="btnAnswer">${answers[3]}</button>`;
+        divAnswer1.innerHTML = `<button id='${decodeHTML(answers[0])}' class="btnAnswer">${decodeHTML(answers[0])}</button>`;
+        divAnswer2.innerHTML = `<button id='${decodeHTML(answers[1])}' class="btnAnswer">${decodeHTML(answers[1])}</button>`;
+        divAnswer3.innerHTML = `<button id='${decodeHTML(answers[2])}' class="btnAnswer">${decodeHTML(answers[2])}</button>`;
+        divAnswer4.innerHTML = `<button id='${decodeHTML(answers[3])}' class="btnAnswer">${decodeHTML(answers[3])}</button>`;
 
         fragment.append(questionTitle, divAnswer1, divAnswer2, divAnswer3, divAnswer4);
         questionCardContainer.append(fragment);
@@ -342,6 +366,57 @@ const signInUser = (email, password) => {
 
 //LOG IN CON GOOGLE
 
+const auth = firebase.auth();
+const provider = new firebase.auth.GoogleAuthProvider();
+
+const loginGoogle = async () => {
+    try {
+        const response = await auth.signInWithPopup(provider);
+
+        console.log(response);
+        return response.user;
+
+    } catch (error) {
+        throw new Error(error);
+
+    }
+}
+
+const buttonLoginGoogle = document.querySelector("#buttonLoginGoogle");
+
+buttonLoginGoogle.addEventListener("click", async (e) => {
+    try {
+        await loginGoogle();
+    } catch (error) { }
+});
+
+//Para que no se solapen
+
+firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+        isUserLogged = firebase.auth().currentUser;
+        console.log(`Está en el sistema:${user.email} ${user.uid}`);
+        document.getElementById("message").innerText = `Hello ${isUserLogged.displayName}!`;
+        document.querySelector('#loggedOffContainer').classList.add('hidden');
+        document.querySelector('#loggedInContainer').classList.remove('hidden');        
+        document.querySelector('#button-logout').classList.remove('hidden');
+        document.querySelector('#pfpMessageContainer').classList.remove('hidden');
+        document.querySelector('#profilePictureContainer').classList.remove('hidden');
+
+        profilePictureContainer.innerHTML = '';
+        getProfilePicture();
+    } else {
+        isUserLogged = firebase.auth().currentUser;
+        console.log("no hay usuarios en el sistema");
+        document.querySelector('#pfpMessageContainer').classList.add('hidden');
+        document.querySelector('#loggedOffContainer').classList.remove('hidden');
+        document.querySelector('#loggedInContainer').classList.add('hidden');
+        document.querySelector('#button-logout').classList.add('hidden');
+        document.querySelector('#profilePictureContainer').classList.add('hidden');
+        profilePictureContainer.innerHTML = '';
+        getProfilePicture();
+    }
+});
 
 
 const createUser = (user) => {
@@ -559,6 +634,6 @@ const saveScore = (obj) => {
 }
 // saveScore({score: 10, date: '07-02-1997'});
 // Function Calls
-onWindowChange();
 generateFooter();
+onWindowChange();
 //startTimer(); 

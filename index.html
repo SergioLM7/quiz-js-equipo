@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="./styles.css" />
     <title>Quiz JS</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+    <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+
 </head>
 
 <body>
@@ -26,6 +29,7 @@
                         style="display:none" />
                     <p id="message"></p>
                 </div>
+                <button id="scoreButton">Stats</button>
                 <button id="button-logout">Logout</button>
             </article>
         </section>
@@ -55,7 +59,7 @@
                     <button id="buttonLoginGoogle">Login con Google</button>
                 </form>
             </article>
-            <article id="signup-container" class="hide">
+            <article id="signup-container" class="2hide">
                 <button class="close-auth-window"><i class="fa-solid fa-xmark" style="color: #000000;"></i></button>
                 <form id="formSignup" action="#" method="POST">
                     <label for="nameSignup">Name:</label>
@@ -69,6 +73,14 @@
                         placeholder="Repeat password...">
                     <input type="submit" value="Signup">
                 </form>
+            </article>
+            <article id="statsContainer" class="hide">
+                <button class="close-auth-window"><i class="fa-solid fa-xmark" style="color: #000000;"></i></button>
+                <form id="formStats" action="#" method="POST">
+                    <label for="titleStats">PLAYER STATS</label>
+                    <div class="ct-chart ct-golden-section" id="chart2"></div>
+                </form>
+
             </article>
         </section>
     </main>

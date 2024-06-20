@@ -31,6 +31,11 @@
     </header>
 
     <main>
+        <div class="audio-button" id="audioButton"></div>
+        <audio id="audioPlayer">
+            <source src="../assets/sounds/audioPokemon.mp3" type="audio/mpeg">
+            Tu navegador no soporta la etiqueta de audio.
+        </audio>
         <section id="results-container">
             <article id="show-results-container">
                 <button id="save-score">Save your score!</button>
@@ -46,9 +51,10 @@
                     <label for="passLogin">Password:</label>
                     <input type="password" id="passLogin" name="passLogin" placeholder="Introduce password...">
                     <input type="submit" value="Login">
+                    <button id="buttonLoginGoogle">Login con Google</button>
                 </form>
             </article>
-            <article id="signup-container" class="hide">
+            <article id="signup-container" class="2hide">
                 <button class="close-auth-window"><i class="fa-solid fa-xmark" style="color: #000000;"></i></button>
                 <form id="formSignup" action="#" method="POST">
                     <label for="nameSignup">Name:</label>
@@ -62,6 +68,14 @@
                         placeholder="Repeat password...">
                     <input type="submit" value="Signup">
                 </form>
+            </article>
+            <article id="statsContainer" class="hide">
+                <button class="close-auth-window"><i class="fa-solid fa-xmark" style="color: #000000;"></i></button>
+                <form id="formStats" action="#" method="POST">
+                    <label for="titleStats">PLAYER STATS</label>
+                    <div class="ct-chart ct-golden-section" id="chart2"></div>
+                </form>
+
             </article>
         </section>
     </main>

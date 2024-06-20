@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles.css" />
+    <title>Quiz JS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <h1><a href="../index.html">QUIZ</a></h1>
+        <section id="userNavContainer">
+            <article id="loggedOffContainer">
+                <button id='login-window'>Login</button>
+                <button id="signup-window">Signup</button>
+            </article>
+            <article id="loggedInContainer">
+                <div id="pfpMessageContainer">
+                    <label for="btnFilePfp" id="labelPfp">
+                        <div id="profilePictureContainer"></div>
+                    </label>
+                    <input type="file" id="btnFilePfp" name="btnFilePfp" accept="image/png, image/jpeg" style="display:none" />
+                    <p id="message"></p>
+                </div>
+                <button id="button-logout">Logout</button>
+            </article>
+        </section>
+    </header>
+
+    <main>
+        /*Results here->*/
+
+        <section>
+            <article>
+                <button id="save-score">Save your score!</button>
+            </article>
+        </section>
+
+        <section id="auth-container">
+            <article id="login-container" class="hide">
+                <button class="close-auth-window"><i class="fa-solid fa-xmark" style="color: #000000;"></i></button>
+                <form id="formLogin" action="#" method="POST">
+                    <label for="emailLogin">Email:</label>
+                    <input type="email" id="emailLogin" name="emailLogin" placeholder="Introduce email...">
+                    <label for="passLogin">Password:</label>
+                    <input type="password" id="passLogin" name="passLogin" placeholder="Introduce password...">
+                    <input type="submit" value="Login">
+                </form>
+            </article>
+            <article id="signup-container" class="hide">
+                <button class="close-auth-window"><i class="fa-solid fa-xmark" style="color: #000000;"></i></button>
+                <form id="formSignup" action="#" method="POST">
+                    <label for="nameSignup">Name:</label>
+                    <input type="text" id="nameSignup" name="nameSignup" placeholder="Introduce a name...">
+                    <label for="emailSignup">Email:</label>
+                    <input type="email" id="emailSignup" name="emailSignup" placeholder="Introduce an email...">
+                    <label for="passSignup">Password:</label>
+                    <input type="password" id="passSignup" name="passSignup" placeholder="Introduce a password...">
+                    <label for="passSignupRepeat">Repeat password:</label>
+                    <input type="password" id="passSignupRepeat" name="passSignupRepeat"
+                        placeholder="Repeat password...">
+                    <input type="submit" value="Signup">
+                </form>
+            </article>
+        </section>
+    </main>
+
+    <footer>
+        <h3>Developed by</h3>
+        <section id="footer-devs-container"></section>
+    </footer>
+    <script src="https://kit.fontawesome.com/84340c7e8d.js" crossorigin="anonymous"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-storage.js"></script>
+    <script src="../index.js"></script>
+</body>
+
+</html>

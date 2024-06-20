@@ -171,7 +171,7 @@ const iterateArrApiQuiz = () => {
 
 //Initial function
 const onWindowChange = async () => {
-    if (window.location.pathname == "/pages/questions.html") {
+    if (window.location.pathname == "/quiz-js-equipo/pages/questions.html") {
         console.log('On questions page');
         if (localStorage.getItem('arrApiQuiz')) {
             arrApiQuiz = JSON.parse(localStorage.getItem('arrApiQuiz'));

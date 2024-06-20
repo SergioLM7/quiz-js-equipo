@@ -186,12 +186,12 @@ header h1 {
     margin: 0;
     margin-left: 10px;
     transition: width 1s ease;
-    width: 120px;
+    width: 200px;
 }
 
 #button-logout:hover {
     background-image: linear-gradient(rgb(204, 0, 255), rgb(0, 81, 255));
-    width: 160px;
+    width: 250px;
 }
 
 #chart2 {
@@ -309,13 +309,14 @@ header h1 {
     margin: 0;
     padding: 5px 10px 7px 10px;
     transition: width 1s ease;
-    width: 120px;
+    font-size: 20px;
+    width: 200px;
 }
 
 #login-window:hover,
 #signup-window:hover {
     background-image: linear-gradient(rgb(204, 0, 255), rgb(0, 81, 255));
-    width: 160px;
+    width: 250px;
 }
 
 #mainContent {
@@ -436,12 +437,12 @@ header h1 {
     height: 60px;
     margin-left: 20px;
     transition: width 1s ease;
-    width: 120px;
+    width: 200px;
 }
 
 #scoreButton:hover {
     background-image: linear-gradient(rgb(204, 0, 255), rgb(0, 81, 255));
-    width: 160px;
+    width: 250px;
 }
 
 #show-results-container {
@@ -450,19 +451,6 @@ header h1 {
     justify-content: center;
 }
 
-#signup-window {
-    background-image: linear-gradient(blue, rgb(117, 225, 255));
-    height: 60px;
-    margin: 0;
-    padding: 5px 10px 7px 10px;
-    transition: width 1s ease;
-    width: 120px;
-}
-
-#signup-window:hover {
-    background-image: linear-gradient(rgb(204, 0, 255), rgb(0, 81, 255));
-    width: 160px;
-}
 
 #statsContainer {
     background-color: #fff;
@@ -785,7 +773,7 @@ header h1 {
     }
 
     #ranking {
-        font-size: 15px;
+        font-size: 10px;
         margin-left: 80px;
     }
 
@@ -908,10 +896,12 @@ header h1 {
 
     #scoreButton {
         margin: 0;
+        width: 100px;
     }
 
     #button-logout {
         margin: 0;
+        width: 100px;
     }
 
     #ranking {
@@ -978,7 +968,7 @@ header h1 {
         max-width: 95%;
         max-height: 50%;
         margin: 0 auto;
-        font-size: 80%;
+        font-size: 50%;
     }
 
     #userNavContainer {
@@ -1152,10 +1142,12 @@ header h1 {
 
     #scoreButton {
         margin: 0;
+        width: 10px;
     }
 
     #button-logout {
         margin: 0;
+        width: 10px;
     }
 
     #ranking {

@@ -32,6 +32,7 @@ header {
 }
 header h1 {
     margin: 0;
+    margin-right: 130px;
 }
 #login-window,
 #signup-window, 
@@ -295,7 +296,7 @@ h4 {
 #statsContainer {
     background-color: #fff;
     height: fit-content;
-    width: 60%;
+    width: 40%;
     max-width: 100%;
     padding: 30px 50px;
     border-radius: 3px;
@@ -364,82 +365,6 @@ input[type=submit]:hover {
     background: url('./assets/images/audioOn.png') no-repeat center center;
     background-size: cover;
 }
-@media (max-width: 1200px) {
-    header {
-        flex-direction: column;
-        text-align: center;
-    }
-    header h1 {
-        margin-bottom: 20px;
-    }
-    #mainContent h2 {
-        font-size: 60px;
-    }
-    #mainContent button {
-        font-size: 1.2em;
-    }
-    #nextButton {
-        margin-left: 35%;
-    }
-    footer {
-        flex-direction: column;
-        align-items: center;
-    }
-}
-@media (max-width: 768px) {
-    header {
-        padding: 15px;
-    }
-    header h1 {
-        font-size: 24px;
-    }
-    #login {
-        width: 50px;
-        height: 50px;
-    }
-    #mainContent {
-        margin-top: 100px;
-    }
-    #mainContent h2 {
-        font-size: 50px;
-    }
-    #nextButton {
-        margin-left: 35%;
-    }
-    #mainContent button {
-        font-size: 1em;
-        padding: 8px 16px;
-    }
-}
-@media (max-width: 480px) {
-    header {
-        padding: 10px;
-    }
-    header h1 {
-        font-size: 20px;
-    }
-    #login {
-        width: 40px;
-        height: 40px;
-    }
-    #nextButton {
-        margin-left: 35%;
-    }
-    #mainContent {
-        margin-top: 50px;
-    }
-    #mainContent h2 {
-        font-size: 40px;
-    }
-    #mainContent button {
-        font-size: 0.8em;
-        padding: 6px 12px;
-    }
-    footer {
-        padding: 30px;
-    }
-}
-
 
 
 /*Nuevas*/
@@ -510,4 +435,111 @@ input[type=submit]:hover {
     align-self: center;
     max-width: 200px;
     padding: 10px;
+}
+#divStats{
+    display: flex;
+}
+#chart2{
+    width: 100%;
+    height: 300px;
+    margin-top: 40px;
+    margin-right: 40px;
+}
+#grafText1 {
+        writing-mode: vertical-rl;
+        text-orientation: mixed; 
+        transform: rotate(180deg); 
+        white-space: nowrap; 
+        margin-left: -10px; 
+        margin-bottom: 20px;
+}
+
+@media (max-width: 1200px) {
+    header {
+        flex-direction: column;
+        text-align: center;
+    }
+    header h1 {
+        margin-bottom: 20px;
+    }
+    #mainContent h2 {
+        font-size: 60px;
+    }
+    #mainContent button {
+        font-size: 1.2em;
+    }
+    .ct-chart {
+        height: 200px;
+      }
+    #nextButton {
+        margin-left: 35%;
+    }
+    footer {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    header {
+        padding: 15px;
+    }
+    header h1 {
+        font-size: 24px;
+    }
+    #login-window,
+    #signup-window {
+        width: 50px;
+        height: 50px;
+    }
+    .ct-chart {
+        height: 100px;
+      }
+    #mainContent {
+        margin-top: 100px;
+    }
+    #mainContent h2 {
+        font-size: 50px;
+    }
+    #nextButton {
+        margin-left: 35%;
+    }
+    #mainContent button {
+        font-size: 1em;
+        padding: 8px 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 10px;
+    }
+    header h1 {
+        font-size: 20px;
+    }
+    #login-window,
+    #signup-window {
+        width: 40px;
+        height: 40px;
+    }
+    .ct-chart {
+        height: 50px;
+      }
+    #nextButton {
+        margin-left: 35%;
+    }
+    #mainContent {
+        margin-top: 50px;
+    }
+    #mainContent h2 {
+        font-size: 40px;
+    }
+    #mainContent button {
+        font-size: 0.8em;
+        padding: 6px 12px;
+    }
+    footer {
+        padding: 30px;
+    }
 }

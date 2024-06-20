@@ -390,7 +390,7 @@ buttonLoginGoogle.addEventListener("click", async (e) => {
     } catch (error) { }
 });
 
-//Para que no se solapen
+//Para que no se solapen los LOG IN
 
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
@@ -632,6 +632,30 @@ const saveScore = (obj) => {
         alert("You need to be logged in to add score.");
     }
 }
+
+//Gráfica stats
+
+const dbRef = firebase.database().ref('datos');
+ // Obtener datos de Firebase y actualizar la gráfica
+ dbRef.once('value', function(snapshot) {
+    const data = snapshot.val();
+
+    // Crear un array para labels y series basado en los datos de Firebase
+    const labels = Object.keys(data); // Suponiendo que las claves son las etiquetas (labels)
+    const series = Object.values(data); // Suponiendo que los valores son los datos de la serie
+
+    // Construir la gráfica usando Chartist.js
+    new Chartist.Line('.ct-chart', {
+        labels: labels,
+        series: [series]
+    }, {
+        low: 0,
+        showArea: true
+    });
+});
+// CONVERTIR FECHA const formattedDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+
+
 // saveScore({score: 10, date: '07-02-1997'});
 // Function Calls
 generateFooter();

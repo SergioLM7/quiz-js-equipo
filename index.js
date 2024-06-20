@@ -35,6 +35,7 @@ document.addEventListener('click', ({ target }) => {
 
     if (target.matches('#goToQuiz')) {
         window.location.href = "./pages/questions.html";
+        console.log(window.location.pathname);
     }
     if (target.matches('#goRankings')) {
         //hay que crear-pintar rankings

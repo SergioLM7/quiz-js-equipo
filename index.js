@@ -460,7 +460,7 @@ buttonLoginGoogle.addEventListener("click", async (e) => {
     } catch (error) { }
 });
 
-//Para que no se solapen
+//Para que no se solapen los LOG IN
 
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {

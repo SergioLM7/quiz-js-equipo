@@ -188,31 +188,49 @@ const iterateArrApiQuiz = () => {
 
 
 const onWindowChange = async () => {
-    console.log('Checking current path:', window.location.pathname);
+    console.log('Checking current path:', window.location);
 
-    if (window.location.pathname === "/quiz-js-equipo/pages/questions.html") {
-        console.log('On questions page');
+    //Hay que quitar esto para desplegar en Pages
+    const pathname = window.location.pathname;
+    let pathnameModified;
+    let regex = /\/pages\/questions\.html$/;
+    let regex2 = /\/pages\/results\.html$/;
 
-        if (localStorage.getItem('arrApiQuiz')) {
-            arrApiQuiz = JSON.parse(localStorage.getItem('arrApiQuiz'));
-            console.log('Using questions from local storage', arrApiQuiz);
-            iterateArrApiQuiz();
-        } else {
-            try {
-                const preguntas = await getApiQuiz();
-                console.log('Questions from API:', preguntas);
-                toLocalStorage(preguntas);
+    if (regex.test(pathname)) {
+        pathnameModified = pathname.match(regex)[0];
+    //Hasta aqui y la } final del if
+
+        if (window.location.pathname === pathnameModified) {
+            console.log('On questions page');
+
+            if (localStorage.getItem('arrApiQuiz')) {
+                arrApiQuiz = JSON.parse(localStorage.getItem('arrApiQuiz'));
+                console.log('Using questions from local storage', arrApiQuiz);
                 iterateArrApiQuiz();
-            } catch (error) {
-                console.error('Error fetching questions:', error);
+            } else {
+                try {
+                    const preguntas = await getApiQuiz();
+                    console.log('Questions from API:', preguntas);
+                    toLocalStorage(preguntas);
+                    iterateArrApiQuiz();
+                } catch (error) {
+                    console.error('Error fetching questions:', error);
+                }
             }
+        } else {
+            console.log('Not on questions page');
         }
-    } else {
-        console.log('Not on questions page');
     }
-    if (window.location.pathname == '/quiz-js-equipo/pages/results.html') {
-        console.log('Painting results...');
-        paintResults(JSON.parse(localStorage.getItem('score')));
+
+    //Hay que quitar esto para desplegar en Pages
+    if (regex2.test(pathname)) {
+        pathnameModified = pathname.match(regex2)[0];
+    //Hasta aqui y la } final del if
+
+        if (window.location.pathname == pathnameModified) {
+            console.log('Painting results...');
+            paintResults(JSON.parse(localStorage.getItem('score')));
+        }
     }
 };
 
@@ -224,7 +242,7 @@ const decodeHTML = (html) => {
 };
 
 
-//Paint questions at pages/questions
+//Function to paint questions at pages/questions
 const paintQuestion = (object) => {
     //console.log('Painting question:', object);
     const questionCardContainer = document.querySelector('#questionCard');
@@ -271,7 +289,7 @@ const paintQuestion = (object) => {
     //console.log('Question painted successfully');
 };
 
-//Paint results
+//Function to paint results, at pages/results
 const paintResults = (number) => {
     const resultsSection = document.getElementById('results-container');
     const newResultsArticle = document.createElement('ARTICLE');
@@ -301,6 +319,13 @@ const paintResults = (number) => {
     newButtonBackArticle.append(newButtonBack);
     newResultsArticle.append(resultDIV, messageDIV);
     resultsSection.append(newResultsArticle, newButtonBackArticle);
+};
+
+
+//Function to paint Ranking at index.html
+const paintRanking = (obj) => {
+
+
 };
 
 //Function to show answers in almost random positions
@@ -631,7 +656,7 @@ const saveScore = (obj) => {
         console.log("No user is logged in to add their score.");
         alert("You need to be logged in to add score.");
     }
-}
+};
 // saveScore({score: 10, date: '07-02-1997'});
 
 function getRanking() {
@@ -683,10 +708,10 @@ function getRanking() {
             console.error("Error retrieving ranking:", error);
             throw new Error("Internal Server Error");
         });
-}
+};
 
 // Function Calls
 generateFooter();
 onWindowChange();
-//startTimer(); 
-getRanking();
+//startTimer();
+getRanking(); 

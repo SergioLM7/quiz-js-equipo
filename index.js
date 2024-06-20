@@ -635,14 +635,37 @@ const saveScore = (obj) => {
 
 //Gráfica stats
 
-const dbRef = firebase.database().ref('datos');
- // Obtener datos de Firebase y actualizar la gráfica
- dbRef.once('value', function(snapshot) {
-    const data = snapshot.val();
+// Obtener datos de Firebase y actualizar la gráfica
+const usersRef = db.ref('users');
 
-    // Crear un array para labels y series basado en los datos de Firebase
-    const labels = Object.keys(data); // Suponiendo que las claves son las etiquetas (labels)
-    const series = Object.values(data); // Suponiendo que los valores son los datos de la serie
+// Escuchar cambios en los datos de usuarios
+usersRef.on('value', (snapshot) => {
+    const usersData = snapshot.val();
+
+    // Preparar datos para Chartist.js
+    const labels = []; // Array para las fechas
+    const series = []; // Array para los puntajes
+
+    // Iterar sobre cada usuario en los datos recuperados
+    for (let userId in usersData) {
+        if (usersData.hasOwnProperty(userId)) {
+            const userData = usersData[userId];
+
+            // Verificar si el usuario tiene la propiedad 'scores'
+            if (userData.scores) {
+                // Iterar sobre los puntajes del usuario
+                for (let scoreId in userData.scores) {
+                    if (userData.scores.hasOwnProperty(scoreId)) {
+                        const scoreData = userData.scores[scoreId];
+                        // Agregar fecha como label
+                        labels.push(scoreData.date);
+                        // Agregar puntaje como serie
+                        series.push(scoreData.score);
+                    }
+                }
+            }
+        }
+    }
 
     // Construir la gráfica usando Chartist.js
     new Chartist.Line('.ct-chart', {

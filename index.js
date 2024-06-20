@@ -189,10 +189,10 @@ const iterateArrApiQuiz = () => {
 
 const onWindowChange = async () => {
     console.log('Checking current path:', window.location.pathname);
-
-    if (window.location.pathname === "/quiz-js-equipo/pages/questions.html") {
+    
+    if (window.location.pathname === "/pages/questions.html") {
         console.log('On questions page');
-
+        
         if (localStorage.getItem('arrApiQuiz')) {
             arrApiQuiz = JSON.parse(localStorage.getItem('arrApiQuiz'));
             console.log('Using questions from local storage', arrApiQuiz);
@@ -210,7 +210,7 @@ const onWindowChange = async () => {
     } else {
         console.log('Not on questions page');
     }
-    if (window.location.pathname == '/quiz-js-equipo/pages/results.html') {
+    if (window.location.pathname == '/pages/results.html') {
         console.log('Painting results...');
         paintResults(JSON.parse(localStorage.getItem('score')));
     }
@@ -224,7 +224,7 @@ const decodeHTML = (html) => {
 };
 
 
-//Paint questions at pages/questions
+//Function to paint questions at pages/questions
 const paintQuestion = (object) => {
     //console.log('Painting question:', object);
     const questionCardContainer = document.querySelector('#questionCard');
@@ -271,7 +271,7 @@ const paintQuestion = (object) => {
     //console.log('Question painted successfully');
 };
 
-//Paint results
+//Function to paint results, at pages/results
 const paintResults = (number) => {
     const resultsSection = document.getElementById('results-container');
     const newResultsArticle = document.createElement('ARTICLE');
@@ -301,6 +301,13 @@ const paintResults = (number) => {
     newButtonBackArticle.append(newButtonBack);
     newResultsArticle.append(resultDIV, messageDIV);
     resultsSection.append(newResultsArticle, newButtonBackArticle);
+};
+
+
+//Function to paint Ranking at index.html
+const paintRanking = (obj) => {
+
+
 };
 
 //Function to show answers in almost random positions
@@ -631,52 +638,10 @@ const saveScore = (obj) => {
         console.log("No user is logged in to add their score.");
         alert("You need to be logged in to add score.");
     }
-}
+};
 
 //Gráfica stats
 
-// Obtener datos de Firebase y actualizar la gráfica
-const usersRef = db.ref('users');
-
-// Escuchar cambios en los datos de usuarios
-usersRef.on('value', (snapshot) => {
-    const usersData = snapshot.val();
-
-    // Preparar datos para Chartist.js
-    const labels = []; // Array para las fechas
-    const series = []; // Array para los puntajes
-
-    // Iterar sobre cada usuario en los datos recuperados
-    for (let userId in usersData) {
-        if (usersData.hasOwnProperty(userId)) {
-            const userData = usersData[userId];
-
-            // Verificar si el usuario tiene la propiedad 'scores'
-            if (userData.scores) {
-                // Iterar sobre los puntajes del usuario
-                for (let scoreId in userData.scores) {
-                    if (userData.scores.hasOwnProperty(scoreId)) {
-                        const scoreData = userData.scores[scoreId];
-                        // Agregar fecha como label
-                        labels.push(scoreData.date);
-                        // Agregar puntaje como serie
-                        series.push(scoreData.score);
-                    }
-                }
-            }
-        }
-    }
-
-    // Construir la gráfica usando Chartist.js
-    new Chartist.Line('.ct-chart', {
-        labels: labels,
-        series: [series]
-    }, {
-        low: 0,
-        showArea: true
-    });
-});
-// CONVERTIR FECHA const formattedDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
 
 
 // saveScore({score: 10, date: '07-02-1997'});
@@ -730,10 +695,10 @@ function getRanking() {
             console.error("Error retrieving ranking:", error);
             throw new Error("Internal Server Error");
         });
-}
+};
 
 // Function Calls
 generateFooter();
 onWindowChange();
-//startTimer(); 
-getRanking();
+//startTimer();
+getRanking(); 

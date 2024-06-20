@@ -210,7 +210,7 @@ const onWindowChange = async () => {
     } else {
         console.log('Not on questions page');
     }
-    if (window.location.pathname == '/pages/results.html') {
+    if (window.location.pathname == '/quiz-js-equipo/pages/results.html') {
         console.log('Painting results...');
         paintResults(JSON.parse(localStorage.getItem('score')));
     }

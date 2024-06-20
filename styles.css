@@ -349,16 +349,15 @@ input[type=submit]:hover {
 }
 .audio-button {
     display: inline-block;
-    width: 70px;
-    height: 51px;
+    align-self: center;
+    width: 50px;
+    height: 30px;
     background: url('./assets/images/audioOff.png') no-repeat center center;
     background-size: cover;
     cursor: pointer;
     margin-left: 0;
-    margin-top: 5px;
-    position: absolute;
-    left: 94%;
-    top: 20%;
+    margin-top: 20px;
+  
 }
 .audio-button.playing {
     background: url('./assets/images/audioOn.png') no-repeat center center;
@@ -510,4 +509,27 @@ input[type=submit]:hover {
     align-self: center;
     max-width: 200px;
     padding: 10px;
+    cursor: pointer;   
+}
+
+/*Ranking Table*/
+#ranking {
+    display: flex;
+    justify-content: center;
+}
+table {
+    margin: 20px;
+}
+
+td {
+    padding: 20px;
+}
+
+
+#head-table th, td {
+    color: white;
+}
+.user-image-table img{
+    width: 20px;
+    height: 20px;
 }

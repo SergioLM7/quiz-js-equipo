@@ -57,6 +57,7 @@ document.addEventListener('click', ({ target }) => {
     }
 
 
+
     if (target.matches('#signup-window')) {
         authContainer.classList.add('show');
         loginContainer.classList.add('hidden');
@@ -83,6 +84,7 @@ document.addEventListener('click', ({ target }) => {
         };
         console.log(objScore)
         if (isUserLogged) {
+        if (isUserLogged) {
             saveScore(objScore);
             saveButton.setAttribute('disabled', true);
             saveButton.classList.add('button-disabled');
@@ -92,8 +94,9 @@ document.addEventListener('click', ({ target }) => {
             loginContainer.classList.add('hidden');
         }
     }
+    }
 
-    if (target.matches('#back-home')) {
+    if (target.matches('#button-back')) {
         window.location.href = "/index.html";
     }
 
@@ -242,6 +245,8 @@ const decodeHTML = (html) => {
 };
 
 
+
+//Function to paint questions at pages/questions
 //Function to paint questions at pages/questions
 const paintQuestion = (object) => {
     //console.log('Painting question:', object);
@@ -290,6 +295,7 @@ const paintQuestion = (object) => {
 };
 
 //Function to paint results, at pages/results
+//Function to paint results, at pages/results
 const paintResults = (number) => {
     const resultsSection = document.getElementById('results-container');
     const newResultsArticle = document.createElement('ARTICLE');
@@ -307,11 +313,13 @@ const paintResults = (number) => {
     newButtonBack.textContent = 'Go back home';
 
     if (number >= 0 && number < 5) {
+    if (number >= 0 && number < 5) {
         messageDIV.textContent = 'Uff, te has quedado lejos de tu mejor versión. ¡Vuelve a intentarlo!';
     } else if (number >= 5 && number < 7) {
         messageDIV.textContent = '¡Nada mal, vas camino de convertirte en un as del Quiz';
     } else if (number >= 7 && number < 9) {
         messageDIV.textContent = '¡Sensacional! Te has acercado a los mejores. Ya estás cerca...';
+    } else if (number >= 9 && number === 10) {
     } else if (number >= 9 && number === 10) {
         messageDIV.textContent = '¡¡Enorme!! Pleno total de respuestas correctas. Pero, ¿estarás dentro del top 10 de nuestro ranking?';
     }
@@ -323,10 +331,35 @@ const paintResults = (number) => {
 
 
 //Function to paint Ranking at index.html
-const paintRanking = (obj) => {
+const paintRanking = async (array) => {
+    const rankingBodyTable = document.getElementById('body-table');
+    const arrayRanking = await array;
+    if (arrayRanking) {
+        let position = 1;
+        array.forEach((object) => {
+            const trUser = document.createElement('TR');
+            const tdPos = document.createElement('TD');
+            tdPos.textContent = `${position++}º`;
 
+            const tdImage = document.createElement('TD');
+            tdImage.classList.add('user-image-table');
+            tdImage.innerHTML = `<img src='${object.profilePicture}' alt='imagen de perfil de ${object.name}'>`;
+            const tdName = document.createElement('TD');
+            tdName.textContent = object.name;
+            const tdScore = document.createElement('TD');
+            tdScore.textContent = object.score;
+            const tdDate = document.createElement('TD');
+            const date = new Date (object.date);
+            const formattedDate2 = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+            tdDate.textContent = formattedDate2;
 
+            fragment.append(tdPos, tdImage, tdName, tdScore, tdDate);
+            trUser.append(fragment);
+            rankingBodyTable.append(trUser);
+        })
+    }
 };
+
 
 //Function to show answers in almost random positions
 const shuffleAnswers = (answers) => {
@@ -340,6 +373,7 @@ const shuffleAnswers = (answers) => {
 };
 
 //Function save answers
+const saveAnswers = (answer) => {
 const saveAnswers = (answer) => {
     userAnswers.push(answer);
 };
@@ -357,7 +391,16 @@ const checkAnswers = (answer, arrayUser, arrayBBDD) => {
     } else {
         buttonAnswer.classList.add('incorrect');
         alert('INCORRECT!')
+        alert('INCORRECT!')
     }
+    /* for (let i=-1; i < arrayUser.length; i++) {
+         if (arrayUser[i+1] === arrayBBDD[i+1].correct_answer) {
+             alert('CORRECT!');
+             console.log(i);
+         } else {
+             alert('INCORRECT');
+         }
+     };*/
     /* for (let i=-1; i < arrayUser.length; i++) {
          if (arrayUser[i+1] === arrayBBDD[i+1].correct_answer) {
              alert('CORRECT!');
@@ -423,6 +466,7 @@ firebase.auth().onAuthStateChanged((user) => {
         console.log(`Está en el sistema:${user.email} ${user.uid}`);
         document.getElementById("message").innerText = `Hello ${isUserLogged.displayName}!`;
         document.querySelector('#loggedOffContainer').classList.add('hidden');
+        document.querySelector('#loggedInContainer').classList.remove('hidden');
         document.querySelector('#loggedInContainer').classList.remove('hidden');
         document.querySelector('#button-logout').classList.remove('hidden');
         document.querySelector('#pfpMessageContainer').classList.remove('hidden');
@@ -498,6 +542,7 @@ firebase.auth().onAuthStateChanged((user) => {
         document.getElementById("message").innerText = `Hello ${isUserLogged.displayName}!`;
         document.querySelector('#loggedOffContainer').classList.add('hidden');
         document.querySelector('#loggedInContainer').classList.remove('hidden');
+        document.querySelector('#loggedInContainer').classList.remove('hidden');
         document.querySelector('#button-logout').classList.remove('hidden');
         document.querySelector('#pfpMessageContainer').classList.remove('hidden');
         document.querySelector('#profilePictureContainer').classList.remove('hidden');
@@ -536,12 +581,15 @@ const uploadProfilePicture = () => {
                 .set({
                     profilePicture: downloadURL
                 }, { merge: true }).then(() => {
+                }, { merge: true }).then(() => {
                     console.log('Profile picture URL saved successfully!');
                     getProfilePicture();
+                }).catch((error) => {
                 }).catch((error) => {
                     console.error('Error saving profile picture URL: ', error);
                 });
         });
+    }).catch((error) => {
     }).catch((error) => {
         console.error('Error uploading profile picture: ', error);
     });
@@ -570,7 +618,26 @@ const getProfilePicture = () => {
             }).catch((error) => {
                 console.log('Error getting document:', error);
             });
+            .doc(isUserLogged.uid)
+            .get()
+            .then((doc) => {
+                if (doc.exists) {
+                    const urlProfilePicture = doc.data().profilePicture;
+                    if (urlProfilePicture) {
+                        profilePictureContainer.innerHTML = '';
+                        const imgProfilePicture = document.createElement('IMG');
+                        imgProfilePicture.id = 'imgProfilePicture';
+                        imgProfilePicture.src = `${urlProfilePicture}`;
+                        profilePictureContainer.append(imgProfilePicture);
+                    }
+                } else {
+                    console.log('No such document!');
+                }
+            }).catch((error) => {
+                console.log('Error getting document:', error);
+            });
     }
+
 
 };
 
@@ -657,9 +724,9 @@ const saveScore = (obj) => {
         alert("You need to be logged in to add score.");
     }
 };
+};
 // saveScore({score: 10, date: '07-02-1997'});
-
-function getRanking() {
+const getRanking = () => {
     return db.collection("users")
         .get()
         .then(usersSnapshot => {
@@ -710,8 +777,17 @@ function getRanking() {
         });
 };
 
+const processingRanking = async() => {
+    getRanking()
+    .then(top10 => {
+        paintRanking(top10);
+    })
+    .catch(error => {
+        console.error("Error processing ranking:", error);
+    });
+}
 // Function Calls
 generateFooter();
 onWindowChange();
-//startTimer();
-getRanking(); 
+processingRanking();
+//startTimer(); 

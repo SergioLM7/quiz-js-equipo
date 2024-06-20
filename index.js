@@ -106,6 +106,9 @@ document.addEventListener('click', ({ target }) => {
     if (target.matches('#goRankings')) {
         processingRanking();
         rankings.classList.remove('hidden');
+        const goRankings = document.getElementById('goRankings');
+        goRankings.setAttribute('disabled', true);
+        goRankings.classList.add('button-disabled');
     }
 
     if (target.matches('#login-results')) {

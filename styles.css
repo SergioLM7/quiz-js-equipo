@@ -194,6 +194,16 @@ header h1 {
     width: 250px;
 }
 
+#buttonLoginGoogle {
+    background-image: url('/assets/images/signGoogle.jpg');
+    background-size: cover;
+    text-indent: -9999px;
+    width: 520px;
+    height: 70px;
+    border: none;
+    cursor: pointer;
+}
+
 #chart2 {
     height: 300px;
     margin-right: 40px;

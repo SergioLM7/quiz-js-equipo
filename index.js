@@ -35,6 +35,7 @@ document.addEventListener('click', ({ target }) => {
 
     if (target.matches('#goToQuiz')) {
         window.location.href = "./pages/questions.html";
+        console.log(window.location.pathname);
     }
     if (target.matches('#goRankings')) {
         //hay que crear-pintar rankings
@@ -64,6 +65,7 @@ document.addEventListener('click', ({ target }) => {
     }
 
     if (target.matches('#save-score')) {
+        const saveButton = document.getElementById('save-score');
         const date = new Date();
         const formattedDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
         const objScore = {
@@ -73,12 +75,19 @@ document.addEventListener('click', ({ target }) => {
         console.log(objScore)
         if (isUserLogged) {
             saveScore(objScore);
+            saveButton.setAttribute('disabled', true);
+            saveButton.classList.add('button-disabled');
         } else {
             authContainer.classList.add('show');
             signupContainer.classList.remove('hidden');
             loginContainer.classList.add('hidden');
         }
+    }  
+
+    if (target.matches('#back-home')) {
+        window.location.href = "/index.html";
     }
+
 });
 
 //Event listener Upload Profile Picture
@@ -184,6 +193,10 @@ const onWindowChange = async () => {
             iterateArrApiQuiz();
         }
     }
+    if (window.location.pathname == '/pages/results.html') {
+        console.log('Painting results...');
+        paintResults(JSON.parse(localStorage.getItem('score')));
+    }
 };
 
 
@@ -232,6 +245,38 @@ const paintQuestion = (object) => {
         questionCardContainer.append(fragment);
     }
     //console.log('Question painted successfully');
+};
+
+//Paint results
+const paintResults = (number) => {
+    const resultsSection = document.getElementById('results-container');
+    const newResultsArticle = document.createElement('ARTICLE');
+    const newButtonBackArticle = document.createElement('ARTICLE');
+    const newButtonBack = document.createElement('BUTTON');
+    const resultDIV = document.createElement('DIV');
+    const messageDIV = document.createElement('DIV');
+
+    resultDIV.textContent = `${number} / 10`;
+    resultDIV.id = 'result';
+    messageDIV.id = 'result-message';
+    newResultsArticle.id = 'results-article';
+    newButtonBackArticle.id = 'button-back-container'
+    newButtonBack.id = 'button-back';
+    newButtonBack.textContent = 'Go back home';
+
+    if (number >=0 && number < 5) {
+        messageDIV.textContent = 'Uff, te has quedado lejos de tu mejor versión. ¡Vuelve a intentarlo!';
+    } else if (number >= 5 && number < 7) {
+        messageDIV.textContent = '¡Nada mal, vas camino de convertirte en un as del Quiz';
+    } else if (number >= 7 && number < 9) {
+        messageDIV.textContent = '¡Sensacional! Te has acercado a los mejores. Ya estás cerca...';
+    } else if (number >=9 && number === 10) {
+        messageDIV.textContent = '¡¡Enorme!! Pleno total de respuestas correctas. Pero, ¿estarás dentro del top 10 de nuestro ranking?';
+    }
+    
+    newButtonBackArticle.append(newButtonBack);
+    newResultsArticle.append(resultDIV, messageDIV);
+    resultsSection.append(newResultsArticle, newButtonBackArticle);
 };
 
 //Function to show answers in almost random positions

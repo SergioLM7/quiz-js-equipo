@@ -196,6 +196,7 @@ h4 {
     align-items: center;
 }
 
+
 /*Clases para cuando las respuestas sean correctas o incorrectas*/
 .correct {
     background-color: greenyellow !important;
@@ -428,4 +429,76 @@ input[type=submit]:hover {
     footer {
         padding: 30px;
     }
+}
+
+
+
+/*Nuevas*/
+#results-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#results-article {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+}
+
+#result {
+    color: white;
+    align-self: center;
+    font-size: 40px;
+}
+
+#result-message {
+    color: white;
+    align-self: center;
+    margin: 70px;
+    text-align: justify;
+}
+
+#results-article #result {
+    background-color: rgb(1, 41, 241);
+    margin-top: 40px;
+    margin-bottom: 40px;
+    border-radius: 50%;
+    width: 300px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#show-results-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#save-score {
+    background-color: rgb(139, 157, 247);
+    align-self: center;
+    max-width: 200px;
+    margin-top: 30px;
+}
+
+.button-disabled {
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+#button-back-container {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+}
+
+
+#button-back {
+    background-color: rgb(139, 157, 247);
+    align-self: center;
+    max-width: 200px;
+    padding: 10px;
 }

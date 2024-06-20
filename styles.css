@@ -187,11 +187,22 @@ header h1 {
     margin-left: 10px;
     transition: width 1s ease;
     width: 200px;
+
 }
 
 #button-logout:hover {
     background-image: linear-gradient(rgb(204, 0, 255), rgb(0, 81, 255));
     width: 250px;
+}
+
+#buttonLoginGoogle {
+    background-image: url('/assets/images/signGoogle.jpg');
+    background-size: cover;
+    text-indent: -9999px;
+    width: 520px;
+    height: 70px;
+    border: none;
+    cursor: pointer;
 }
 
 #chart2 {
@@ -635,7 +646,8 @@ header h1 {
         height: 40px;
         margin-top: 10px;
     }
-    #signup-window{
+
+    #signup-window {
         font-size: 10px;
         width: 90px;
         height: 40px;
@@ -742,7 +754,8 @@ header h1 {
         height: 40px;
         margin-top: 10px;
     }
-    #signup-window{
+
+    #signup-window {
         font-size: 10px;
         width: 90px;
         height: 40px;
@@ -887,7 +900,8 @@ header h1 {
         height: 40px;
         margin-top: 10px;
     }
-    #signup-window{
+
+    #signup-window {
         font-size: 10px;
         width: 90px;
         height: 40px;
@@ -1013,7 +1027,8 @@ header h1 {
         height: 40px;
         margin-top: 10px;
     }
-    #signup-window{
+
+    #signup-window {
         font-size: 10px;
         width: 90px;
         height: 40px;

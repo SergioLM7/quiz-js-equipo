@@ -56,7 +56,7 @@ document.addEventListener('click', ({ target }) => {
         statsContainer.classList.add('hidden')
     }
 
-    
+
     if (target.matches('#signup-window')) {
         authContainer.classList.add('show');
         loginContainer.classList.add('hidden');
@@ -76,13 +76,13 @@ document.addEventListener('click', ({ target }) => {
     if (target.matches('#save-score')) {
         const saveButton = document.getElementById('save-score');
         const date = new Date();
-        const formattedDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+        // const formattedDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
         const objScore = {
             score: JSON.parse(localStorage.getItem('score')),
-            date: formattedDate
+            date: date
         };
         console.log(objScore)
-        if (isUserLogged){
+        if (isUserLogged) {
             saveScore(objScore);
             saveButton.setAttribute('disabled', true);
             saveButton.classList.add('button-disabled');
@@ -91,7 +91,7 @@ document.addEventListener('click', ({ target }) => {
             signupContainer.classList.remove('hidden');
             loginContainer.classList.add('hidden');
         }
-    }  
+    }
 
     if (target.matches('#back-home')) {
         window.location.href = "/index.html";
@@ -189,10 +189,10 @@ const iterateArrApiQuiz = () => {
 
 const onWindowChange = async () => {
     console.log('Checking current path:', window.location.pathname);
-    
+
     if (window.location.pathname === "/quiz-js-equipo/pages/questions.html") {
         console.log('On questions page');
-        
+
         if (localStorage.getItem('arrApiQuiz')) {
             arrApiQuiz = JSON.parse(localStorage.getItem('arrApiQuiz'));
             console.log('Using questions from local storage', arrApiQuiz);
@@ -222,7 +222,7 @@ const decodeHTML = (html) => {
     textArea.innerHTML = html;
     return textArea.value;
 };
-    
+
 
 //Paint questions at pages/questions
 const paintQuestion = (object) => {
@@ -288,16 +288,16 @@ const paintResults = (number) => {
     newButtonBack.id = 'button-back';
     newButtonBack.textContent = 'Go back home';
 
-    if (number >=0 && number < 5) {
+    if (number >= 0 && number < 5) {
         messageDIV.textContent = 'Uff, te has quedado lejos de tu mejor versión. ¡Vuelve a intentarlo!';
     } else if (number >= 5 && number < 7) {
         messageDIV.textContent = '¡Nada mal, vas camino de convertirte en un as del Quiz';
     } else if (number >= 7 && number < 9) {
         messageDIV.textContent = '¡Sensacional! Te has acercado a los mejores. Ya estás cerca...';
-    } else if (number >=9 && number === 10) {
+    } else if (number >= 9 && number === 10) {
         messageDIV.textContent = '¡¡Enorme!! Pleno total de respuestas correctas. Pero, ¿estarás dentro del top 10 de nuestro ranking?';
     }
-    
+
     newButtonBackArticle.append(newButtonBack);
     newResultsArticle.append(resultDIV, messageDIV);
     resultsSection.append(newResultsArticle, newButtonBackArticle);
@@ -315,7 +315,7 @@ const shuffleAnswers = (answers) => {
 };
 
 //Function save answers
-const saveAnswers =(answer) => {
+const saveAnswers = (answer) => {
     userAnswers.push(answer);
 };
 
@@ -331,16 +331,16 @@ const checkAnswers = (answer, arrayUser, arrayBBDD) => {
         alert('CORRECT!');
     } else {
         buttonAnswer.classList.add('incorrect');
-        alert ('INCORRECT!')
+        alert('INCORRECT!')
     }
-   /* for (let i=-1; i < arrayUser.length; i++) {
-        if (arrayUser[i+1] === arrayBBDD[i+1].correct_answer) {
-            alert('CORRECT!');
-            console.log(i);
-        } else {
-            alert('INCORRECT');
-        }
-    };*/
+    /* for (let i=-1; i < arrayUser.length; i++) {
+         if (arrayUser[i+1] === arrayBBDD[i+1].correct_answer) {
+             alert('CORRECT!');
+             console.log(i);
+         } else {
+             alert('INCORRECT');
+         }
+     };*/
 };
 
 
@@ -398,7 +398,7 @@ firebase.auth().onAuthStateChanged((user) => {
         console.log(`Está en el sistema:${user.email} ${user.uid}`);
         document.getElementById("message").innerText = `Hello ${isUserLogged.displayName}!`;
         document.querySelector('#loggedOffContainer').classList.add('hidden');
-        document.querySelector('#loggedInContainer').classList.remove('hidden');        
+        document.querySelector('#loggedInContainer').classList.remove('hidden');
         document.querySelector('#button-logout').classList.remove('hidden');
         document.querySelector('#pfpMessageContainer').classList.remove('hidden');
         document.querySelector('#profilePictureContainer').classList.remove('hidden');
@@ -472,7 +472,7 @@ firebase.auth().onAuthStateChanged((user) => {
         //console.log(isUserLogged);
         document.getElementById("message").innerText = `Hello ${isUserLogged.displayName}!`;
         document.querySelector('#loggedOffContainer').classList.add('hidden');
-        document.querySelector('#loggedInContainer').classList.remove('hidden');        
+        document.querySelector('#loggedInContainer').classList.remove('hidden');
         document.querySelector('#button-logout').classList.remove('hidden');
         document.querySelector('#pfpMessageContainer').classList.remove('hidden');
         document.querySelector('#profilePictureContainer').classList.remove('hidden');
@@ -510,14 +510,14 @@ const uploadProfilePicture = () => {
                 .doc(isUserLogged.uid)
                 .set({
                     profilePicture: downloadURL
-                }, { merge: true }).then( () => {
+                }, { merge: true }).then(() => {
                     console.log('Profile picture URL saved successfully!');
                     getProfilePicture();
-                }).catch( (error) => {
+                }).catch((error) => {
                     console.error('Error saving profile picture URL: ', error);
                 });
         });
-    }).catch( (error) => {
+    }).catch((error) => {
         console.error('Error uploading profile picture: ', error);
     });
 };
@@ -527,26 +527,26 @@ const getProfilePicture = () => {
 
     if (isUserLogged) {
         db.collection('users')
-        .doc(isUserLogged.uid)
-        .get()
-        .then( (doc) => {
-            if (doc.exists) {
-                const urlProfilePicture = doc.data().profilePicture;
-                if (urlProfilePicture) {
-                    profilePictureContainer.innerHTML = '';
-                    const imgProfilePicture = document.createElement('IMG');
-                    imgProfilePicture.id = 'imgProfilePicture';
-                    imgProfilePicture.src = `${urlProfilePicture}`;
-                    profilePictureContainer.append(imgProfilePicture);
+            .doc(isUserLogged.uid)
+            .get()
+            .then((doc) => {
+                if (doc.exists) {
+                    const urlProfilePicture = doc.data().profilePicture;
+                    if (urlProfilePicture) {
+                        profilePictureContainer.innerHTML = '';
+                        const imgProfilePicture = document.createElement('IMG');
+                        imgProfilePicture.id = 'imgProfilePicture';
+                        imgProfilePicture.src = `${urlProfilePicture}`;
+                        profilePictureContainer.append(imgProfilePicture);
+                    }
+                } else {
+                    console.log('No such document!');
                 }
-            } else {
-                console.log('No such document!');
-            }
-        }).catch( (error) => {
-            console.log('Error getting document:', error);
-        });
+            }).catch((error) => {
+                console.log('Error getting document:', error);
+            });
     }
-    
+
 };
 
 // Footer Logic
@@ -657,7 +657,60 @@ const dbRef = firebase.database().ref('datos');
 
 
 // saveScore({score: 10, date: '07-02-1997'});
+
+function getRanking() {
+    return db.collection("users")
+        .get()
+        .then(usersSnapshot => {
+            const bestScoreUsers = [];
+
+            usersSnapshot.forEach(doc => {
+                const data = doc.data();
+
+                if (data.scores && Array.isArray(data.scores)) {
+
+                    const maxScoreObj = data.scores.reduce((maxObj, currentObj) => {
+                        // return currentObj.score > maxObj.score ? currentObj : maxObj;
+                        if (currentObj.score > maxObj.score) {
+                            return currentObj;
+                        } else if (currentObj.score === maxObj.score) {
+                            // return new Date(currentObj.date) > new Date(maxObj.date) ? currentObj : maxObj;
+                            if (new Date(currentObj.date) > new Date(maxObj.date)) {
+                                return currentObj;
+                            } else {
+                                return maxObj;
+                            }
+                        } else {
+                            return maxObj;
+                        }
+                    }, data.scores[0]);
+
+                    bestScoreUsers.push({
+                        profilePicture: data.profilePicture,
+                        name: data.name,
+                        score: maxScoreObj.score,
+                        date: maxScoreObj.date
+                    });
+                    // console.log(bestScoreUsers);
+                }
+            });
+            const bestScoreUsersOrdered = bestScoreUsers.sort((a, b) => {
+                if (b.score === a.score) {
+                    return new Date(b.date) - new Date(a.date);
+                }
+                return b.score - a.score;
+            });
+            // console.log(bestScoreUsersOrdered.slice(0,3));
+            return bestScoreUsersOrdered.slice(0, 10);
+        })
+        .catch(error => {
+            console.error("Error retrieving ranking:", error);
+            throw new Error("Internal Server Error");
+        });
+}
+
 // Function Calls
 generateFooter();
 onWindowChange();
 //startTimer(); 
+getRanking();

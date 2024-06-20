@@ -56,7 +56,7 @@ document.addEventListener('click', ({ target }) => {
         statsContainer.classList.add('hidden')
     }
 
-    
+
     if (target.matches('#signup-window')) {
         authContainer.classList.add('show');
         loginContainer.classList.add('hidden');
@@ -76,10 +76,10 @@ document.addEventListener('click', ({ target }) => {
     if (target.matches('#save-score')) {
         const saveButton = document.getElementById('save-score');
         const date = new Date();
-        const formattedDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+        // const formattedDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
         const objScore = {
             score: JSON.parse(localStorage.getItem('score')),
-            date: formattedDate
+            date: date
         };
         console.log(objScore)
         if (isUserLogged) {
@@ -91,7 +91,7 @@ document.addEventListener('click', ({ target }) => {
             signupContainer.classList.remove('hidden');
             loginContainer.classList.add('hidden');
         }
-    }  
+    }
 
     if (target.matches('#back-home')) {
         window.location.href = "/index.html";
@@ -189,10 +189,10 @@ const iterateArrApiQuiz = () => {
 
 const onWindowChange = async () => {
     console.log('Checking current path:', window.location.pathname);
-    
+
     if (window.location.pathname === "/quiz-js-equipo/pages/questions.html") {
         console.log('On questions page');
-        
+
         if (localStorage.getItem('arrApiQuiz')) {
             arrApiQuiz = JSON.parse(localStorage.getItem('arrApiQuiz'));
             console.log('Using questions from local storage', arrApiQuiz);
@@ -222,7 +222,7 @@ const decodeHTML = (html) => {
     textArea.innerHTML = html;
     return textArea.value;
 };
-    
+
 
 //Paint questions at pages/questions
 const paintQuestion = (object) => {
@@ -288,16 +288,16 @@ const paintResults = (number) => {
     newButtonBack.id = 'button-back';
     newButtonBack.textContent = 'Go back home';
 
-    if (number >=0 && number < 5) {
+    if (number >= 0 && number < 5) {
         messageDIV.textContent = 'Uff, te has quedado lejos de tu mejor versión. ¡Vuelve a intentarlo!';
     } else if (number >= 5 && number < 7) {
         messageDIV.textContent = '¡Nada mal, vas camino de convertirte en un as del Quiz';
     } else if (number >= 7 && number < 9) {
         messageDIV.textContent = '¡Sensacional! Te has acercado a los mejores. Ya estás cerca...';
-    } else if (number >=9 && number === 10) {
+    } else if (number >= 9 && number === 10) {
         messageDIV.textContent = '¡¡Enorme!! Pleno total de respuestas correctas. Pero, ¿estarás dentro del top 10 de nuestro ranking?';
     }
-    
+
     newButtonBackArticle.append(newButtonBack);
     newResultsArticle.append(resultDIV, messageDIV);
     resultsSection.append(newResultsArticle, newButtonBackArticle);
@@ -398,7 +398,7 @@ firebase.auth().onAuthStateChanged((user) => {
         console.log(`Está en el sistema:${user.email} ${user.uid}`);
         document.getElementById("message").innerText = `Hello ${isUserLogged.displayName}!`;
         document.querySelector('#loggedOffContainer').classList.add('hidden');
-        document.querySelector('#loggedInContainer').classList.remove('hidden');        
+        document.querySelector('#loggedInContainer').classList.remove('hidden');
         document.querySelector('#button-logout').classList.remove('hidden');
         document.querySelector('#pfpMessageContainer').classList.remove('hidden');
         document.querySelector('#profilePictureContainer').classList.remove('hidden');
@@ -632,64 +632,58 @@ const saveScore = (obj) => {
         alert("You need to be logged in to add score.");
     }
 }
-
 // saveScore({score: 10, date: '07-02-1997'});
 
 function getRanking() {
     return db.collection("users")
         .get()
         .then(usersSnapshot => {
-            const ranking = [];
+            const bestScoreUsers = [];
 
             usersSnapshot.forEach(doc => {
                 const data = doc.data();
-                console.log(data.scores);
-                // let maxScore = Math.max.apply(Math, array.map(function(o) { return o.score; }));
-                let maxScore = Math.max(...data.scores.map(obj => {
-                    // Sort the ranking by score (descending) and by date (descending) for the same score
-                    // data.scores.sort((a = a.date, b = b.date) => {
-                    //     if (b.score === a.score) {
-                    //         return new Date(b.date) - new Date(a.date);
-                    //     }
-                    //     return b.score - a.score;
-                    // });
-                    if (a) {
-                        obj.score;
-                    }
-                }));
-                console.log(maxScore);
-                // if (data.scores && Array.isArray(data.scores)) {
-                //     data.scores.forEach(scoreObj => {
-                //         ranking.push({
-                //             profilePicture: scoreObj.profilePicture,
-                //             name: scoreObj.name,
-                //             score: scoreObj.score,
-                //             date: scoreObj.date
-                //         });
-                //     });
-                // }
+
+                if (data.scores && Array.isArray(data.scores)) {
+
+                    const maxScoreObj = data.scores.reduce((maxObj, currentObj) => {
+                        // return currentObj.score > maxObj.score ? currentObj : maxObj;
+                        if (currentObj.score > maxObj.score) {
+                            return currentObj;
+                        } else if (currentObj.score === maxObj.score) {
+                            // return new Date(currentObj.date) > new Date(maxObj.date) ? currentObj : maxObj;
+                            if (new Date(currentObj.date) > new Date(maxObj.date)) {
+                                return currentObj;
+                            } else {
+                                return maxObj;
+                            }
+                        } else {
+                            return maxObj;
+                        }
+                    }, data.scores[0]);
+
+                    bestScoreUsers.push({
+                        profilePicture: data.profilePicture,
+                        name: data.name,
+                        score: maxScoreObj.score,
+                        date: maxScoreObj.date
+                    });
+                    // console.log(bestScoreUsers);
+                }
             });
-
-
-            // Get the top 10 users
-            const top10Users = ranking.slice(0, 10);
-
-            console.log(top10Users);
-            return top10Users;
+            const bestScoreUsersOrdered = bestScoreUsers.sort((a, b) => {
+                if (b.score === a.score) {
+                    return new Date(b.date) - new Date(a.date);
+                }
+                return b.score - a.score;
+            });
+            // console.log(bestScoreUsersOrdered.slice(0,3));
+            return bestScoreUsersOrdered.slice(0, 10);
         })
         .catch(error => {
-            console.error("Error retrieving top 10 ranking:", error);
+            console.error("Error retrieving ranking:", error);
             throw new Error("Internal Server Error");
         });
 }
-
-// Call the function and log the top 10 users
-// getTop10Users().then(top10Users => {
-//     console.log("Top 10 Users:", top10Users);
-// }).catch(error => {
-//     console.error("Error:", error);
-// });
-
 
 // Function Calls
 generateFooter();

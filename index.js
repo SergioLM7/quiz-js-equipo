@@ -100,7 +100,7 @@ document.addEventListener('click', ({ target }) => {
     }
 
     if (target.matches('#button-back')) {
-        window.location.href = "/index.html";
+        window.location.href = "./index.html";
     }
 
     if (target.matches('#goRankings')) {

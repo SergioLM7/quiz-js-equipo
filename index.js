@@ -221,8 +221,8 @@ const onWindowChange = async () => {
     //Hay que quitar esto para desplegar en Pages
     const pathname = window.location.pathname;
     let pathnameModified;
-    let regex = /\/pages\/questions\.html$/;
-    let regex2 = /\/pages\/results\.html$/;
+    let regex = /\/quiz-js-equipo\/pages\/questions\.html$/;
+    let regex2 = /\/quiz-js-equipo\/pages\/results\.html$/;
 
     if (regex.test(pathname)) {
         pathnameModified = pathname.match(regex)[0];

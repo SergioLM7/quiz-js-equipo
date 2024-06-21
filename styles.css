@@ -185,14 +185,14 @@ header h1 {
     height: 60px;
     margin: 0;
     margin-left: 10px;
-    transition: width 1s ease;
+   /* transition: width 1s ease;*/
     width: 200px;
 
 }
 
 #button-logout:hover {
     background-image: linear-gradient(rgb(204, 0, 255), rgb(0, 81, 255));
-    width: 250px;
+    /*width: 250px;*/
 }
 
 #buttonLoginGoogle {
@@ -323,7 +323,7 @@ header h1 {
     height: 60px;
     margin: 0;
     padding: 5px 10px 7px 10px;
-    transition: width 1s ease;
+   /* transition: width 1s ease;*/
     font-size: 20px;
     width: 200px;
 }
@@ -331,7 +331,7 @@ header h1 {
 #login-window:hover,
 #signup-window:hover {
     background-image: linear-gradient(rgb(204, 0, 255), rgb(0, 81, 255));
-    width: 250px;
+   /* width: 250px;*/
 }
 
 #mainContent {
@@ -451,13 +451,13 @@ header h1 {
     background-image: linear-gradient(blue, rgb(117, 225, 255));
     height: 60px;
     margin-left: 20px;
-    transition: width 1s ease;
+    /*transition: width 1s ease;*/
     width: 200px;
 }
 
 #scoreButton:hover {
     background-image: linear-gradient(rgb(204, 0, 255), rgb(0, 81, 255));
-    width: 250px;
+   /* width: 250px;*/
 }
 
 #show-results-container {
@@ -496,11 +496,9 @@ header h1 {
     display: inline-block;
     height: 51px;
     margin-left: 0;
-    margin-top: 20px;
-
-    margin-top: 5px;
+   /* margin-top: 5px;*/
     position: absolute;
-    top: 17%;
+    top: 19%;
     width: 70px;
     left: 94%;
 }
@@ -569,10 +567,12 @@ header h1 {
     .ct-chart {
         height: 50px;
     }
+
     #buttonLoginGoogle {
         width: 300px;
         height: 40px;
     }
+
     #nextButton {
         margin-left: 35%;
     }
@@ -634,11 +634,11 @@ header h1 {
 
     #loggedInContainer button {
         font-size: 10px;
-        max-width: 50%;
+        max-width: 20%;
         max-height: 30px;
         margin-top: 10px;
     }
-
+    
     #loggedOffContainer {
         display: flex;
         flex-direction: row;
@@ -745,10 +745,12 @@ header h1 {
     #profilePictureContainer {
         display: none;
     }
+
     #buttonLoginGoogle {
         width: 200px;
         height: 30px;
     }
+
     #loggedInContainer {
         display: flex;
         flex-direction: row;
@@ -787,6 +789,13 @@ header h1 {
         margin-top: 10px;
     }
 
+    #loggedInContainer button {
+        font-size: 10px;
+        max-width: 20%;
+        max-height: 30px;
+        margin-top: 10px;
+    }
+
     #scoreButton {
         margin: 0;
     }
@@ -813,8 +822,38 @@ header h1 {
     }
 }
 
+/*@media (max-width: 605px) {
+    footer {
+        padding: 10px;
+        max-width: 96%;
+        max-height: 50%;
+        margin: 0 auto;
+        font-size: 80%;
+    }
+
+    #footer-devs-container {
+        margin-right: 10px;
+        margin-left: 40px;
+        justify-content: center;
+    }
+
+    header {
+        padding: 10px;
+        max-width: 100%;
+        max-height: 50%;
+        margin: 0 auto;
+    }
+
+    #loggedInContainer button {
+        font-size: 10px;
+        max-width: 20%;
+        max-height: 30px;
+        margin-top: 10px;
+    }
+}*/
+
 /* Dispositivos pequeños (teléfonos móviles, pantallas pequeñas) */
-@media (max-width: 480px) {
+@media (max-width: 605px) {
     header {
         padding: 10px;
         max-width: 100%;
@@ -858,11 +897,13 @@ header h1 {
     #statsContainer {
         height: 70%;
     }
+
     #buttonLoginGoogle {
         width: 150px;
         height: 20px;
         margin: 0;
     }
+
     footer {
         padding: 10px;
         max-width: 95%;
@@ -895,7 +936,7 @@ header h1 {
 
     #loggedInContainer button {
         font-size: 10px;
-        max-width: 50%;
+        max-width: 20%;
         max-height: 30px;
         margin-top: 10px;
     }
@@ -968,6 +1009,13 @@ header h1 {
     #signup-window {
         width: 40px;
         height: 40px;
+    }
+
+    #loggedInContainer button {
+        font-size: 10px;
+        max-width: 10%;
+        max-height: 30px;
+        margin-top: 10px;
     }
 
     .ct-chart {
@@ -1076,9 +1124,16 @@ header h1 {
         margin-left: 15px;
         left: 80%;
     }
+
+    #login-container,
+    #signup-container,
+    #statsContainer {
+        width: 90%;
+        padding: 10px 30px;
+    }
 }
 
-@media (max-width: 0px) {
+/*@media (max-width: 0px) {
     header {
         padding: 10px;
         max-width: 70%;
@@ -1195,8 +1250,12 @@ header h1 {
         margin-left: 15px;
         left: 80%;
     }
-}
+}*/
 
+/*#myChart {
+
+
+}*/
 
 #grafText1 {
     margin-bottom: 20px;

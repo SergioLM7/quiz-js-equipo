@@ -117,6 +117,14 @@ document.addEventListener('click', ({ target }) => {
         pSignUp.innerHTML = '';
     }
 
+    if (target.matches('#scoreButton')) {
+        authContainer.classList.add('show');
+        signupContainer.classList.add('hidden');
+        loginContainer.classList.add('hidden');
+        statsContainer.classList.remove('hidden');
+        getUserScores();
+    }
+
 });
 
 //Event listener Upload Profile Picture
@@ -777,6 +785,62 @@ const processingRanking = async () => {
 
     }  
 };
+
+//Function to get last 10 user scores
+const getUserScores = () => {
+    const isUserLogged = firebase.auth().currentUser;
+    if (isUserLogged) {
+        db.collection("users")
+            .doc(isUserLogged.uid)
+            .get()
+            .then((doc) => {
+                const lastScoresSliced = doc.data().scores.slice(-10);
+                let arrScoreChart = [];
+                let arrDateChart = [];
+                lastScoresSliced.forEach((element) => {
+                    arrScoreChart.push(element.score);
+                    arrDateChart.push(new Date(element.date));
+                });
+                paintChart(arrScoreChart, arrDateChart);
+            })
+            .catch(() => console.log('Error reading documents'));
+    }
+}
+
+//Function to paint user stats
+const paintChart = (arrScoreChart, arrDateChart) => {
+    const arrDateChartFormatted = arrDateChart.map(date => {
+        return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+    });
+    // console.log(arrDateChartFormatted);
+
+    const chartContainer = document.querySelector('#chart-container');
+    chartContainer.innerHTML = '';
+
+    const chartElement = document.createElement('div');
+    chartElement.id = 'myChart';
+    chartContainer.appendChild(chartElement);
+
+    new Chartist.Line('#myChart', {
+        labels: arrDateChartFormatted,
+        series: [arrScoreChart]
+    }, {
+        fullWidth: true,
+        chartPadding: {
+            right: 40
+        },
+
+        axisY: {
+            high: 10,
+            low: 0,
+            onlyInteger: true,
+            type: Chartist.FixedScaleAxis,
+            divisor: 1,
+            ticks: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+        }
+    });
+}
 
 // Function Calls
 generateFooter();

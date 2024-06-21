@@ -239,7 +239,7 @@ const onWindowChange = async () => {
                 try {
                     const preguntas = await getApiQuiz();
                     console.log('Questions from API:', preguntas);
-                    toLocalStorage(preguntas);
+                    //toLocalStorage(preguntas);
                     iterateArrApiQuiz();
                 } catch (error) {
                     console.error('Error fetching questions:', error);
@@ -374,6 +374,7 @@ const paintRanking = async (array) => {
             tdScore.textContent = object.score;
             const tdDate = document.createElement('TD');
             const date = new Date(object.date);
+            console.log(date)
             const formattedDate2 = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
             tdDate.textContent = formattedDate2;
 
@@ -731,9 +732,9 @@ function getRanking() {
 
             usersSnapshot.forEach(doc => {
                 const data = doc.data();
-
+                console.log(data)
                 if (data.scores && Array.isArray(data.scores)) {
-
+                 
                     const maxScoreObj = data.scores.reduce((maxObj, currentObj) => {
                         // return currentObj.score > maxObj.score ? currentObj : maxObj;
                         if (currentObj.score > maxObj.score) {
@@ -749,7 +750,7 @@ function getRanking() {
                             return maxObj;
                         }
                     }, data.scores[0]);
-
+                    console.log(maxScoreObj)
                     bestScoreUsers.push({
                         profilePicture: data.profilePicture,
                         name: data.name,
@@ -757,7 +758,7 @@ function getRanking() {
                         date: maxScoreObj.date
                     });
                      console.log(bestScoreUsers);
-                }
+                } 
             });
             const bestScoreUsersOrdered = bestScoreUsers.sort((a, b) => {
                 if (b.score === a.score) {

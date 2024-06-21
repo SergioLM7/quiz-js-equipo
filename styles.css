@@ -216,6 +216,10 @@ header h1 {
     display: flex;
 }
 
+.fa-xmark {
+    pointer-events: none;
+}
+
 #footer-devs-container {
     display: flex;
     font-weight: bold;

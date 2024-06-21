@@ -83,7 +83,7 @@ document.addEventListener('click', ({ target }) => {
         // const formattedDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
         const objScore = {
             score: JSON.parse(localStorage.getItem('score')),
-            date: date
+            date: date.toString(),
         };
         console.log(objScore)
             if (isUserLogged) {
@@ -221,8 +221,8 @@ const onWindowChange = async () => {
     //Hay que quitar esto para desplegar en Pages
     const pathname = window.location.pathname;
     let pathnameModified;
-    let regex = /\/quiz-js-equipo\/pages\/questions\.html$/;
-    let regex2 = /\/quiz-js-equipo\/pages\/results\.html$/;
+    let regex = /\/pages\/questions\.html$/;
+    let regex2 = /\/pages\/results\.html$/;
 
     if (regex.test(pathname)) {
         pathnameModified = pathname.match(regex)[0];
@@ -756,7 +756,7 @@ function getRanking() {
                         score: maxScoreObj.score,
                         date: maxScoreObj.date
                     });
-                    // console.log(bestScoreUsers);
+                     console.log(bestScoreUsers);
                 }
             });
             const bestScoreUsersOrdered = bestScoreUsers.sort((a, b) => {
@@ -799,7 +799,7 @@ const getUserScores = () => {
                 let arrDateChart = [];
                 lastScoresSliced.forEach((element) => {
                     arrScoreChart.push(element.score);
-                    arrDateChart.push(new Date(element.date));
+                    arrDateChart.push(new Date(element.date)); //AQUI????
                 });
                 paintChart(arrScoreChart, arrDateChart);
             })
@@ -812,7 +812,7 @@ const paintChart = (arrScoreChart, arrDateChart) => {
     const arrDateChartFormatted = arrDateChart.map(date => {
         return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
     });
-    // console.log(arrDateChartFormatted);
+     console.log(arrDateChartFormatted); //AQUI YA ENTRA NAN SALVO EN EL PRIMERO
 
     const chartContainer = document.querySelector('#chart-container');
     chartContainer.innerHTML = '';
@@ -831,13 +831,12 @@ const paintChart = (arrScoreChart, arrDateChart) => {
         },
 
         axisY: {
-            high: 10,
+            high: 30,
             low: 0,
             onlyInteger: true,
             type: Chartist.FixedScaleAxis,
-            divisor: 1,
-            ticks: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
+            divisor: 5,
+            ticks: [0, 5, 10, 15, 20, 25, 30]
         }
     });
 }

@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="../styles.css" />
     <title>Quiz JS</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+    <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+    <link rel="stylesheet" href="path/to/normalize.css">
 </head>
 
 <body>
@@ -31,16 +34,19 @@
     </header>
 
     <main>
-        /*Results here->*/
-
-        <section>
-            <article>
+        <div class="audio-button" id="audioButton"></div>
+        <audio id="audioPlayer">
+            <source src="../assets/sounds/audioPokemon.mp3" type="audio/mpeg">
+            Tu navegador no soporta la etiqueta de audio.
+        </audio>
+        <section id="results-container">
+            <article id="show-results-container">
                 <button id="save-score">Save your score!</button>
             </article>
         </section>
 
         <section id="auth-container">
-            <article id="login-container" class="hide">
+            <article id="login-container" class="hidden">
                 <button class="close-auth-window"><i class="fa-solid fa-xmark" style="color: #000000;"></i></button>
                 <form id="formLogin" action="#" method="POST">
                     <label for="emailLogin">Email:</label>
@@ -48,9 +54,10 @@
                     <label for="passLogin">Password:</label>
                     <input type="password" id="passLogin" name="passLogin" placeholder="Introduce password...">
                     <input type="submit" value="Login">
+                    <button id="buttonLoginGoogle">Login con Google</button>
                 </form>
             </article>
-            <article id="signup-container" class="hide">
+            <article id="signup-container" class="hidden">
                 <button class="close-auth-window"><i class="fa-solid fa-xmark" style="color: #000000;"></i></button>
                 <form id="formSignup" action="#" method="POST">
                     <label for="nameSignup">Name:</label>
@@ -64,6 +71,13 @@
                         placeholder="Repeat password...">
                     <input type="submit" value="Signup">
                 </form>
+            </article>
+            <article id="statsContainer" class="hidden">
+                <button class="close-auth-window"><i class="fa-solid fa-xmark" style="color: #000000;"></i></button>
+                <h3>Your most recent games: </h3>
+                <div id="chart-container">
+                    
+                </div>
             </article>
         </section>
     </main>

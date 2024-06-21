@@ -13,6 +13,9 @@ const db = firebase.firestore();
 const fragment = document.createDocumentFragment();
 const goButton = document.querySelector('#goButton');
 const nextButton = document.querySelector('#nextButton');
+const rankings = document.getElementById('ranking');
+const pSignUp = document.createElement('P');
+
 
 // ApiQuiz Variables
 const apiQuiz = 'https://opentdb.com/api.php?amount=10';
@@ -29,6 +32,7 @@ const loginContainer = document.querySelector('#login-container');
 const signupContainer = document.querySelector('#signup-container');
 const authContainer = document.querySelector('#auth-container');
 const closeAuthWindow = document.querySelector('.close-auth-window');
+const statsContainer = document.querySelector("#statsContainer");
 
 // Event Listeners
 document.addEventListener('click', ({ target }) => {
@@ -52,34 +56,75 @@ document.addEventListener('click', ({ target }) => {
         authContainer.classList.add('show');
         signupContainer.classList.add('hidden');
         loginContainer.classList.remove('hidden');
+        statsContainer.classList.add('hidden')
     }
+
+
 
     if (target.matches('#signup-window')) {
         authContainer.classList.add('show');
         loginContainer.classList.add('hidden');
         signupContainer.classList.remove('hidden');
+        statsContainer.classList.add('hidden')
     }
-
+    if (target.matches('#scoreButton')) {
+        authContainer.classList.add('show');
+        signupContainer.classList.add('hidden');
+        loginContainer.classList.add('hidden');
+        statsContainer.classList.remove('hidden')
+    }
     if (target.matches('.close-auth-window')) {
         authContainer.classList.remove('show');
     }
 
     if (target.matches('#save-score')) {
+        const saveButton = document.getElementById('save-score');
         const date = new Date();
-        const formattedDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+        // const formattedDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
         const objScore = {
             score: JSON.parse(localStorage.getItem('score')),
-            date: formattedDate
+            date: date
         };
         console.log(objScore)
-        if (isUserLogged){
-            saveScore(objScore);
-        } else {
-            authContainer.classList.add('show');
-            signupContainer.classList.remove('hidden');
-            loginContainer.classList.add('hidden');
-        }
-    }  
+            if (isUserLogged) {
+                saveScore(objScore);
+                saveButton.setAttribute('disabled', true);
+                saveButton.classList.add('button-disabled');
+            } else {
+                pSignUp.innerHTML = `If you already have and account:<button id='login-results'>Log In</button>`;
+                signupContainer.append(pSignUp)
+                authContainer.classList.add('show');
+                signupContainer.classList.remove('hidden');
+                loginContainer.classList.add('hidden');
+            }
+    }
+
+    if (target.matches('#button-back')) {
+        window.location.href = "/index.html";
+    }
+
+    if (target.matches('#goRankings')) {
+        processingRanking();
+        rankings.classList.remove('hidden');
+        const goRankings = document.getElementById('goRankings');
+        goRankings.setAttribute('disabled', true);
+        goRankings.classList.add('button-disabled');
+    }
+
+    if (target.matches('#login-results')) {
+        signupContainer.classList.add('hidden');
+        loginContainer.classList.remove('hidden');
+        pSignUp.innerHTML = '';
+    }
+
+    if (target.matches('#scoreButton')) {
+        authContainer.classList.add('show');
+        signupContainer.classList.add('hidden');
+        loginContainer.classList.add('hidden');
+        statsContainer.classList.remove('hidden');
+        getUserScores();
+    }
+
 });
 
 //Event listener Upload Profile Picture
@@ -170,25 +215,64 @@ const iterateArrApiQuiz = () => {
 };
 
 
-//Initial function
 const onWindowChange = async () => {
-    if (window.location.pathname == "/quiz-js-equipo/pages/questions.html") {
-        console.log('On questions page');
-        if (localStorage.getItem('arrApiQuiz')) {
-            arrApiQuiz = JSON.parse(localStorage.getItem('arrApiQuiz'));
-            console.log('Using questions from local storage', arrApiQuiz);
-            iterateArrApiQuiz();
+    console.log('Checking current path:', window.location);
+
+    //Hay que quitar esto para desplegar en Pages
+    const pathname = window.location.pathname;
+    let pathnameModified;
+    let regex = /\/quiz-js-equipo\/pages\/questions\.html$/;
+    let regex2 = /\/quiz-js-equipo\/pages\/results\.html$/;
+
+    if (regex.test(pathname)) {
+        pathnameModified = pathname.match(regex)[0];
+        //Hasta aqui y la } final del if
+
+        if (window.location.pathname === pathnameModified) {
+            console.log('On questions page');
+
+            if (localStorage.getItem('arrApiQuiz')) {
+                arrApiQuiz = JSON.parse(localStorage.getItem('arrApiQuiz'));
+                console.log('Using questions from local storage', arrApiQuiz);
+                iterateArrApiQuiz();
+            } else {
+                try {
+                    const preguntas = await getApiQuiz();
+                    console.log('Questions from API:', preguntas);
+                    toLocalStorage(preguntas);
+                    iterateArrApiQuiz();
+                } catch (error) {
+                    console.error('Error fetching questions:', error);
+                }
+            }
         } else {
-            const preguntas = await getApiQuiz();
-            console.log('Questions from API:', preguntas);
-            toLocalStorage(preguntas);
-            iterateArrApiQuiz();
+            console.log('Not on questions page');
+        }
+    }
+
+    //Hay que quitar esto para desplegar en Pages
+    if (regex2.test(pathname)) {
+        pathnameModified = pathname.match(regex2)[0];
+        //Hasta aqui y la } final del if
+
+        if (window.location.pathname == pathnameModified) {
+            console.log('Painting results...');
+            paintResults(JSON.parse(localStorage.getItem('score')));
         }
     }
 };
 
+//Normalización preguntas
+const decodeHTML = (html) => {
+    const textArea = document.createElement("textarea");
+    textArea.innerHTML = html;
+    return textArea.value;
+};
 
-//Paint questions at pages/questions
+
+
+//Function to paint questions at pages/questions
+//Function to paint questions at pages/questions
 const paintQuestion = (object) => {
     //console.log('Painting question:', object);
     const questionCardContainer = document.querySelector('#questionCard');
@@ -215,8 +299,8 @@ const paintQuestion = (object) => {
         answers = [object.incorrect_answers[0], object.correct_answer];
         shuffleAnswers(answers);
 
-        divAnswer1.innerHTML = `<button id='${answers[0]}' class="btnAnswer">${answers[0]}</button>`;
-        divAnswer2.innerHTML = `<button id='${answers[1]}' class="btnAnswer">${answers[1]}</button>`;
+        divAnswer1.innerHTML = `<button id='${decodeHTML(answers[0])}' class="btnAnswer">${decodeHTML(answers[0])}</button>`;
+        divAnswer2.innerHTML = `<button id='${decodeHTML(answers[1])}' class="btnAnswer">${decodeHTML(answers[1])}</button>`;
 
         fragment.append(questionTitle, divAnswer1, divAnswer2);
         questionCardContainer.append(fragment);
@@ -224,16 +308,82 @@ const paintQuestion = (object) => {
         answers = [object.correct_answer, object.incorrect_answers[0], object.incorrect_answers[1], object.incorrect_answers[2]];
         shuffleAnswers(answers);
 
-        divAnswer1.innerHTML = `<button id='${answers[0]}' class="btnAnswer">${answers[0]}</button>`;
-        divAnswer2.innerHTML = `<button id='${answers[1]}' class="btnAnswer">${answers[1]}</button>`;
-        divAnswer3.innerHTML = `<button id='${answers[2]}' class="btnAnswer">${answers[2]}</button>`;
-        divAnswer4.innerHTML = `<button id='${answers[3]}' class="btnAnswer">${answers[3]}</button>`;
+        divAnswer1.innerHTML = `<button id='${decodeHTML(answers[0])}' class="btnAnswer">${decodeHTML(answers[0])}</button>`;
+        divAnswer2.innerHTML = `<button id='${decodeHTML(answers[1])}' class="btnAnswer">${decodeHTML(answers[1])}</button>`;
+        divAnswer3.innerHTML = `<button id='${decodeHTML(answers[2])}' class="btnAnswer">${decodeHTML(answers[2])}</button>`;
+        divAnswer4.innerHTML = `<button id='${decodeHTML(answers[3])}' class="btnAnswer">${decodeHTML(answers[3])}</button>`;
 
         fragment.append(questionTitle, divAnswer1, divAnswer2, divAnswer3, divAnswer4);
         questionCardContainer.append(fragment);
     }
     //console.log('Question painted successfully');
 };
+
+//Function to paint results, at pages/results
+//Function to paint results, at pages/results
+const paintResults = (number) => {
+    const resultsSection = document.getElementById('results-container');
+    const newResultsArticle = document.createElement('ARTICLE');
+    const newButtonBackArticle = document.createElement('ARTICLE');
+    const newButtonBack = document.createElement('BUTTON');
+    const resultDIV = document.createElement('DIV');
+    const messageDIV = document.createElement('DIV');
+
+    resultDIV.textContent = `${number}/30`;
+    resultDIV.id = 'result';
+    messageDIV.id = 'result-message';
+    newResultsArticle.id = 'results-article';
+    newButtonBackArticle.id = 'button-back-container'
+    newButtonBack.id = 'button-back';
+    newButtonBack.textContent = 'Go back home';
+
+    if (number >= 0 && number < 10) {
+            messageDIV.textContent = 'Uff, you are far from your best version, try again!';
+        } else if (number >= 10 && number < 16) {
+            messageDIV.textContent = 'Not bad, you are on your way to becoming a Quiz master!';
+        } else if (number >= 16 && number < 30) {
+            messageDIV.textContent = 'Sensational! You have come close to the best. You are already close...';
+        } else if (number === 30) {
+            messageDIV.textContent = 'Huge one!!! You are the Lord of the Quiz, but is there a place for you in the overall top10?';
+        }
+
+        newButtonBackArticle.append(newButtonBack);
+        newResultsArticle.append(resultDIV, messageDIV);
+        resultsSection.append(newResultsArticle, newButtonBackArticle);
+   
+};
+
+
+//Function to paint Ranking at index.html
+const paintRanking = async (array) => {
+    const rankingBodyTable = document.getElementById('body-table');
+    const arrayRanking = await array;
+    if (arrayRanking) {
+        let position = 1;
+        arrayRanking.forEach((object) => {
+            const trUser = document.createElement('TR');
+            const tdPos = document.createElement('TD');
+            tdPos.textContent = `${position++}º`;
+
+            const tdImage = document.createElement('TD');
+            tdImage.classList.add('user-image-table');
+            tdImage.innerHTML = `<img src='${object.profilePicture}' alt='imagen de perfil de ${object.name}'>`;
+            const tdName = document.createElement('TD');
+            tdName.textContent = object.name;
+            const tdScore = document.createElement('TD');
+            tdScore.textContent = object.score;
+            const tdDate = document.createElement('TD');
+            const date = new Date(object.date);
+            const formattedDate2 = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+            tdDate.textContent = formattedDate2;
+
+            fragment.append(tdPos, tdImage, tdName, tdScore, tdDate);
+            trUser.append(fragment);
+            rankingBodyTable.append(trUser);
+        })
+    }
+};
+
 
 //Function to show answers in almost random positions
 const shuffleAnswers = (answers) => {
@@ -247,32 +397,34 @@ const shuffleAnswers = (answers) => {
 };
 
 //Function save answers
-const saveAnswers =(answer) => {
-    userAnswers.push(answer);
+const saveAnswers = (answer) => {
+        userAnswers.push(answer)
 };
 
-//Function check answers
+//Function to check if the answers are correct
 const checkAnswers = (answer, arrayUser, arrayBBDD) => {
     const answerIndex = arrayUser.indexOf(answer);
     const buttonAnswer = document.getElementById(answer);
 
-    if (answer === arrayBBDD[answerIndex].correct_answer) {
+    if (answer === decodeHTML(arrayBBDD[answerIndex].correct_answer) && arrayBBDD[answerIndex].difficulty === 'hard') {
         buttonAnswer.classList.add('correct');
-        points++;
+        points += 3;
+        console.log(points)
+        alert('CORRECT!');
+    } else if (answer === decodeHTML(arrayBBDD[answerIndex].correct_answer) && arrayBBDD[answerIndex].difficulty === 'medium') {
+        buttonAnswer.classList.add('correct');
+        points += 2;
+        console.log(points)
+        alert('CORRECT!');
+    } else if (answer === decodeHTML(arrayBBDD[answerIndex].correct_answer) && arrayBBDD[answerIndex].difficulty === 'easy') {
+        buttonAnswer.classList.add('correct');
+        points ++;
         console.log(points)
         alert('CORRECT!');
     } else {
         buttonAnswer.classList.add('incorrect');
-        alert ('INCORRECT!')
+        alert('INCORRECT!')
     }
-   /* for (let i=-1; i < arrayUser.length; i++) {
-        if (arrayUser[i+1] === arrayBBDD[i+1].correct_answer) {
-            alert('CORRECT!');
-            console.log(i);
-        } else {
-            alert('INCORRECT');
-        }
-    };*/
 };
 
 
@@ -298,6 +450,58 @@ const signInUser = (email, password) => {
 
 //LOG IN CON GOOGLE
 
+const auth = firebase.auth();
+const provider = new firebase.auth.GoogleAuthProvider();
+
+const loginGoogle = async () => {
+    try {
+        const response = await auth.signInWithPopup(provider);
+
+        console.log(response);
+        return response.user;
+
+    } catch (error) {
+        throw new Error(error);
+
+    }
+};
+
+const buttonLoginGoogle = document.querySelector("#buttonLoginGoogle");
+
+buttonLoginGoogle.addEventListener("click", async (e) => {
+    try {
+        await loginGoogle();
+    } catch (error) { }
+});
+
+//Para que no se solapen los LOG IN
+
+firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+        isUserLogged = firebase.auth().currentUser;
+        console.log(`Está en el sistema:${user.email} ${user.uid}`);
+        document.getElementById("message").innerText = `Hello ${isUserLogged.displayName}!`;
+        document.querySelector('#loggedOffContainer').classList.add('hidden');
+        document.querySelector('#loggedInContainer').classList.remove('hidden');
+        document.querySelector('#loggedInContainer').classList.remove('hidden');
+        document.querySelector('#button-logout').classList.remove('hidden');
+        document.querySelector('#pfpMessageContainer').classList.remove('hidden');
+        document.querySelector('#profilePictureContainer').classList.remove('hidden');
+
+        profilePictureContainer.innerHTML = '';
+        getProfilePicture();
+    } else {
+        isUserLogged = firebase.auth().currentUser;
+        console.log("no hay usuarios en el sistema");
+        document.querySelector('#pfpMessageContainer').classList.add('hidden');
+        document.querySelector('#loggedOffContainer').classList.remove('hidden');
+        document.querySelector('#loggedInContainer').classList.add('hidden');
+        document.querySelector('#button-logout').classList.add('hidden');
+        document.querySelector('#profilePictureContainer').classList.add('hidden');
+        profilePictureContainer.innerHTML = '';
+        getProfilePicture();
+    }
+});
 
 
 const createUser = (user) => {
@@ -311,7 +515,7 @@ const createUser = (user) => {
         .catch((error) => {
             console.error("Error adding document: ", error);
         });
-}
+};
 
 const signUpUser = (nameSignup, email, password) => {
     firebase
@@ -353,7 +557,8 @@ firebase.auth().onAuthStateChanged((user) => {
         //console.log(isUserLogged);
         document.getElementById("message").innerText = `Hello ${isUserLogged.displayName}!`;
         document.querySelector('#loggedOffContainer').classList.add('hidden');
-        document.querySelector('#loggedInContainer').classList.remove('hidden');        
+        document.querySelector('#loggedInContainer').classList.remove('hidden');
+        document.querySelector('#loggedInContainer').classList.remove('hidden');
         document.querySelector('#button-logout').classList.remove('hidden');
         document.querySelector('#pfpMessageContainer').classList.remove('hidden');
         document.querySelector('#profilePictureContainer').classList.remove('hidden');
@@ -391,14 +596,17 @@ const uploadProfilePicture = () => {
                 .doc(isUserLogged.uid)
                 .set({
                     profilePicture: downloadURL
-                }, { merge: true }).then( () => {
+                }, { merge: true }).then(() => {
+                }, { merge: true }).then(() => {
                     console.log('Profile picture URL saved successfully!');
                     getProfilePicture();
-                }).catch( (error) => {
+                }).catch((error) => {
+                }).catch((error) => {
                     console.error('Error saving profile picture URL: ', error);
                 });
         });
-    }).catch( (error) => {
+    }).catch((error) => {
+    }).catch((error) => {
         console.error('Error uploading profile picture: ', error);
     });
 };
@@ -408,26 +616,25 @@ const getProfilePicture = () => {
 
     if (isUserLogged) {
         db.collection('users')
-        .doc(isUserLogged.uid)
-        .get()
-        .then( (doc) => {
-            if (doc.exists) {
-                const urlProfilePicture = doc.data().profilePicture;
-                if (urlProfilePicture) {
-                    profilePictureContainer.innerHTML = '';
-                    const imgProfilePicture = document.createElement('IMG');
-                    imgProfilePicture.id = 'imgProfilePicture';
-                    imgProfilePicture.src = `${urlProfilePicture}`;
-                    profilePictureContainer.append(imgProfilePicture);
+            .doc(isUserLogged.uid)
+            .get()
+            .then((doc) => {
+                if (doc.exists) {
+                    const urlProfilePicture = doc.data().profilePicture;
+                    if (urlProfilePicture) {
+                        profilePictureContainer.innerHTML = '';
+                        const imgProfilePicture = document.createElement('IMG');
+                        imgProfilePicture.id = 'imgProfilePicture';
+                        imgProfilePicture.src = `${urlProfilePicture}`;
+                        profilePictureContainer.append(imgProfilePicture);
+                    }
+                } else {
+                    console.log('No such document!');
                 }
-            } else {
-                console.log('No such document!');
-            }
-        }).catch( (error) => {
-            console.log('Error getting document:', error);
-        });
+            }).catch((error) => {
+                console.log('Error getting document:', error);
+            });
     }
-    
 };
 
 // Footer Logic
@@ -460,29 +667,29 @@ const generateFooter = () => {
 /*let timer;
 let minutes = 0;
 let seconds = 0;
-
+ 
 function startTimer() {
     timer = setInterval(updateTimer, 1000); 
     document.getElementById('timer').classList.add('timer-go');
 }
-
+ 
 function stopTimer() {
     clearInterval(timer);
     document.getElementById('timer').classList.remove('timer-go');
     document.getElementById('timer').classList.add('timer-stopped');
-
+ 
 }
-
+ 
 function updateTimer() {
     seconds++;
     if (seconds >= 60) {
         seconds = 0;
         minutes++;
     }
-
+ 
     let displayMinutes = minutes < 10 ? `0${minutes}` : minutes;
     let displaySeconds = seconds < 10 ? `0${seconds}` : seconds;
-
+ 
     document.getElementById('timer').textContent = `${displayMinutes}:${displaySeconds}`;
     if(seconds == 10){
         stopTimer();
@@ -512,9 +719,130 @@ const saveScore = (obj) => {
         console.log("No user is logged in to add their score.");
         alert("You need to be logged in to add score.");
     }
-}
+};
+
 // saveScore({score: 10, date: '07-02-1997'});
+
+function getRanking() {
+    return db.collection("users")
+        .get()
+        .then(usersSnapshot => {
+            const bestScoreUsers = [];
+
+            usersSnapshot.forEach(doc => {
+                const data = doc.data();
+
+                if (data.scores && Array.isArray(data.scores)) {
+
+                    const maxScoreObj = data.scores.reduce((maxObj, currentObj) => {
+                        // return currentObj.score > maxObj.score ? currentObj : maxObj;
+                        if (currentObj.score > maxObj.score) {
+                            return currentObj;
+                        } else if (currentObj.score === maxObj.score) {
+                            // return new Date(currentObj.date) > new Date(maxObj.date) ? currentObj : maxObj;
+                            if (new Date(currentObj.date) > new Date(maxObj.date)) {
+                                return currentObj;
+                            } else {
+                                return maxObj;
+                            }
+                        } else {
+                            return maxObj;
+                        }
+                    }, data.scores[0]);
+
+                    bestScoreUsers.push({
+                        profilePicture: data.profilePicture,
+                        name: data.name,
+                        score: maxScoreObj.score,
+                        date: maxScoreObj.date
+                    });
+                    // console.log(bestScoreUsers);
+                }
+            });
+            const bestScoreUsersOrdered = bestScoreUsers.sort((a, b) => {
+                if (b.score === a.score) {
+                    return new Date(b.date) - new Date(a.date);
+                }
+                return b.score - a.score;
+            });
+            // console.log(bestScoreUsersOrdered.slice(0,3));
+            return bestScoreUsersOrdered.slice(0, 10);
+        })
+        .catch(error => {
+            console.error("Error retrieving ranking:", error);
+            throw new Error("Internal Server Error");
+        });
+};
+
+//Function to resolve getRanking promise and call paintRanking
+const processingRanking = async () => {
+    try {
+        const top10 = await getRanking();
+        paintRanking(top10);
+
+    } catch (error) {
+        console.error("Error processing ranking:", error);
+
+    }  
+};
+
+//Function to get last 10 user scores
+const getUserScores = () => {
+    const isUserLogged = firebase.auth().currentUser;
+    if (isUserLogged) {
+        db.collection("users")
+            .doc(isUserLogged.uid)
+            .get()
+            .then((doc) => {
+                const lastScoresSliced = doc.data().scores.slice(-10);
+                let arrScoreChart = [];
+                let arrDateChart = [];
+                lastScoresSliced.forEach((element) => {
+                    arrScoreChart.push(element.score);
+                    arrDateChart.push(new Date(element.date));
+                });
+                paintChart(arrScoreChart, arrDateChart);
+            })
+            .catch(() => console.log('Error reading documents'));
+    }
+}
+
+//Function to paint user stats
+const paintChart = (arrScoreChart, arrDateChart) => {
+    const arrDateChartFormatted = arrDateChart.map(date => {
+        return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+    });
+    // console.log(arrDateChartFormatted);
+
+    const chartContainer = document.querySelector('#chart-container');
+    chartContainer.innerHTML = '';
+
+    const chartElement = document.createElement('div');
+    chartElement.id = 'myChart';
+    chartContainer.appendChild(chartElement);
+
+    new Chartist.Line('#myChart', {
+        labels: arrDateChartFormatted,
+        series: [arrScoreChart]
+    }, {
+        fullWidth: true,
+        chartPadding: {
+            right: 40
+        },
+
+        axisY: {
+            high: 10,
+            low: 0,
+            onlyInteger: true,
+            type: Chartist.FixedScaleAxis,
+            divisor: 1,
+            ticks: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+        }
+    });
+}
+
 // Function Calls
-onWindowChange();
 generateFooter();
-//startTimer(); 
+onWindowChange();
+//startTimer();

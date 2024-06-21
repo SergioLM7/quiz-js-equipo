@@ -1,431 +1,1229 @@
+/* Selectores Universales */
 * {
     font-family: 'Press Start 2P', sans-serif;
     margin: 0;
     padding: 0;
 }
-html,
-body {
-    height: 100%;
+
+/* Selectores de Etiqueta */
+a {
+    color: inherit;
+    text-decoration: none;
 }
+
+article h3,
+h4 {
+    padding: 10px 0 0 0;
+}
+
 body {
     background-color: black;
 }
 
-main {
-    min-height: 100vh; 
-    display: flex; 
+footer {
+    align-items: center;
+    background-color: white;
+    color: black;
+    display: flex;
     flex-direction: column;
+    height: 100px;
+    justify-content: center;
+    margin-top: auto;
+    width: 100%;
 }
 
-a {
-    text-decoration: none;
-    color: inherit;
+footer h3 {
+    font-size: 0.9em;
+    text-align: center;
 }
+
 header {
-    color: rgb(0, 0, 0);
-    font-size: 30px;
-    background-color: white;
-    display: flex;
-    justify-content: space-between;
     align-items: center;
+    background-color: white;
+    color: rgb(0, 0, 0);
+    display: flex;
+    font-size: 30px;
+    justify-content: space-between;
     padding: 25px;
 }
+
 header h1 {
     margin: 0;
+    margin-right: 130px;
 }
-#login-window,
-#signup-window {
-    margin: 0;
-    background-image: linear-gradient(blue, rgb(117, 225, 255));
-    width: 120px;
-    height: 60px;
-    transition: width 1s ease;
+
+html,
+body {
+    height: 100%;
 }
-#login-window:hover,
-#signup-window:hover {
-    background-image: linear-gradient(rgb(204, 0, 255), rgb(0, 81, 255));
-    width: 160px;
-}
-#button-logout{
-    margin: 0;
-    background-image: linear-gradient(blue, rgb(117, 225, 255));
-    width: 120px;
-    height: 60px;
-    transition: width 1s ease;
-    margin-left: 50px;
-}
-#loggedInContainer{
-display: flex;
-}
-#loggedOffContainer{
-margin: 0
-}
-#mainContent {
+
+main {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    margin-top: 150px;
-    color: white;
-    padding-bottom: 20px;
+    min-height: 100vh;
 }
+
+@keyframes rainbow {
+    0% {
+        color: red;
+    }
+
+    14% {
+        color: orange;
+    }
+
+    28% {
+        color: yellow;
+    }
+
+    42% {
+        color: green;
+    }
+
+    57% {
+        color: blue;
+    }
+
+    71% {
+        color: indigo;
+    }
+
+    85% {
+        color: violet;
+    }
+
+    100% {
+        color: red;
+    }
+}
+
+/* Selectores Anidados */
+footer h3 {
+    font-size: 0.9em;
+    text-align: center;
+}
+
+#footer-devs-container span {
+    margin-right: 40px;
+}
+
+header h1 {
+    margin: 0;
+    margin-right: 130px;
+}
+
 #mainContent h2 {
     font-size: 80px;
     margin-bottom: 50px;
     margin-top: 10px;
 }
+
 #mainContent button {
+    cursor: pointer;
     font-size: 1.5em;
     padding: 10px 20px;
+}
+
+#questionTitle h3 {
+    color: white;
+    font-size: 20px;
+}
+
+#questionTitle h4 {
+    font-size: 20px;
+    padding-bottom: 10px;
+}
+
+/* Selectores por ID */
+#answer1 button {
+    background-color: rgb(90, 222, 255);
+}
+
+#answer2 button {
+    background-color: rgb(255, 236, 131);
+}
+
+#answer3 button {
+    background-color: rgb(123, 255, 151);
+}
+
+#answer4 button {
+    background-color: rgb(255, 105, 105);
+}
+
+#auth-container {
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    box-sizing: border-box;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    left: 0;
+    opacity: 0;
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    transition: opacity 0.3s ease;
+    width: 100vw;
+}
+
+#button-back {
+    align-self: center;
+    background-color: rgb(139, 157, 247);
+    max-width: 200px;
+    padding: 10px;
+}
+
+#button-back-container {
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+}
+
+#button-logout {
+    background-image: linear-gradient(blue, rgb(117, 225, 255));
+    height: 60px;
+    margin: 0;
+    margin-left: 10px;
+    transition: width 1s ease;
+    width: 200px;
+
+}
+
+#button-logout:hover {
+    background-image: linear-gradient(rgb(204, 0, 255), rgb(0, 81, 255));
+    width: 250px;
+}
+
+#buttonLoginGoogle {
+    background-image: url('/assets/images/signGoogle.jpg');
+    background-size: cover;
+    text-indent: -9999px;
+    width: 520px;
+    height: 70px;
+    border: none;
     cursor: pointer;
 }
+
+#chart2 {
+    height: 300px;
+    margin-right: 40px;
+    margin-top: 40px;
+    width: 100%;
+}
+
+#divStats {
+    display: flex;
+}
+
+#footer-devs-container {
+    display: flex;
+    font-weight: bold;
+    justify-content: space-evenly;
+    margin-top: 20px;
+}
+
+#goButton {
+    display: block;
+    margin-bottom: 80px;
+    margin-top: 200px;
+}
+
+#goRankings {
+    background-color: rgb(247, 0, 255);
+    margin-bottom: 21px;
+}
+
+#goRankings:hover {
+    background-image: linear-gradient(rgb(234, 0, 255), rgb(0, 81, 255));
+}
+
 #goToQuiz {
     background-color: rgb(119, 0, 255);
     margin: 10px;
     margin-bottom: 40px;
 }
+
 #goToQuiz:hover {
     background-image: linear-gradient(rgb(132, 0, 255), rgb(0, 81, 255));
 }
-#goRankings {
-    background-color: rgb(247, 0, 255);
-    margin-bottom: 21px;
-}
-#goRankings:hover {
-    background-image: linear-gradient(rgb(234, 0, 255), rgb(0, 81, 255));
-}
-footer {
+
+#imgProfilePicture {
+    height: 100%;
+    margin-right: 10px;
     width: 100%;
-    background-color: white;
-    /* padding-top: 50px;
-    padding-bottom: 50px; */
-    height: 100px;
-    color: black;
+}
+
+#labelPfp {
+    display: block;
+    width: fit-content;
+}
+
+#labelPfp:hover {
+    cursor: pointer;
+}
+
+#loggedInContainer {
     display: flex;
-    justify-content: center;
-    flex-direction: column;
-    margin-top: auto;
 }
-#timer{
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-    font-size: 30px;
+
+#loggedOffContainer {
+    margin: 0;
 }
-.timer-stopped {
-    color: red;
+
+#login-container,
+#signup-container,
+#statsContainer {
+    background-color: #fff;
+    border-radius: 3px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    height: fit-content;
+    max-width: 100%;
+    padding: 30px 50px;
+    width: 40%;
 }
-.timer-go {
+
+#login-container input,
+#signup-container input {
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+    display: inline-block;
+    margin-bottom: 10px;
+    padding: 10px 10px;
+    width: 100%;
+}
+
+#login-container input[type=submit],
+#signup-container input[type=submit] {
+    background-color: darkblue;
+    border: none;
+    border-radius: 3px;
     color: white;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 10px;
+    padding: 10px 20px;
+    width: 100%;
 }
-footer h3 {
-    font-size: 0.9em;
+
+#login-container label,
+#signup-container label,
+#statsContainer label {
+    margin-top: 100px;
+}
+
+#login-window,
+#signup-window {
+    background-image: linear-gradient(blue, rgb(117, 225, 255));
+    height: 60px;
+    margin: 0;
+    padding: 5px 10px 7px 10px;
+    transition: width 1s ease;
+    font-size: 20px;
+    width: 200px;
+}
+
+#login-window:hover,
+#signup-window:hover {
+    background-image: linear-gradient(rgb(204, 0, 255), rgb(0, 81, 255));
+    width: 250px;
+}
+
+#mainContent {
+    align-items: center;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    margin-top: 150px;
+    padding-bottom: 20px;
     text-align: center;
 }
-#footer-devs-container {
-    font-weight: bold;
+
+#message {
+    margin-left: 20px;
+    margin-top: 20PX;
+}
+
+#nextButton {
+    align-items: center;
+    margin-bottom: 320px;
+    margin-left: 45%;
+    margin-top: 100px;
+    padding-bottom: 10px;
+    padding-left: 60px;
+    padding-right: 60px;
+    padding-top: 10px;
+}
+
+#pfpMessageContainer {
+    align-items: center;
     display: flex;
-    justify-content: space-evenly;
-    margin-top: 20px;
+    margin-bottom: 10px;
 }
-@keyframes rainbow {
-    0% {
-        color: red;
-    }
-    14% {
-        color: orange;
-    }
-    28% {
-        color: yellow;
-    }
-    42% {
-        color: green;
-    }
-    57% {
-        color: blue;
-    }
-    71% {
-        color: indigo;
-    }
-    85% {
-        color: violet;
-    }
-    100% {
-        color: red;
-    }
+
+#profilePictureContainer {
+    border: 1px solid gray;
+    border-radius: 50%;
+    height: 50px;
+    overflow: hidden;
+    width: 50px;
 }
-.rainbow-text {
-    font-size: 2em;
-    font-weight: bold;
-    animation: rainbow 3s infinite;
+
+#questionCard {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    grid-template-columns: repeat(2, 1fr);
+    text-align: center;
 }
-/*Añadido (A REVISAR) para pintar las preguntas*/
-article h3,
-h4 {
-    padding: 10px 0 0 0;
+
+#questionCard button {
+    height: 90px;
+    padding-bottom: 10px;
+    padding-left: 60px;
+    padding-right: 60px;
+    width: 400px;
 }
-#goButton {
-    display: block;
-    margin-top: 200px;
-    margin-bottom: 80px;
-}
-#questionsMainContainer {
-    padding-top: 20px;
-    margin-right: 110px;
-    margin-left: 110px;
-}
+
 #questionTitle {
     display: flex;
     flex-direction: column;
     padding-bottom: 30px;
 }
-#questionTitle h4 {
-    padding-bottom: 10px;
-    font-size: 20px;
-}
-#questionTitle h3 {
-    color: white;
-    font-size: 20px;
-}
-#questionCard {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+
+#questionsMainContainer {
+    margin-left: 110px;
+    margin-right: 110px;
+    padding-top: 20px;
 }
 
-/*Clases para cuando las respuestas sean correctas o incorrectas*/
+#result {
+    align-self: center;
+    color: white;
+    font-size: 40px;
+}
+
+#result-message {
+    align-self: center;
+    color: white;
+    margin: 70px;
+    text-align: justify;
+}
+
+#results-article {
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+}
+
+#results-article #result {
+    align-items: center;
+    background-color: rgb(1, 41, 241);
+    border-radius: 50%;
+    display: flex;
+    height: 300px;
+    justify-content: center;
+    margin-bottom: 40px;
+    margin-top: 40px;
+    width: 300px;
+}
+
+#results-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#save-score {
+    align-self: center;
+    background-color: rgb(139, 157, 247);
+    margin-top: 30px;
+    max-width: 200px;
+}
+
+#scoreButton {
+    background-image: linear-gradient(blue, rgb(117, 225, 255));
+    height: 60px;
+    margin-left: 20px;
+    transition: width 1s ease;
+    width: 200px;
+}
+
+#scoreButton:hover {
+    background-image: linear-gradient(rgb(204, 0, 255), rgb(0, 81, 255));
+    width: 250px;
+}
+
+#show-results-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+#statsContainer {
+    background-color: #fff;
+    border-radius: 3px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    height: fit-content;
+    max-width: 100%;
+    padding: 30px 50px;
+    width: 40%;
+}
+
+#timer {
+    display: flex;
+    font-size: 30px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* Selectores por Clases */
+.audio-button {
+    display: inline-block;
+    align-self: center;
+    width: 50px;
+    height: 30px;
+    background: url('./assets/images/audioOff.png') no-repeat center center;
+    background-size: cover;
+    cursor: pointer;
+    display: inline-block;
+    height: 51px;
+    margin-left: 0;
+    margin-top: 20px;
+
+    margin-top: 5px;
+    position: absolute;
+    top: 17%;
+    width: 70px;
+    left: 94%;
+}
+
+.audio-button.playing {
+    background: url('./assets/images/audioOn.png') no-repeat center center;
+    background-size: cover;
+}
+
+.button-disabled {
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+.close-auth-window {
+    box-sizing: border-box;
+    margin-left: 90%;
+    padding: 4px 10px 5px 10px;
+}
+
 .correct {
     background-color: greenyellow !important;
+}
+
+.hidden {
+    display: none !important;
 }
 
 .incorrect {
     background-color: red !important;
 }
 
-#answer1 button {
-    background-color: rgb(90, 222, 255);
+.rainbow-text {
+    animation: rainbow 3s infinite;
+    font-size: 2em;
+    font-weight: bold;
 }
-#answer2 button {
-    background-color: rgb(255, 236, 131);
-}
-#answer3 button {
-    background-color: rgb(123, 255, 151);
-}
-#answer4 button {
-    background-color: rgb(255, 105, 105);
-}
-#questionCard button {
-    padding-bottom: 10px;
-    padding-right: 60px;
-    padding-left: 60px;
-    width: 400px;
-    height: 90px;
-}
-#nextButton {
-    margin-top: 100px;
-    align-items: center;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-right: 60px;
-    padding-left: 60px;
-    margin-left: 45%;
-    margin-bottom: 320px;
-}
-#message{
-    margin-left: 20px;
-    margin-top: 20PX;
-}
-/* User Authentication Styles */
-#pfpMessageContainer {
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-}
-#labelPfp {
-    display: block;
-    width: fit-content;
-}
-#labelPfp:hover {
-    cursor: pointer;
-}
-#profilePictureContainer {
-    width: 50px;
-    height: 50px;
-    border: 1px solid gray;
-    border-radius: 50%;
-    overflow: hidden;
-}
-#imgProfilePicture {
-    width: 100%;
-    height: 100%;
-    margin-right: 10px;
-}
-#login-window,
-#signup-window {
-    padding: 5px 10px 7px 10px;
-}
-#auth-container {
-    display: flex;
-    background-color: rgba(0, 0, 0, 0.5);
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    pointer-events: none;
-    opacity: 0;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 100vw;
-    transition: opacity 0.3s ease;
-    box-sizing: border-box;
-}
-#login-container,
-#signup-container {
-    background-color: #fff;
-    height: fit-content;
-    width: 30%;
-    max-width: 100%;
-    padding: 30px 50px;
-    border-radius: 3px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-.fa-xmark {
-    pointer-events: none;
-}
-.close-auth-window {
-    padding: 4px 10px 5px 10px;
-    /* margin-bottom: 10px; */
-    margin-left: 90%;
-    box-sizing: border-box;
-}
-#login-container label,
-#signup-container label {
-    margin-top: 100px;
-}
-#login-container input,
-#signup-container input {
-    width: 100%;
-    padding: 10px 10px;
-    margin-bottom: 10px;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    box-sizing: border-box;
-}
-#login-container input[type=submit],
-#signup-container input[type=submit] {
-    width: 100%;
-    background-color: darkblue;
-    font-size: 1em;
-    color: white;
-    padding: 10px 20px;
-    margin-top: 10px;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-}
-input[type=submit]:hover {
-    background-color: #45A049;
-}
+
 .show {
-    pointer-events: auto !important;
     opacity: 1 !important;
+    pointer-events: auto !important;
 }
-.hidden {
-    display: none !important;
-}
-.audio-button {
-    display: inline-block;
-    width: 70px;
-    height: 51px;
-    background: url('./assets/images/audioOn.png') no-repeat center center;
-    background-size: cover;
-    cursor: pointer;
-    margin-left: 0;
-    margin-top: 5px;
-    position: absolute;
-    left: 94%;
-    top: 20%;
-}
-.audio-button.playing {
-    background: url('./assets/images/audioOff.png') no-repeat center center;
-    background-size: cover;
-}
+
+/* Media queries mejoradas */
+
+/* Dispositivos grandes (pantallas de escritorio grandes) */
 @media (max-width: 1200px) {
     header {
-        flex-direction: column;
-        text-align: center;
+        padding: 30px;
+        max-width: 100%;
+        max-height: 100%;
+        margin: 0 auto;
     }
+
     header h1 {
-        margin-bottom: 20px;
+        font-size: 40px;
+        display: contents;
     }
-    #mainContent h2 {
-        font-size: 60px;
+
+    #login-window,
+    #signup-window {
+        width: 40px;
+        height: 40px;
     }
-    #mainContent button {
-        font-size: 1.2em;
-    }
-    #nextButton {
-        margin-left: 35%;
-    }
-    footer {
-        flex-direction: column;
-        align-items: center;
-    }
-}
-@media (max-width: 768px) {
-    header {
-        padding: 15px;
-    }
-    header h1 {
-        font-size: 24px;
-    }
-    #login {
-        width: 50px;
+
+    .ct-chart {
         height: 50px;
     }
-    #mainContent {
-        margin-top: 100px;
-    }
-    #mainContent h2 {
-        font-size: 50px;
-    }
-    #nextButton {
-        margin-left: 35%;
-    }
-    #mainContent button {
-        font-size: 1em;
-        padding: 8px 16px;
-    }
-}
-@media (max-width: 480px) {
-    header {
-        padding: 10px;
-    }
-    header h1 {
-        font-size: 20px;
-    }
-    #login {
-        width: 40px;
+    #buttonLoginGoogle {
+        width: 300px;
         height: 40px;
     }
     #nextButton {
         margin-left: 35%;
     }
+
     #mainContent {
         margin-top: 50px;
     }
+
+    #mainContent h2 {
+        font-size: 70px;
+    }
+
+    #mainContent button {
+        font-size: 18px;
+        padding: 6px 12px;
+        width: 280px;
+        height: 40px;
+
+    }
+
+    footer {
+        padding: 10px;
+        max-width: 98%;
+        max-height: 50%;
+        margin: 0 auto;
+        font-size: 80%;
+    }
+
+    #footer-devs-container {
+        margin-right: 10px;
+        margin-left: 40px;
+        justify-content: center;
+    }
+
+    #footer-devs-container span {
+        margin-right: 30px;
+    }
+
+    #userNavContainer {
+        font-size: 20px;
+        display: flex;
+    }
+
+    #pfpMessageContainer {
+        margin-right: 0px;
+    }
+
+    #profilePictureContainer {
+        display: none;
+    }
+
+    #loggedInContainer {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    #loggedInContainer button {
+        font-size: 10px;
+        max-width: 50%;
+        max-height: 30px;
+        margin-top: 10px;
+    }
+
+    #loggedOffContainer {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    #login-window {
+        font-size: 10px;
+        width: 90px;
+        height: 40px;
+        margin-top: 10px;
+    }
+
+    #signup-window {
+        font-size: 10px;
+        width: 90px;
+        height: 40px;
+        margin-top: 10px;
+    }
+
+    #scoreButton {
+        margin: 0;
+    }
+
+    #button-logout {
+        margin: 0;
+    }
+
+    .audio-button {
+        width: 40px;
+        height: 30px;
+        top: 120px;
+        margin-left: 15px;
+        left: 89%;
+    }
+}
+
+/* Dispositivos medianos (tabletas, pantallas medianas) */
+@media (max-width: 768px) {
+    header {
+        padding: 10px;
+        max-width: 100%;
+        max-height: 50%;
+        margin: 0 auto;
+    }
+
+    header h1 {
+        font-size: 20px;
+        display: contents;
+    }
+
+    #login-window,
+    #signup-window {
+        width: 40px;
+        height: 40px;
+    }
+
+    .ct-chart {
+        height: 50px;
+    }
+
+    #nextButton {
+        margin-left: 35%;
+    }
+
+    #mainContent {
+        margin-top: 50px;
+    }
+
     #mainContent h2 {
         font-size: 40px;
     }
+
     #mainContent button {
         font-size: 0.8em;
         padding: 6px 12px;
     }
+
     footer {
-        padding: 30px;
+        padding: 10px;
+        max-width: 96%;
+        max-height: 50%;
+        margin: 0 auto;
+        font-size: 80%;
     }
+
+    #footer-devs-container {
+        margin-right: 10px;
+        margin-left: 40px;
+        justify-content: center;
+    }
+
+    #userNavContainer {
+        font-size: 10px;
+        display: flex;
+    }
+
+    #pfpMessageContainer {
+        margin-right: 0px;
+    }
+
+    #profilePictureContainer {
+        display: none;
+    }
+    #buttonLoginGoogle {
+        width: 200px;
+        height: 30px;
+    }
+    #loggedInContainer {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        /* Espacio entre los botones */
+    }
+
+    #login-window {
+        font-size: 10px;
+        width: 90px;
+        height: 40px;
+        margin-top: 10px;
+    }
+
+    #signup-window {
+        font-size: 10px;
+        width: 90px;
+        height: 40px;
+        margin-top: 10px;
+    }
+
+    #loggedOffContainer {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    #loggedOffContainer button {
+        font-size: 10px;
+        max-width: 50%;
+        max-height: 30px;
+        margin-top: 10px;
+    }
+
+    #scoreButton {
+        margin: 0;
+    }
+
+    #button-logout {
+        margin: 0;
+    }
+
+    #ranking {
+        font-size: 10px;
+        margin-left: 80px;
+    }
+
+    main {
+        min-height: 20;
+    }
+
+    .audio-button {
+        width: 40px;
+        height: 30px;
+        top: 70px;
+        margin-left: 15px;
+        left: 85%;
+    }
+}
+
+/* Dispositivos pequeños (teléfonos móviles, pantallas pequeñas) */
+@media (max-width: 480px) {
+    header {
+        padding: 10px;
+        max-width: 100%;
+        max-height: 50%;
+        margin: 0 auto;
+    }
+
+    header h1 {
+        font-size: 20px;
+        display: contents;
+    }
+
+
+    #login-window,
+    #signup-window {
+        width: 40px;
+        height: 40px;
+    }
+
+    .ct-chart {
+        height: 50px;
+    }
+
+    #nextButton {
+        margin-left: 35%;
+    }
+
+    #mainContent {
+        margin-top: 50px;
+    }
+
+    #mainContent h2 {
+        font-size: 40px;
+    }
+
+    #mainContent button {
+        font-size: 0.8em;
+        padding: 6px 12px;
+    }
+
+    #statsContainer {
+        height: 70%;
+    }
+    #buttonLoginGoogle {
+        width: 150px;
+        height: 20px;
+        margin: 0;
+    }
+    footer {
+        padding: 10px;
+        max-width: 95%;
+        max-height: 50%;
+        margin: 0 auto;
+        font-size: 80%;
+    }
+
+    #userNavContainer {
+        font-size: 10px;
+        display: flex;
+    }
+
+    #pfpMessageContainer {
+        margin-right: 0px;
+    }
+
+    #profilePictureContainer {
+        display: none;
+    }
+
+    #loggedInContainer {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        /* Espacio entre los botones */
+    }
+
+    #loggedInContainer button {
+        font-size: 10px;
+        max-width: 50%;
+        max-height: 30px;
+        margin-top: 10px;
+    }
+
+    #loggedOffContainer {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    #login-window {
+        font-size: 10px;
+        width: 90px;
+        height: 40px;
+        margin-top: 10px;
+    }
+
+    #signup-window {
+        font-size: 10px;
+        width: 90px;
+        height: 40px;
+        margin-top: 10px;
+    }
+
+    #scoreButton {
+        margin: 0;
+        width: 100px;
+    }
+
+    #button-logout {
+        margin: 0;
+        width: 100px;
+    }
+
+    #ranking {
+        font-size: 9px;
+        margin-left: 20px;
+    }
+
+    main {
+        min-height: 20;
+    }
+
+    .audio-button {
+        width: 40px;
+        height: 30px;
+        top: 80px;
+        margin-left: 15px;
+        left: 80%;
+    }
+}
+
+/* Dispositivos muy pequeños (teléfonos móviles pequeños como el iPhone SE) */
+@media (max-width: 375px) {
+    header {
+        padding: 10px;
+        max-width: 100%;
+        max-height: 50%;
+        margin: 0 auto;
+    }
+
+    header h1 {
+        font-size: 20px;
+        display: contents;
+    }
+
+    #login-window,
+    #signup-window {
+        width: 40px;
+        height: 40px;
+    }
+
+    .ct-chart {
+        height: 50px;
+    }
+
+    #nextButton {
+        margin-left: 35%;
+    }
+
+    #mainContent {
+        margin-top: 50px;
+    }
+
+    #mainContent h2 {
+        font-size: 40px;
+    }
+
+    #mainContent button {
+        font-size: 0.8em;
+        padding: 6px 12px;
+    }
+
+    footer {
+        padding: 10px;
+        max-width: 95%;
+        max-height: 50%;
+        margin: 0 auto;
+        font-size: 50%;
+    }
+
+    #userNavContainer {
+        font-size: 10px;
+        display: flex;
+    }
+
+    #pfpMessageContainer {
+        margin-right: 0px;
+    }
+
+    #profilePictureContainer {
+        display: none;
+    }
+
+    #loggedInContainer {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    #loggedInContainer button {
+        font-size: 10px;
+        max-width: 50%;
+        max-height: 30px;
+        margin-top: 10px;
+    }
+
+    #loggedOffContainer {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    #login-window {
+        font-size: 10px;
+        width: 90px;
+        height: 40px;
+        margin-top: 10px;
+    }
+
+    #signup-window {
+        font-size: 10px;
+        width: 90px;
+        height: 40px;
+        margin-top: 10px;
+    }
+
+    #scoreButton {
+        margin: 0;
+        width: 80px;
+    }
+
+    #button-logout {
+        margin: 0;
+        width: 80px;
+    }
+
+    #ranking {
+        font-size: 7px;
+        margin-left: 20px;
+        margin-right: 0;
+    }
+
+    main {
+        min-height: 20;
+    }
+
+    .audio-button {
+        width: 40px;
+        height: 30px;
+        top: 100px;
+        margin-left: 15px;
+        left: 80%;
+    }
+}
+
+@media (max-width: 0px) {
+    header {
+        padding: 10px;
+        max-width: 70%;
+        max-height: 50%;
+        margin: 0 auto;
+    }
+
+    header h1 {
+        font-size: 20px;
+        display: contents;
+    }
+
+    #login-window,
+    #signup-window {
+        width: 40px;
+        height: 40px;
+    }
+
+    .ct-chart {
+        height: 50px;
+    }
+
+    #nextButton {
+        margin-left: 35%;
+    }
+
+    #mainContent {
+        margin-top: 50px;
+    }
+
+    #mainContent h2 {
+        font-size: 40px;
+    }
+
+    #mainContent button {
+        font-size: 0.8em;
+        padding: 6px 12px;
+    }
+
+    footer {
+        padding: 10px;
+        max-width: 70%;
+        max-height: 50%;
+        margin: 0 auto;
+        font-size: 80%;
+    }
+
+    #userNavContainer {
+        font-size: 10px;
+        display: flex;
+    }
+
+    #pfpMessageContainer {
+        margin-right: 0px;
+    }
+
+    #profilePictureContainer {
+        display: none;
+    }
+
+    #loggedInContainer {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    #loggedInContainer button {
+        font-size: 10px;
+        max-width: 50%;
+        max-height: 30px;
+        margin-top: 10px;
+    }
+
+    #loggedOffContainer {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    #loggedOffContainer button {
+        font-size: 10px;
+        max-width: 50%;
+        max-height: 30px;
+        margin-top: 10px;
+    }
+
+    #scoreButton {
+        margin: 0;
+        width: 10px;
+    }
+
+    #button-logout {
+        margin: 0;
+        width: 10px;
+    }
+
+    #ranking {
+        font-size: 9px;
+        margin-left: 20px;
+    }
+
+    main {
+        min-height: 20;
+    }
+
+    .audio-button {
+        width: 40px;
+        height: 30px;
+        top: 100px;
+        margin-left: 15px;
+        left: 80%;
+    }
+}
+
+
+#grafText1 {
+    margin-bottom: 20px;
+    margin-left: -10px;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    white-space: nowrap;
+    writing-mode: vertical-rl;
+    cursor: pointer;
+}
+
+/*Ranking Table*/
+#ranking {
+    display: flex;
+    justify-content: center;
+}
+
+table {
+    margin: 20px;
+}
+
+td {
+    padding: 20px;
+}
+
+#head-table th,
+td {
+    color: white;
+}
+
+.user-image-table img {
+    width: 20px;
+    height: 20px;
 }

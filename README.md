@@ -1,4 +1,5 @@
 # Quiz App
+<a href="https://sergiolm7.github.io/quiz-js-equipo/" target="_blank"> <img src="./assets/images/banner-quiz.jpg"/></a> 
 
 This is a quiz application that displays 10 random questions and saves your results. It also shows a ranking comparing your results with other users.
 

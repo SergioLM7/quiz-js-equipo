@@ -83,7 +83,7 @@ document.addEventListener('click', ({ target }) => {
         // const formattedDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
         const objScore = {
             score: JSON.parse(localStorage.getItem('score')),
-            date: date
+            date: date.toString(),
         };
         console.log(objScore)
             if (isUserLogged) {
@@ -239,7 +239,7 @@ const onWindowChange = async () => {
                 try {
                     const preguntas = await getApiQuiz();
                     console.log('Questions from API:', preguntas);
-                    toLocalStorage(preguntas);
+                    //toLocalStorage(preguntas);
                     iterateArrApiQuiz();
                 } catch (error) {
                     console.error('Error fetching questions:', error);
@@ -374,6 +374,7 @@ const paintRanking = async (array) => {
             tdScore.textContent = object.score;
             const tdDate = document.createElement('TD');
             const date = new Date(object.date);
+            console.log(date)
             const formattedDate2 = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
             tdDate.textContent = formattedDate2;
 
@@ -731,9 +732,9 @@ function getRanking() {
 
             usersSnapshot.forEach(doc => {
                 const data = doc.data();
-
+                console.log(data)
                 if (data.scores && Array.isArray(data.scores)) {
-
+                 
                     const maxScoreObj = data.scores.reduce((maxObj, currentObj) => {
                         // return currentObj.score > maxObj.score ? currentObj : maxObj;
                         if (currentObj.score > maxObj.score) {
@@ -749,15 +750,15 @@ function getRanking() {
                             return maxObj;
                         }
                     }, data.scores[0]);
-
+                    console.log(maxScoreObj)
                     bestScoreUsers.push({
                         profilePicture: data.profilePicture,
                         name: data.name,
                         score: maxScoreObj.score,
                         date: maxScoreObj.date
                     });
-                    // console.log(bestScoreUsers);
-                }
+                     console.log(bestScoreUsers);
+                } 
             });
             const bestScoreUsersOrdered = bestScoreUsers.sort((a, b) => {
                 if (b.score === a.score) {
@@ -799,7 +800,7 @@ const getUserScores = () => {
                 let arrDateChart = [];
                 lastScoresSliced.forEach((element) => {
                     arrScoreChart.push(element.score);
-                    arrDateChart.push(new Date(element.date));
+                    arrDateChart.push(new Date(element.date)); //AQUI????
                 });
                 paintChart(arrScoreChart, arrDateChart);
             })
@@ -812,7 +813,7 @@ const paintChart = (arrScoreChart, arrDateChart) => {
     const arrDateChartFormatted = arrDateChart.map(date => {
         return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
     });
-    // console.log(arrDateChartFormatted);
+     console.log(arrDateChartFormatted); //AQUI YA ENTRA NAN SALVO EN EL PRIMERO
 
     const chartContainer = document.querySelector('#chart-container');
     chartContainer.innerHTML = '';
@@ -831,13 +832,12 @@ const paintChart = (arrScoreChart, arrDateChart) => {
         },
 
         axisY: {
-            high: 10,
+            high: 30,
             low: 0,
             onlyInteger: true,
             type: Chartist.FixedScaleAxis,
-            divisor: 1,
-            ticks: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
+            divisor: 5,
+            ticks: [0, 5, 10, 15, 20, 25, 30]
         }
     });
 }

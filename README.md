@@ -24,16 +24,20 @@
 1. **Main Page (`index.html`)**:
    - Displays the quiz title and includes sections for login, signup, overall ranking, start quiz questions, and player stats.
    - Includes an audio player to enhance the user experience.
+<img src="./assets/images/home.jpeg"/>
+<img src="./assets/images/ranking.jpeg"/>
 
 2. **Questions Page(`pages/questions.html`)**:
    - Displays API questions one by one and goes to next one when clicked.
    - Alerts if the answer is correct or wrong.
    - Includes an audio player to enhance the user experience.
+<img src="./assets/images/questions.jpeg"/>
 
 3.  **Results Page(`pages/results.html`)**:
    - Shows user's result and a message depending on the result.
    - Gives the option of save the result in Firebase if logged, and redirects to Sign Up if not logged.
    - Includes an audio player to enhance the user experience.
+<img src="./assets/images/charts.jpeg"/>
 
 4.   **Styles (`styles.css`)**:
    - Defines the visual appearance of the application, using the `Press Start 2P` font for a retro gaming theme.

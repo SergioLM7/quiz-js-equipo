@@ -24,7 +24,7 @@
 1. **Main Page (`index.html`)**:
    - Displays the quiz title and includes sections for login, signup, overall ranking, start quiz questions, and player stats.
    - Includes an audio player to enhance the user experience.
-<img src="./assets/images/home.jpeg"/>
+<img src="./assets/images/home.jpeg" width=300px; height=400px;/>
 <img src="./assets/images/ranking.jpeg"/>
 
 2. **Questions Page(`pages/questions.html`)**:

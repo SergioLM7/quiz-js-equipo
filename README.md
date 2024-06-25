@@ -37,7 +37,7 @@
    - Shows user's result and a message depending on the result.
    - Gives the option of save the result in Firebase if logged, and redirects to Sign Up if not logged.
    - Includes an audio player to enhance the user experience.
-<img src="./assets/images/chart.jpeg" width=300px; height=500px;/>
+<img src="./assets/images/chart.jpeg" width=300px; height=400px;/>
 
 4.   **Styles (`styles.css`)**:
    - Defines the visual appearance of the application, using the `Press Start 2P` font for a retro gaming theme.

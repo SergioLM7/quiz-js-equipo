@@ -58,9 +58,13 @@ To run the application locally:
 1. Clone this repository to your local machine.
 2. Open the `index.html` file in your preferred web browser.
 
-## Author
-
-Developed by Antonio, Sergio y Diego.
+## Authors
+<br>**Sergio Lillo, Full Stack Developer**
+<a href="https://www.linkedin.com/in/lillosergio/" target="_blank"> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/LinkedIn_icon.svg/1200px-LinkedIn_icon.svg.png" width=30px, height=30px/></a> 
+<br>**Antonio González, Full Stack Developer**
+<a href="https://www.linkedin.com/in/antonio-gonzález-torres-35b74522a/" target="_blank"> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/LinkedIn_icon.svg/1200px-LinkedIn_icon.svg.png" width=30px, height=30px/></a>
+<br>**Diego Blázquez, Full Stack Developer**
+<a href="https://www.linkedin.com/in/diego-blázquez-rosado-b08192ba/" target="_blank"> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/LinkedIn_icon.svg/1200px-LinkedIn_icon.svg.png" width=30px, height=30px/></a> 
 
 ## External Resources
 - [Font Awesome](https://fontawesome.com): Used for several icons.
